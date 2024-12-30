@@ -1,12 +1,28 @@
 import React, { ReactNode } from "react";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, StyleSheet, Image, Text } from "react-native";
-
+import {
+  View,
+  StyleSheet,
+  Image,
+  Text,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
+import BackIcon from "../../../assets/vendors/back-icon";
+import { useNavigation } from "@react-navigation/native";
+import SearchInput from "../filters/searchInput";
+import TopHeaderIcon from "../../../assets/vendors/top-header-icon";
+const width = Dimensions.get("window").width;
 interface MainWrapperProps {
   children: ReactNode;
   showSafeArea?: boolean;
+  showSearch?: boolean;
+  showHeart?: boolean;
   iconBg?: string;
+  title?: string;
+  headerImage?: number;
+  type_of_header?: string;
   icon?: ReactNode;
 }
 
@@ -15,20 +31,62 @@ const MainWrapper: React.FC<MainWrapperProps> = ({
   showSafeArea = false,
   iconBg = "#FF6347", // Default iconBg color
   icon,
+  type_of_header,
+  title,
+  showSearch = true,
+  showHeart = false,
+  headerImage = require("../../../assets/images/home-top-header.png"),
 }) => {
-  const renderHeader = (
+  const navigator = useNavigation();
+  const renderHeaderWithImage = (
     <View style={styles.header}>
-      <Image
-        style={styles.headerImage}
-        source={require("../../../assets/images/home-top-header.png")}
-      />
+      <Image style={styles.headerImage} source={headerImage} />
       <View style={styles.headerContent}>
         <View style={[styles.iconContainer, { backgroundColor: iconBg }]}>
           {icon}
         </View>
-        <Text style={[styles.headerText, { color: iconBg }]}>Home</Text>
+        <Text style={[styles.headerText, { color: iconBg }]}>{title}</Text>
       </View>
     </View>
+  );
+  const renderHeaderWithOutImage = (
+    <SafeAreaView>
+      <View
+        style={{
+          height: 32,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          flexDirection: "row",
+          width: width - 32,
+          marginHorizontal: 16,
+        }}
+      >
+        <TouchableOpacity
+          onPress={() => navigator.goBack()}
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <BackIcon />
+          <Text>back</Text>
+        </TouchableOpacity>
+        <Text
+          style={{
+            fontStyle: "italic",
+            fontWeight: "bold",
+            fontSize: 20,
+            marginLeft: 20,
+          }}
+        >
+          {title}
+        </Text>
+        {showSearch && <SearchInput />}
+        {showHeart && <TopHeaderIcon />}
+      </View>
+    </SafeAreaView>
   );
 
   return (
@@ -39,7 +97,9 @@ const MainWrapper: React.FC<MainWrapperProps> = ({
         </SafeAreaView>
       ) : (
         <>
-          {renderHeader}
+          {type_of_header === "withoutImage"
+            ? renderHeaderWithOutImage
+            : renderHeaderWithImage}
           <View style={styles.content}>{children}</View>
         </>
       )}

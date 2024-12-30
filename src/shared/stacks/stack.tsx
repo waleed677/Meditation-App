@@ -45,6 +45,7 @@ interface StackProps {
   my?: number; // Vertical margin (top and bottom)
   w?: number; // Width
   h?: number; // Height
+  style?: ViewStyle; // Height
 }
 
 const Stack: React.FC<StackProps> = ({
@@ -73,6 +74,7 @@ const Stack: React.FC<StackProps> = ({
   w,
   h,
   flex,
+  style,
 }) => {
   // Define style props using the provided props
   const basicsStylesProps: ViewStyle = {
@@ -102,7 +104,7 @@ const Stack: React.FC<StackProps> = ({
     height: h,
   };
 
-  return <View style={basicsStylesProps}>{children}</View>;
+  return <View style={[basicsStylesProps, style]}>{children}</View>;
 };
 
 export default Stack;

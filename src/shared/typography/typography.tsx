@@ -6,12 +6,15 @@ interface TypographyProps {
   children: React.ReactNode;
   type:
     | "title"
+    | "title2"
     | "subtitle1"
     | "subtitle2"
+    | "subtitle3"
     | "paragraph1"
     | "paragraph1Bold"
     | "button"
     | "paragraph2"
+    | "paragraph2bold"
     | "paragraph2Light"
     | "caption"
     | "inputLabel";
@@ -24,10 +27,14 @@ const Typography: React.FC<TypographyProps> = ({ children, type, style }) => {
     switch (type) {
       case "title":
         return styles.title;
+      case "title2":
+        return styles.title2;
       case "subtitle1":
         return styles.subtitle1;
       case "subtitle2":
         return styles.subtitle2;
+      case "subtitle3":
+        return styles.subtitle3;
       case "paragraph1":
         return styles.paragraph1;
       case "paragraph1Bold":
@@ -36,6 +43,8 @@ const Typography: React.FC<TypographyProps> = ({ children, type, style }) => {
         return styles.button;
       case "paragraph2":
         return styles.paragraph2;
+      case "paragraph2bold":
+        return styles.paragraph2bold;
       case "paragraph2Light":
         return styles.paragraph2Light;
       case "caption":
@@ -56,6 +65,11 @@ const styles = StyleSheet.create({
     lineHeight: 40,
     fontWeight: "bold", // Title should be bold
   },
+  title2: {
+    fontSize: 20,
+    lineHeight: 32,
+    fontWeight: "bold", // Title should be bold
+  },
   subtitle1: {
     fontSize: 22,
     lineHeight: 42,
@@ -65,6 +79,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     lineHeight: 20,
     fontWeight: "normal", // Subtitle 2, normal weight
+  },
+  subtitle3: {
+    fontSize: 18,
+    lineHeight: 20,
+    fontWeight: "medium", // Subtitle 2, normal weight
   },
   paragraph1: {
     fontSize: 16,
@@ -85,6 +104,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 16,
     fontWeight: "normal", // Small paragraph
+  },
+  paragraph2bold: {
+    fontSize: 12,
+    lineHeight: 16,
+    fontWeight: "bold", // Small paragraph
   },
   paragraph2Light: {
     fontSize: 12,

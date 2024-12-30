@@ -4,6 +4,19 @@ import Home from "./HomeNavigator";
 import SelectHomeIcon from "../../assets/vendors/select-home-icon";
 import UnSelectHomeIcon from "../../assets/vendors/un-select-home-icon";
 import { Platform } from "react-native";
+import UnSelectPracticeIcon from "../../assets/vendors/un-select-practice-icon";
+import SelectPracticeIcon from "../../assets/vendors/select-practice-icon";
+import PracticeNavigator from "./PracticeNavigator";
+import ResourcesNavigator from "./ResourcesNavigator";
+import UnSelectResourcesIcon from "../../assets/vendors/un-select-resources-icon";
+import SelectResourcesIcon from "../../assets/vendors/select-resources-icon";
+import UnSelectMomentsIcon from "../../assets/vendors/un-select-moments-icon";
+import SelectMomentsIcon from "../../assets/vendors/select-moments-icon";
+import UnSelectSettingIcon from "../../assets/vendors/un-select-setting-icon";
+import SelectSettingIcon from "../../assets/vendors/select-setting-icon";
+import MomentsNavigator from "./MomentsNavigator";
+import SettingNavigator from "./SettingNavigator";
+
 const TabNavigator = () => {
   const BottomTab = createBottomTabNavigator();
   const Device = Platform.OS === "android" ? true : false;
@@ -37,37 +50,37 @@ const TabNavigator = () => {
           options={({ route }) => ({
             headerShown: false,
             tabBarIcon: ({ color, focused }) =>
-              focused ? <SelectHomeIcon /> : <UnSelectHomeIcon />,
+              focused ? <SelectPracticeIcon /> : <UnSelectPracticeIcon />,
           })}
           name="Practice"
-          component={Home}
+          component={PracticeNavigator}
         />
         <BottomTab.Screen
           options={({ route }) => ({
             headerShown: false,
             tabBarIcon: ({ color, focused }) =>
-              focused ? <SelectHomeIcon /> : <UnSelectHomeIcon />,
+              focused ? <SelectResourcesIcon /> : <UnSelectResourcesIcon />,
           })}
           name="Resources"
-          component={Home}
+          component={ResourcesNavigator}
         />
         <BottomTab.Screen
           options={({ route }) => ({
             headerShown: false,
             tabBarIcon: ({ color, focused }) =>
-              focused ? <SelectHomeIcon /> : <UnSelectHomeIcon />,
+              focused ? <SelectMomentsIcon /> : <UnSelectMomentsIcon />,
           })}
           name="Moments"
-          component={Home}
+          component={MomentsNavigator}
         />
         <BottomTab.Screen
           options={({ route }) => ({
             headerShown: false,
             tabBarIcon: ({ color, focused }) =>
-              focused ? <SelectHomeIcon /> : <UnSelectHomeIcon />,
+              focused ? <SelectSettingIcon /> : <UnSelectSettingIcon />,
           })}
           name="Settings"
-          component={Home}
+          component={SettingNavigator}
         />
       </BottomTab.Navigator>
     </>
