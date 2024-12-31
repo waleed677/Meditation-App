@@ -2,6 +2,8 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Resources from "../screens/resources";
 import ResourcesList from "../screens/resourcesList";
+import VideoPlayerPage from "../screens/videoPlayerPage";
+
 const ResourcesNavigator = () => {
   const ResourcesStack = createNativeStackNavigator();
   return (
@@ -20,6 +22,11 @@ const ResourcesNavigator = () => {
         options={{ headerShown: false }}
         name="ResourcesList"
         component={ResourcesList}
+      />
+      <ResourcesStack.Screen
+        options={{ headerShown: false }}
+        name="VideoPlayerDetail"
+        component={VideoPlayerPage}
       />
     </ResourcesStack.Navigator>
   );

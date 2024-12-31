@@ -1,10 +1,14 @@
 import React from "react";
 import MainWrapper from "../../shared/wrappers/main-wrapper";
-import { FlatList } from "react-native";
+import { FlatList, TouchableOpacity } from "react-native";
 import VideoCard from "../../shared/video/VideoCard";
 import Stack from "../../shared/stacks/stack";
-
+import { NavigationProp, useNavigation } from "@react-navigation/native";
+type RootStackParamList = {
+  VideoPlayerDetail: { data: Record<string, unknown> };
+};
 const Index = ({ route }: { route: any }) => {
+  const navigator = useNavigation<NavigationProp<RootStackParamList>>();
   return (
     <MainWrapper title={route.params.data.name} type_of_header="withoutImage">
       <Stack px={15} py={14}>
@@ -19,9 +23,17 @@ const Index = ({ route }: { route: any }) => {
             { key: "6" },
           ]}
           renderItem={() => (
-            <VideoCard
-              source={require("../../../assets/images/video_box.png")}
-            />
+            <TouchableOpacity
+              onPress={() =>
+                navigator.navigate("VideoPlayerDetail", {
+                  data: { name: "Deep Sleep Exercise" },
+                })
+              }
+            >
+              <VideoCard
+                source={require("../../../assets/images/video_box.png")}
+              />
+            </TouchableOpacity>
           )}
           keyExtractor={(item) => item.key}
         />

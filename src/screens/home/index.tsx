@@ -3,12 +3,11 @@ import Stack from "../../shared/stacks/stack";
 import MainWrapper from "../../shared/wrappers/main-wrapper";
 import SelectHomeIcon from "../../../assets/vendors/select-home-icon";
 import Card from "./components/Card";
-import { FlatList, Text, TouchableOpacity } from "react-native";
+import { FlatList, TouchableOpacity } from "react-native";
 import { timeSlots } from "../../../dummyData";
 import Tag from "./components/Tag";
 import VideoCard from "../../shared/video/VideoCard";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
-import Typography from "../../shared/typography/typography";
 type RootStackParamList = {
   VisualPractice: undefined;
   AudioPractice: undefined;
@@ -20,9 +19,6 @@ type RootStackParamList = {
 const Index = () => {
   const [selectSlot, setSelectSlot] = useState("");
   const navigator = useNavigation<NavigationProp<RootStackParamList>>();
-  const redirectPage = (name: keyof RootStackParamList) => {
-    navigator.navigate(name);
-  };
 
   return (
     <MainWrapper
@@ -34,24 +30,24 @@ const Index = () => {
         <Stack mt={30}>
           <Stack flexDirection="row" gap={10} mb={10}>
             <Card
-              onPress={() => redirectPage("VisualPractice")}
+              onPress={() => navigator.navigate("VisualPractice")}
               imageLink={require("../../../assets/images/visual-practice-card-home.png")}
               text="Visual Practice"
             />
             <Card
-              onPress={() => redirectPage("AudioPractice")}
+              onPress={() => navigator.navigate("AudioPractice")}
               imageLink={require("../../../assets/images/audio-practice.png")}
               text="Audio Practice"
             />
           </Stack>
           <Stack flexDirection="row" gap={10} mb={10}>
             <Card
-              onPress={() => redirectPage("Resources")}
+              onPress={() => navigator.navigate("AudioPractice")}
               imageLink={require("../../../assets/images/resources-card-home.png")}
               text="Resources"
             />
             <Card
-              onPress={() => redirectPage("Moments")}
+              onPress={() => navigator.navigate("Moments")}
               imageLink={require("../../../assets/images/moment-card-home.png")}
               text="Moments"
             />
