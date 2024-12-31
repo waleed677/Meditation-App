@@ -8,10 +8,15 @@ import { timeSlots } from "../../../dummyData";
 import Tag from "./components/Tag";
 import VideoCard from "../../shared/video/VideoCard";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
+import Typography from "../../shared/typography/typography";
 type RootStackParamList = {
   VisualPractice: undefined;
   AudioPractice: undefined;
+  Resources: undefined;
+  Moments: undefined;
+  VideoPlayerDetail: { data: Record<string, unknown> };
 };
+
 const Index = () => {
   const [selectSlot, setSelectSlot] = useState("");
   const navigator = useNavigation<NavigationProp<RootStackParamList>>();
@@ -41,10 +46,12 @@ const Index = () => {
           </Stack>
           <Stack flexDirection="row" gap={10} mb={10}>
             <Card
+              onPress={() => redirectPage("Resources")}
               imageLink={require("../../../assets/images/resources-card-home.png")}
               text="Resources"
             />
             <Card
+              onPress={() => redirectPage("Moments")}
               imageLink={require("../../../assets/images/moment-card-home.png")}
               text="Moments"
             />
@@ -85,9 +92,17 @@ const Index = () => {
             { key: "6" },
           ]}
           renderItem={() => (
-            <VideoCard
-              source={require("../../../assets/images/video_box.png")}
-            />
+            <TouchableOpacity
+              onPress={() =>
+                navigator.navigate("VideoPlayerDetail", {
+                  data: { name: "Deep Sleep Exercise" },
+                })
+              }
+            >
+              <VideoCard
+                source={require("../../../assets/images/video_box.png")}
+              />
+            </TouchableOpacity>
           )}
           style={{ marginBottom: 400 }}
           keyExtractor={(item) => item.key}

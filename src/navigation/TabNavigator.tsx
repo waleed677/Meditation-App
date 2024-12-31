@@ -16,10 +16,17 @@ import UnSelectSettingIcon from "../../assets/vendors/un-select-setting-icon";
 import SelectSettingIcon from "../../assets/vendors/select-setting-icon";
 import MomentsNavigator from "./MomentsNavigator";
 import SettingNavigator from "./SettingNavigator";
+import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 
 const TabNavigator = () => {
   const BottomTab = createBottomTabNavigator();
   const Device = Platform.OS === "android" ? true : false;
+  const checkCondition = (routeName: string) => {
+    let pathNames = ["AudioPlayerDetail", "VideoPlayerDetail"];
+    if (pathNames.includes(routeName)) {
+      return true;
+    }
+  };
   return (
     <>
       <BottomTab.Navigator
@@ -28,8 +35,24 @@ const TabNavigator = () => {
           tabBarActiveTintColor: "#FFFFFF",
           tabBarInactiveTintColor: "#99CCFF",
           tabBarStyle: {
-            height: Device ? 60 : 70,
-            backgroundColor: "#2762A6",
+            display: checkCondition(getFocusedRouteNameFromRoute(route) ?? "")
+              ? "none"
+              : "flex",
+            height: checkCondition(getFocusedRouteNameFromRoute(route) ?? "")
+              ? 0
+              : Device
+              ? 60
+              : 70,
+            overflow: "hidden",
+            position: "absolute",
+            zIndex: checkCondition(getFocusedRouteNameFromRoute(route) ?? "")
+              ? 0
+              : 1,
+            backgroundColor: checkCondition(
+              getFocusedRouteNameFromRoute(route) ?? ""
+            )
+              ? "transparent"
+              : "#2762A6",
           },
           tabBarLabelStyle: {
             fontSize: 12,

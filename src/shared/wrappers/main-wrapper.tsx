@@ -23,6 +23,7 @@ interface MainWrapperProps {
   title?: string;
   headerImage?: number;
   type_of_header?: string;
+  fontStyle?: string;
   icon?: ReactNode;
 }
 
@@ -35,6 +36,7 @@ const MainWrapper: React.FC<MainWrapperProps> = ({
   title,
   showSearch = true,
   showHeart = false,
+  fontStyle = "italic",
   headerImage = require("../../../assets/images/home-top-header.png"),
 }) => {
   const navigator = useNavigation();
@@ -74,8 +76,9 @@ const MainWrapper: React.FC<MainWrapperProps> = ({
           <Text>back</Text>
         </TouchableOpacity>
         <Text
+          //@ts-ignore
           style={{
-            fontStyle: "italic",
+            fontStyle: fontStyle,
             fontWeight: "bold",
             fontSize: 20,
             marginLeft: 20,

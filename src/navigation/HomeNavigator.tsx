@@ -3,7 +3,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Home from "../screens/home";
 import VisualPractice from "../screens/visualPractice";
 import AudioPractice from "../screens/audioPractice";
-
+import VideoPlayerPage from "../screens/videoPlayerPage";
+import AudioPlayerPage from "../screens/audioPlayerPage";
 const HomeNavigator = () => {
   const HomeStack = createNativeStackNavigator();
   return (
@@ -27,6 +28,16 @@ const HomeNavigator = () => {
         options={{ headerShown: false }}
         name="AudioPractice"
         component={AudioPractice}
+      />
+      <HomeStack.Screen
+        options={{ headerShown: false }}
+        name="VideoPlayerDetail"
+        component={VideoPlayerPage}
+      />
+      <HomeStack.Screen
+        options={{ headerShown: false }}
+        name="AudioPlayerDetail"
+        component={AudioPlayerPage}
       />
     </HomeStack.Navigator>
   );
