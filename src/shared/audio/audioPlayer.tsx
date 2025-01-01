@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -14,7 +14,6 @@ import Slider from "@react-native-community/slider";
 import Stack from "../stacks/stack";
 import CrossIcon from "../../../assets/vendors/cross-icon";
 
-// Get screen width and height
 const { width } = Dimensions.get("window");
 
 const AudioPlayer: React.FC = () => {
@@ -24,9 +23,8 @@ const AudioPlayer: React.FC = () => {
   const [duration, setDuration] = useState<number>(0);
   const [currentTime, setCurrentTime] = useState<number>(0);
 
-  // Play/pause audio
   const togglePlayPause = async () => {
-    if (!sound) return; // Ensure sound is loaded before attempting to play
+    if (!sound) return;
 
     if (isPlaying) {
       await sound.pauseAsync();
@@ -36,18 +34,16 @@ const AudioPlayer: React.FC = () => {
     setIsPlaying(!isPlaying);
   };
 
-  // Handle audio progress
   const handlePlaybackStatusUpdate = (status: any) => {
     if (status.isLoaded) {
       setDuration(status.durationMillis / 1000);
       setCurrentTime(status.positionMillis / 1000);
       if (status.didJustFinish && isRepeating) {
-        sound.playAsync(); // Repeat audio when finished
+        sound.playAsync();
       }
     }
   };
 
-  // Seek to a specific time in the audio
   const onSeek = async (value: number) => {
     setCurrentTime(value);
     if (sound) {
@@ -55,12 +51,10 @@ const AudioPlayer: React.FC = () => {
     }
   };
 
-  // Toggle repeat functionality
   const toggleRepeat = () => {
     setIsRepeating(!isRepeating);
   };
 
-  // Load the audio file
   const loadAudio = async () => {
     try {
       console.log("Loading Sound");
@@ -78,7 +72,6 @@ const AudioPlayer: React.FC = () => {
   useEffect(() => {
     loadAudio();
 
-    // Cleanup on unmount
     return () => {
       if (sound) {
         console.log("Unloading Sound");
@@ -87,7 +80,6 @@ const AudioPlayer: React.FC = () => {
     };
   }, []);
 
-  // Format time (minutes:seconds)
   const formatTime = (seconds: number): string => {
     const minutes = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
@@ -96,7 +88,6 @@ const AudioPlayer: React.FC = () => {
 
   return (
     <View style={{ height: 150, position: "relative" }}>
-      {/* Audio controls */}
       <View style={styles.controls}>
         <View>
           <Slider
@@ -156,7 +147,6 @@ const AudioPlayer: React.FC = () => {
   );
 };
 
-// Styles for portrait and landscape orientation
 const styles = StyleSheet.create({
   controls: {
     position: "absolute",

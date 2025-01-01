@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   NavigationContainer,
   useNavigationContainerRef,
@@ -13,7 +13,7 @@ const Router = () => {
   return (
     <NavigationContainer ref={navigationRef}>
       {checkUserLogin ? (
-        <TabNavigator />
+        <TabNavigator setCheckUserLogin={setCheckUserLogin} />
       ) : (
         <AuthNavigator setCheckUserLogin={setCheckUserLogin} />
       )}

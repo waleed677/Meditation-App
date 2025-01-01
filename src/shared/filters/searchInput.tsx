@@ -27,9 +27,10 @@ const styles = StyleSheet.create({
   },
   input: {
     width: 60,
+    height: 30,
     color: "#2762A6",
-    fontSize: 14,
-    lineHeight: 10,
+    fontSize: 10,
+    // lineHeight: 10,
     paddingVertical: 5,
     paddingHorizontal: 10,
   },

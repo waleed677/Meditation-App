@@ -45,7 +45,7 @@ const Index: React.FC = () => {
             </TouchableOpacity>
           )}
           style={{ marginBottom: 400, height: height - 170 }}
-          keyExtractor={(item: any) => item.key} // 'item' is typed as 'any'
+          keyExtractor={(item: any) => item.key}
         />
       </Stack>
     </MainWrapper>

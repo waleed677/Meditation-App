@@ -3,7 +3,6 @@ import Stack from "../../shared/stacks/stack";
 import MainWrapper from "../../shared/wrappers/main-wrapper";
 import { Dimensions, FlatList, TouchableOpacity } from "react-native";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
-import PracticeHeaderIcon from "../../../assets/vendors/practice-header-icon";
 import BarCard from "../../shared/cards/BarCard";
 import ResourcesHeaderIcon from "../../../assets/vendors/resources-header-icon";
 
@@ -46,7 +45,7 @@ const Index: React.FC = () => {
             </TouchableOpacity>
           )}
           style={{ marginBottom: 400, height: height - 170 }}
-          keyExtractor={(item: any) => item.key} // 'item' is typed as 'any'
+          keyExtractor={(item: any) => item.key}
         />
       </Stack>
     </MainWrapper>

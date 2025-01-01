@@ -9,7 +9,6 @@ import UserLabelIcon from "../../../../assets/vendors/user-label-icon";
 import { RouteProp } from "@react-navigation/native";
 import MainWrapper from "../../../shared/wrappers/main-wrapper";
 
-// Define the type for route parameters
 type SignInRouteParams = {
   setCheckUserLogin: (value: boolean) => void;
 };

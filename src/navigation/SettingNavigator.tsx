@@ -4,7 +4,18 @@ import Setting from "../screens/setting";
 import AboutApp from "../screens/aboutApp";
 import AboutAuthor from "../screens/aboutAuthor";
 import Account from "../screens/account";
-const SettingNavigator = () => {
+import { RouteProp } from "@react-navigation/native";
+
+type SignInRouteParams = {
+  setCheckUserLogin: (value: boolean) => void;
+};
+
+type SettingNavigatorProps = {
+  route: RouteProp<{ params: SignInRouteParams }>;
+};
+
+const SettingNavigator: React.FC<SettingNavigatorProps> = ({ route }) => {
+  const { setCheckUserLogin } = route.params;
   const SettingStack = createNativeStackNavigator();
   return (
     <SettingStack.Navigator
@@ -31,7 +42,9 @@ const SettingNavigator = () => {
       <SettingStack.Screen
         options={{ headerShown: false }}
         name="Account"
+        //@ts-ignore
         component={Account}
+        initialParams={{ setCheckUserLogin }}
       />
     </SettingStack.Navigator>
   );

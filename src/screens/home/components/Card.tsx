@@ -7,9 +7,8 @@ import {
 } from "react-native";
 import Typography from "../../../shared/typography/typography";
 
-// Adjusting the prop types for the imageLink and text
 interface CardProps {
-  imageLink: number; // Image source is a module ID (number) after requiring an image
+  imageLink: number;
   text: string;
   onPress?: () => void;
 }
@@ -19,7 +18,6 @@ const Card: React.FC<CardProps> = ({
   text,
   onPress = () => console.log("press"),
 }) => {
-  // Calculate width only once using useMemo
   const width = useMemo(() => Dimensions.get("window").width / 2 - 20, []);
 
   return (

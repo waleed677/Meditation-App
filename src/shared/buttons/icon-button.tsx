@@ -8,20 +8,19 @@ import {
   View,
 } from "react-native";
 
-// Define the types for the props
 interface IconButtonProps {
-  text?: string; // Button text
-  onPress?: () => void; // Optional onPress handler
-  style?: ViewStyle; // Style for the button container (TouchableOpacity)
-  titleStyle?: TextStyle; // Style for the text (Button title)
-  backgroundColor?: string; // Custom background color for the button
-  padding?: number; // Custom padding for the button
-  borderRadius?: number; // Custom border radius
-  textColor?: string; // Custom text color for the button's title
-  fontSize?: number; // Custom font size for the button's title
-  lineHeight?: number; // Custom lineHeight
-  h?: number; // Custom height
-  fontWeight?: TextStyle["fontWeight"]; // Custom font weight for the button's title
+  text?: string;
+  onPress?: () => void;
+  style?: ViewStyle;
+  titleStyle?: TextStyle;
+  backgroundColor?: string;
+  padding?: number;
+  borderRadius?: number;
+  textColor?: string;
+  fontSize?: number;
+  lineHeight?: number;
+  h?: number;
+  fontWeight?: TextStyle["fontWeight"];
   rightIcon?: ReactNode;
   leftIcon?: ReactNode;
 }
@@ -31,12 +30,12 @@ const IconButton: React.FC<IconButtonProps> = ({
   onPress = () => console.log("Button pressed"),
   style,
   titleStyle,
-  backgroundColor = "#000", // Default background color
-  padding, // Default padding
-  borderRadius = 24, // Default border radius
-  textColor = "#fff", // Default text color
-  fontSize = 16, // Default font size
-  fontWeight = "bold", // Default font weight
+  backgroundColor = "#000",
+  padding,
+  borderRadius = 24,
+  textColor = "#fff",
+  fontSize = 16,
+  fontWeight = "bold",
   lineHeight = 24,
   h = 38,
   rightIcon,
@@ -66,22 +65,21 @@ const IconButton: React.FC<IconButtonProps> = ({
   return (
     <TouchableOpacity
       onPress={onPress}
-      style={[styles.button, buttonStyle, style]} // Apply container styles
+      style={[styles.button, buttonStyle, style]}
     >
       {leftIcon && <View style={{ marginBottom: 2 }}>{leftIcon}</View>}
       <Text style={[styles.title, buttonTitleStyle, titleStyle]}>{text}</Text>
       {rightIcon && <View>{rightIcon}</View>}
-      {/* Apply title styles */}
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   button: {
-    justifyContent: "center", // Center text vertically
+    justifyContent: "center",
   },
   title: {
-    textAlign: "center", // Center the text
+    textAlign: "center",
   },
 });
 

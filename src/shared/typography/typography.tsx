@@ -1,7 +1,6 @@
 import React from "react";
 import { Text, TextStyle, StyleSheet } from "react-native";
 
-// Define a prop type with a `type` field for predefined styles
 interface TypographyProps {
   children: React.ReactNode;
   type:
@@ -18,11 +17,10 @@ interface TypographyProps {
     | "paragraph2Light"
     | "caption"
     | "inputLabel";
-  style?: TextStyle; // Additional custom styles
+  style?: TextStyle;
 }
 
 const Typography: React.FC<TypographyProps> = ({ children, type, style }) => {
-  // Define the default styles based on the type
   const getTextStyle = (type: string) => {
     switch (type) {
       case "title":
@@ -52,7 +50,7 @@ const Typography: React.FC<TypographyProps> = ({ children, type, style }) => {
       case "inputLabel":
         return styles.inputLabel;
       default:
-        return styles.paragraph1; // Default to paragraph1 style
+        return styles.paragraph1;
     }
   };
 
@@ -63,67 +61,67 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     lineHeight: 40,
-    fontWeight: "bold", // Title should be bold
+    fontWeight: "bold",
   },
   title2: {
     fontSize: 20,
     lineHeight: 32,
-    fontWeight: "bold", // Title should be bold
+    fontWeight: "bold",
   },
   subtitle1: {
     fontSize: 22,
     lineHeight: 42,
-    fontWeight: "normal", // Subtitle 1, normal weight
+    fontWeight: "normal",
   },
   subtitle2: {
     fontSize: 18,
     lineHeight: 20,
-    fontWeight: "normal", // Subtitle 2, normal weight
+    fontWeight: "normal",
   },
   subtitle3: {
     fontSize: 18,
     lineHeight: 20,
-    fontWeight: "medium", // Subtitle 2, normal weight
+    fontWeight: "medium",
   },
   paragraph1: {
     fontSize: 16,
     lineHeight: 24,
-    fontWeight: "normal", // Regular paragraph
+    fontWeight: "normal",
   },
   paragraph1Bold: {
     fontSize: 16,
     lineHeight: 24,
-    fontWeight: "bold", // Bold paragraph
+    fontWeight: "bold",
   },
   button: {
     fontSize: 14,
     lineHeight: 16,
-    fontWeight: "bold", // Button text should be bold
+    fontWeight: "bold",
   },
   paragraph2: {
     fontSize: 12,
     lineHeight: 16,
-    fontWeight: "normal", // Small paragraph
+    fontWeight: "normal",
   },
   paragraph2bold: {
     fontSize: 12,
     lineHeight: 16,
-    fontWeight: "bold", // Small paragraph
+    fontWeight: "bold",
   },
   paragraph2Light: {
     fontSize: 12,
     lineHeight: 16,
-    fontWeight: "300", // Lighter weight for small text
+    fontWeight: "300",
   },
   caption: {
     fontSize: 12,
     lineHeight: 16,
-    fontWeight: "normal", // Caption style
+    fontWeight: "normal",
   },
   inputLabel: {
     fontSize: 16,
     lineHeight: 24,
-    fontWeight: "normal", // Input label style
+    fontWeight: "normal",
   },
 });
 

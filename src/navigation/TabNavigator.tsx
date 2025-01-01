@@ -17,12 +17,15 @@ import SelectSettingIcon from "../../assets/vendors/select-setting-icon";
 import MomentsNavigator from "./MomentsNavigator";
 import SettingNavigator from "./SettingNavigator";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
+type TabNavigatorProps = {
+  setCheckUserLogin: (value: boolean) => void;
+};
 
-const TabNavigator = () => {
+const TabNavigator: React.FC<TabNavigatorProps> = ({ setCheckUserLogin }) => {
   const BottomTab = createBottomTabNavigator();
   const Device = Platform.OS === "android" ? true : false;
   const checkCondition = (routeName: string) => {
-    let pathNames = ["AudioPlayerDetail", "VideoPlayerDetail"];
+    let pathNames = ["AudioPlayerDetail", "VideoPlayerDetail", "Account"];
     if (pathNames.includes(routeName)) {
       return true;
     }
@@ -103,7 +106,9 @@ const TabNavigator = () => {
               focused ? <SelectSettingIcon /> : <UnSelectSettingIcon />,
           })}
           name="Settings"
+          //@ts-ignore
           component={SettingNavigator}
+          initialParams={{ setCheckUserLogin }}
         />
       </BottomTab.Navigator>
     </>

@@ -30,7 +30,7 @@ interface MainWrapperProps {
 const MainWrapper: React.FC<MainWrapperProps> = ({
   children,
   showSafeArea = false,
-  iconBg = "#FF6347", // Default iconBg color
+  iconBg = "#FF6347",
   icon,
   type_of_header,
   title,

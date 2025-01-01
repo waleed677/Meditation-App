@@ -4,12 +4,19 @@ import MainWrapper from "../../shared/wrappers/main-wrapper";
 import Stack from "../../shared/stacks/stack";
 import { Text, TouchableOpacity, View } from "react-native";
 import BackIcon from "../../../assets/vendors/back-icon";
-import { useNavigation } from "@react-navigation/native";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import OrangeUserIcon from "../../../assets/vendors/orange-user-icon";
 import IconButton from "../../shared/buttons/icon-button";
 import LogoutIcon from "../../../assets/vendors/logout-icon";
+type SignInRouteParams = {
+  setCheckUserLogin: (value: boolean) => void;
+};
 
-const Index = () => {
+type SignInProps = {
+  route: RouteProp<{ params: SignInRouteParams }>;
+};
+const Index: React.FC<SignInProps> = ({ route }) => {
+  const { setCheckUserLogin } = route.params;
   const navigator = useNavigation();
   return (
     <MainWrapper showSafeArea={true}>
@@ -45,6 +52,7 @@ const Index = () => {
       </Stack>
       <Stack px={15}>
         <IconButton
+          onPress={() => setCheckUserLogin(false)}
           backgroundColor="#FFA864"
           h={48}
           text="Sign out"

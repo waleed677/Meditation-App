@@ -5,7 +5,6 @@ import {
   Dimensions,
   TouchableOpacity,
   Text,
-  Platform,
 } from "react-native";
 import { Video, AVPlaybackStatus } from "expo-av";
 import PlayVideoButton from "../../../assets/vendors/play-video-button";
@@ -15,11 +14,9 @@ import CrossIcon from "../../../assets/vendors/cross-icon";
 import Slider from "@react-native-community/slider";
 import PauseButton from "../../../assets/vendors/pause-button-icon";
 
-// Video source URL
 const videoSource =
   "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
 
-// Get screen width and height
 const { width, height } = Dimensions?.get("window");
 
 const VideoPlayer: React.FC = () => {
@@ -32,9 +29,9 @@ const VideoPlayer: React.FC = () => {
     "portrait"
   );
 
-  // Handle playback status updates
   const handlePlaybackStatusUpdate = (status: AVPlaybackStatus) => {
     if (status.isLoaded) {
+      //@ts-ignore
       setDuration(status.durationMillis / 1000);
       setCurrentTime(status.positionMillis / 1000);
       if (status.didJustFinish && isRepeating) {
@@ -43,18 +40,15 @@ const VideoPlayer: React.FC = () => {
     }
   };
 
-  // Toggle repeat state
   const toggleRepeat = (): void => {
     setIsRepeating(!isRepeating);
   };
 
-  // Seek to a specific time in the video
   const onSeek = (value: number): void => {
     setCurrentTime(value);
     videoRef.current?.setPositionAsync(value * 1000);
   };
 
-  // Toggle play/pause functionality
   const togglePlayPause = async (): Promise<void> => {
     if (isPlaying) {
       await videoRef.current?.pauseAsync();
@@ -64,30 +58,35 @@ const VideoPlayer: React.FC = () => {
     setIsPlaying(!isPlaying);
   };
 
-  // Handle orientation changes
   useEffect(() => {
     const updateOrientation = () => {
       const { width, height } = Dimensions?.get("window");
       setOrientation(width > height ? "landscape" : "portrait");
     };
 
-    // Add event listener for orientation changes
     Dimensions?.addEventListener("change", updateOrientation);
 
-    // Clean up event listener on component unmount
     return () => {
+      //@ts-ignore
       if (Dimensions?.removeEventListener) {
+        //@ts-ignore
         Dimensions?.removeEventListener("change", updateOrientation);
       }
     };
   }, []);
 
-  // Adjust layout and styles based on orientation
   const videoStyle =
     orientation === "landscape" ? styles.landscapeVideo : styles.portraitVideo;
 
   return (
-    <View style={{ height: 250, position: "relative" }}>
+    <View
+      style={{
+        height: width - 190,
+        position: "relative",
+        borderRadius: 16,
+        overflow: "hidden",
+      }}
+    >
       <Video
         ref={videoRef}
         source={{ uri: videoSource }}
@@ -156,30 +155,27 @@ const VideoPlayer: React.FC = () => {
   );
 };
 
-// Format time (minutes:seconds)
 const formatTime = (seconds: number): string => {
   const minutes = Math.floor(seconds / 60);
   const secs = Math.floor(seconds % 60);
   return `${minutes}:${secs < 10 ? `0${secs}` : secs}`;
 };
 
-// Styles for portrait and landscape orientation
 const styles = StyleSheet.create({
   portraitVideo: {
-    height: width - 195,
+    height: width - 180,
     resizeMode: "stretch",
     borderRadius: 16,
   },
   landscapeVideo: {
-    height: height, // Use full screen height in landscape
-    width: width, // Use full screen width in landscape
-    resizeMode: "contain", // To prevent distortion
+    height: height,
+    width: width,
+    resizeMode: "contain",
   },
   controls: {
-    marginTop: 10,
     position: "absolute",
-    bottom: 40,
     width: width - 35,
+    bottom: 10,
   },
   timeText: {
     fontSize: 12,
