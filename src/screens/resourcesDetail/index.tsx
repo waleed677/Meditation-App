@@ -13,6 +13,7 @@ const Index = ({ route }: { route: any }) => {
       showSearch={false}
       title={route.params.data.name}
       type_of_header="withoutImage"
+      fontStyle="normal"
     >
       <Stack px={15} gap={18}>
         <Image

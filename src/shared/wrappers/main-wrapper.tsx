@@ -47,7 +47,14 @@ const MainWrapper: React.FC<MainWrapperProps> = ({
         <View style={[styles.iconContainer, { backgroundColor: iconBg }]}>
           {icon}
         </View>
-        <Text style={[styles.headerText, { color: iconBg }]}>{title}</Text>
+        <Text
+          style={[
+            styles.headerText,
+            { color: iconBg, fontFamily: "Sansita-BoldItalic" },
+          ]}
+        >
+          {title}
+        </Text>
       </View>
     </View>
   );
@@ -78,8 +85,8 @@ const MainWrapper: React.FC<MainWrapperProps> = ({
         <Text
           //@ts-ignore
           style={{
-            fontStyle: fontStyle,
-            fontWeight: "bold",
+            fontWeight: fontStyle === "normal" ? "bold" : "",
+            fontFamily: fontStyle !== "normal" ? "Sansita-BoldItalic" : "",
             fontSize: 20,
             marginLeft: 20,
           }}
@@ -144,8 +151,6 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 20,
-    fontStyle: "italic",
-    fontWeight: "bold",
   },
   content: {
     flex: 1,

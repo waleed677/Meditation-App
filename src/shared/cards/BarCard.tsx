@@ -21,8 +21,7 @@ const BarCard = ({ title }: { title: string }) => {
       />
       <Text
         style={{
-          fontStyle: "italic",
-          fontWeight: "bold",
+          fontFamily: "Sansita-BoldItalic",
           fontSize: 20,
           color: "#2762A6",
         }}

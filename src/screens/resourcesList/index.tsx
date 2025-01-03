@@ -1,11 +1,11 @@
 import React from "react";
 import MainWrapper from "../../shared/wrappers/main-wrapper";
 import { FlatList, TouchableOpacity } from "react-native";
-import VideoCard from "../../shared/video/VideoCard";
 import Stack from "../../shared/stacks/stack";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
+import ArticleCard from "../../shared/cards/ArticleCard";
 type RootStackParamList = {
-  VideoPlayerDetail: { data: Record<string, unknown> };
+  ResourcesDetail: { data: Record<string, unknown> };
 };
 const Index = ({ route }: { route: any }) => {
   const navigator = useNavigation<NavigationProp<RootStackParamList>>();
@@ -25,13 +25,13 @@ const Index = ({ route }: { route: any }) => {
           renderItem={() => (
             <TouchableOpacity
               onPress={() =>
-                navigator.navigate("VideoPlayerDetail", {
+                navigator.navigate("ResourcesDetail", {
                   data: { name: "Deep Sleep Exercise" },
                 })
               }
             >
-              <VideoCard
-                source={require("../../../assets/images/video_box.png")}
+              <ArticleCard
+                source={require("../../../assets/images/article_image.png")}
               />
             </TouchableOpacity>
           )}

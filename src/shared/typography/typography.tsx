@@ -11,12 +11,14 @@ interface TypographyProps {
     | "subtitle3"
     | "paragraph1"
     | "paragraph1Bold"
+    | "none"
     | "button"
     | "paragraph2"
     | "paragraph2bold"
     | "paragraph2Light"
     | "caption"
     | "inputLabel";
+
   style?: TextStyle;
 }
 

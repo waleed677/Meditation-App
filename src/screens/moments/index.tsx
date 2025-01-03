@@ -33,17 +33,7 @@ const Index: React.FC = () => {
             { key: "6" },
             { key: "7" },
           ]}
-          renderItem={({ item }: { item: any }) => (
-            <TouchableOpacity
-              onPress={() =>
-                navigator.navigate("MomentsDetail", {
-                  data: { name: "Taking Care of Anger" },
-                })
-              }
-            >
-              <MomentCard />
-            </TouchableOpacity>
-          )}
+          renderItem={({ item }: { item: any }) => <MomentCard />}
           style={{ marginBottom: 400, height: height - 170 }}
           keyExtractor={(item: any) => item.key} // 'item' is typed as 'any'
         />

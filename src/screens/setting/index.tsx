@@ -17,8 +17,12 @@ const Index = () => {
   return (
     <MainWrapper showSafeArea={true}>
       <Typography
-        style={{ fontStyle: "italic", textAlign: "center" }}
-        type="title"
+        style={{
+          textAlign: "center",
+          fontFamily: "Sansita-BoldItalic",
+          fontSize: 20,
+        }}
+        type="none"
       >
         Setting
       </Typography>

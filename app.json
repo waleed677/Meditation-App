@@ -14,7 +14,9 @@
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "UIBackgroundModes": ["audio"]
+        "UIBackgroundModes": [
+          "audio"
+        ]
       }
     },
     "android": {
@@ -33,6 +35,9 @@
         "projectId": "eb300846-3f97-4560-91be-a219016caab8"
       }
     },
-    "plugins": ["expo-video"]
+    "plugins": [
+      "expo-video",
+      "expo-font"
+    ]
   }
 }
