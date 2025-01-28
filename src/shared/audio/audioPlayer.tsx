@@ -13,10 +13,11 @@ import RepeatingIcon from "../../../assets/vendors/repeatinf-icon";
 import Slider from "@react-native-community/slider";
 import Stack from "../stacks/stack";
 import CrossIcon from "../../../assets/vendors/cross-icon";
+import { apiUrl } from "../../constants";
 
 const { width } = Dimensions.get("window");
 
-const AudioPlayer: React.FC = () => {
+const AudioPlayer = ({ data }: { data: any }) => {
   const [sound, setSound] = useState<any>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isRepeating, setIsRepeating] = useState<boolean>(false);
@@ -58,8 +59,9 @@ const AudioPlayer: React.FC = () => {
   const loadAudio = async () => {
     try {
       console.log("Loading Sound");
+      const audioUrl = `${apiUrl}/${data?.file_url}`
       const { sound } = await Audio.Sound.createAsync(
-        require("../../../assets/audio/Hello.mp3"),
+        { uri: audioUrl },
         { shouldPlay: false },
         handlePlaybackStatusUpdate
       );

@@ -8,7 +8,7 @@ const Index = ({ route }: { route: any }) => {
   return (
     <MainWrapper
       fontStyle="normal"
-      title={route.params.data.name}
+      title={route?.params?.data?.title}
       showSearch={false}
       showHeart={true}
       type_of_header="withoutImage"
@@ -19,7 +19,7 @@ const Index = ({ route }: { route: any }) => {
           understand what is it about. Make quick decision if they want to play
           this.
         </Typography>
-        <VideoPlayer />
+        <VideoPlayer data={route?.params?.data} />
       </Stack>
     </MainWrapper>
   );

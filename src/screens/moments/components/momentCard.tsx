@@ -4,7 +4,7 @@ import { Dimensions, Image } from "react-native";
 import Typography from "../../../shared/typography/typography";
 
 const width = Dimensions.get("window").width;
-const MomentCard = () => {
+const MomentCard = ({ data }: { data: any }) => {
   return (
     <Stack py={10}>
       <Stack mb={4} flexDirection="row" justifyContent="space-between">

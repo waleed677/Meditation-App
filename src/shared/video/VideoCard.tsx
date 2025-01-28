@@ -5,7 +5,7 @@ import Typography from "../typography/typography";
 import Stack from "../stacks/stack";
 import AudioIcon from "../../../assets/vendors/audio-icon";
 const width = Dimensions.get("window").width;
-const VideoCard = ({ source }: { source: number }) => {
+const VideoCard = ({ source, title, duration }: { source: number, title?: string, duration?: string }) => {
   return (
     <View style={style.container}>
       <View style={style.card_img_wrapper}>
@@ -20,13 +20,13 @@ const VideoCard = ({ source }: { source: number }) => {
           GUIDED MINDFULNESS
         </Typography>
         <Typography type="subtitle3" style={{ color: "#2762A6" }}>
-          Deep Sleep Exercise
+          {title}
         </Typography>
       </Stack>
       <Stack mt={5} flexDirection="row" gap={4}>
         <AudioIcon />
         <Typography type="caption" style={{ color: "#FF6A00" }}>
-          11:14
+          {duration != "" ? duration : "11:30"}
         </Typography>
       </Stack>
     </View>

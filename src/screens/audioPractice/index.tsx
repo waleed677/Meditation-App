@@ -4,40 +4,38 @@ import { FlatList, TouchableOpacity } from "react-native";
 import VideoCard from "../../shared/video/VideoCard";
 import Stack from "../../shared/stacks/stack";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { useGetAudioPracticeQuery } from "../../services/audioPractice";
 type RootStackParamList = {
   AudioPlayerDetail: { data: Record<string, unknown> };
 };
 
 const Index = () => {
   const navigator = useNavigation<NavigationProp<RootStackParamList>>();
-
+  const { data, isLoading } = useGetAudioPracticeQuery();
+  console.log("data::", data?.audios)
   return (
     <MainWrapper title="Audio Practice" type_of_header="withoutImage">
       <Stack px={15} py={14}>
         <FlatList
           showsVerticalScrollIndicator={false}
-          data={[
-            { key: "1" },
-            { key: "2" },
-            { key: "3" },
-            { key: "4" },
-            { key: "5" },
-            { key: "6" },
-          ]}
-          renderItem={() => (
+          data={data?.audios}
+          renderItem={({ item, index }) => (
             <TouchableOpacity
+              key={index}
               onPress={() =>
                 navigator.navigate("AudioPlayerDetail", {
-                  data: { name: "Deep Sleep Exercise" },
+                  data: item,
                 })
               }
             >
               <VideoCard
                 source={require("../../../assets/images/video_box.png")}
+                title={item?.title}
+                duration={item?.duration}
               />
             </TouchableOpacity>
           )}
-          keyExtractor={(item) => item.key}
+          keyExtractor={(item, index) => index.toString()}
         />
       </Stack>
     </MainWrapper>

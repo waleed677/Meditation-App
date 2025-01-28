@@ -13,13 +13,13 @@ import Stack from "../stacks/stack";
 import CrossIcon from "../../../assets/vendors/cross-icon";
 import Slider from "@react-native-community/slider";
 import PauseButton from "../../../assets/vendors/pause-button-icon";
+import { apiUrl } from "../../constants";
 
-const videoSource =
-  "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
+
 
 const { width, height } = Dimensions?.get("window");
 
-const VideoPlayer: React.FC = () => {
+const VideoPlayer = ({ data }: { data: any }) => {
   const videoRef = useRef<Video>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isRepeating, setIsRepeating] = useState<boolean>(false);
@@ -28,6 +28,8 @@ const VideoPlayer: React.FC = () => {
   const [orientation, setOrientation] = useState<"portrait" | "landscape">(
     "portrait"
   );
+
+  const videoSource = `${apiUrl}/${data?.file_url}`;
 
   const handlePlaybackStatusUpdate = (status: AVPlaybackStatus) => {
     if (status.isLoaded) {

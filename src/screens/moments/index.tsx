@@ -5,6 +5,7 @@ import { Dimensions, FlatList, TouchableOpacity } from "react-native";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import MomentTopHeaderIcon from "../../../assets/vendors/moment-top-header-icon";
 import MomentCard from "./components/momentCard";
+import { useGetMomentQuery } from "../../services/moments";
 
 const height = Dimensions.get("window").height;
 type RootStackParamList = {
@@ -13,7 +14,8 @@ type RootStackParamList = {
 
 const Index: React.FC = () => {
   const navigator = useNavigation<NavigationProp<RootStackParamList>>();
-
+  const { data, isLoading } = useGetMomentQuery();
+  console.log(data)
   return (
     <MainWrapper
       iconBg="#FF913C"
@@ -24,18 +26,10 @@ const Index: React.FC = () => {
       <Stack px={15} mt={9}>
         <FlatList
           showsVerticalScrollIndicator={false}
-          data={[
-            { key: "1" },
-            { key: "2" },
-            { key: "3" },
-            { key: "4" },
-            { key: "5" },
-            { key: "6" },
-            { key: "7" },
-          ]}
-          renderItem={({ item }: { item: any }) => <MomentCard />}
+          data={data && data?.moments}
+          renderItem={({ item, index }: { item: any, index: number }) => <MomentCard data={item} />}
           style={{ marginBottom: 400, height: height - 170 }}
-          keyExtractor={(item: any) => item.key} // 'item' is typed as 'any'
+          keyExtractor={(item, index) => index.toString()} // 'item' is typed as 'any'
         />
       </Stack>
     </MainWrapper>

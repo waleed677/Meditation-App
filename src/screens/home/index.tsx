@@ -8,6 +8,7 @@ import { timeSlots } from "../../../dummyData";
 import Tag from "./components/Tag";
 import VideoCard from "../../shared/video/VideoCard";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { useGetVisualPracticeQuery } from "../../services/visualPractice";
 type RootStackParamList = {
   VisualPractice: undefined;
   AudioPractice: undefined;
@@ -19,7 +20,7 @@ type RootStackParamList = {
 const Index = () => {
   const [selectSlot, setSelectSlot] = useState("");
   const navigator = useNavigation<NavigationProp<RootStackParamList>>();
-
+  const { data, isLoading } = useGetVisualPracticeQuery();
   return (
     <MainWrapper
       iconBg="#2762A6"
@@ -42,7 +43,7 @@ const Index = () => {
           </Stack>
           <Stack flexDirection="row" gap={10} mb={10}>
             <Card
-              onPress={() => navigator.navigate("AudioPractice")}
+              onPress={() => navigator.navigate("Resources")}
               imageLink={require("../../../assets/images/resources-card-home.png")}
               text="Resources"
             />
@@ -66,9 +67,8 @@ const Index = () => {
                 tagTextStyle={{
                   color: selectSlot == item?.value ? "#ffffff" : "#6699FF",
                 }}
-                text={`${item?.min} ${item?.min ? "-" : ">"} ${
-                  item.max
-                } minutes`}
+                text={`${item?.min} ${item?.min ? "-" : ">"} ${item.max
+                  } minutes`}
               />
             </TouchableOpacity>
           )}
@@ -79,29 +79,24 @@ const Index = () => {
       <Stack px={15} mt={9}>
         <FlatList
           showsVerticalScrollIndicator={false}
-          data={[
-            { key: "1" },
-            { key: "2" },
-            { key: "3" },
-            { key: "4" },
-            { key: "5" },
-            { key: "6" },
-          ]}
-          renderItem={() => (
+          data={data && data?.videos}
+          renderItem={({ item, index }) => (
             <TouchableOpacity
               onPress={() =>
                 navigator.navigate("VideoPlayerDetail", {
-                  data: { name: "Deep Sleep Exercise" },
+                  data: item,
                 })
               }
             >
               <VideoCard
                 source={require("../../../assets/images/video_box.png")}
+                title={item?.title}
+                duration={""}
               />
             </TouchableOpacity>
           )}
           style={{ marginBottom: 400 }}
-          keyExtractor={(item) => item.key}
+          keyExtractor={(item, index) => index.toString()}
         />
       </Stack>
     </MainWrapper>

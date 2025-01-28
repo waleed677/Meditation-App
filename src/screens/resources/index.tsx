@@ -5,6 +5,7 @@ import { Dimensions, FlatList, TouchableOpacity } from "react-native";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import BarCard from "../../shared/cards/BarCard";
 import ResourcesHeaderIcon from "../../../assets/vendors/resources-header-icon";
+import { useGetResourcesQuery } from "../../services/resources";
 
 const height = Dimensions.get("window").height;
 type RootStackParamList = {
@@ -13,7 +14,8 @@ type RootStackParamList = {
 
 const Index: React.FC = () => {
   const navigator = useNavigation<NavigationProp<RootStackParamList>>();
-
+  const { data, isLoading } = useGetResourcesQuery();
+  console.log(data)
   return (
     <MainWrapper
       iconBg="#655BBA"
@@ -24,15 +26,7 @@ const Index: React.FC = () => {
       <Stack px={15} mt={9}>
         <FlatList
           showsVerticalScrollIndicator={false}
-          data={[
-            { key: "1" },
-            { key: "2" },
-            { key: "3" },
-            { key: "4" },
-            { key: "5" },
-            { key: "6" },
-            { key: "7" },
-          ]}
+          data={data}
           renderItem={({ item }: { item: any }) => (
             <TouchableOpacity
               onPress={() =>
