@@ -5,6 +5,7 @@ import { Dimensions, FlatList, TouchableOpacity } from "react-native";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import PracticeHeaderIcon from "../../../assets/vendors/practice-header-icon";
 import BarCard from "../../shared/cards/BarCard";
+import { useGetPracticesQuery } from "../../services/practices";
 
 const height = Dimensions.get("window").height;
 type RootStackParamList = {
@@ -13,7 +14,8 @@ type RootStackParamList = {
 
 const Index: React.FC = () => {
   const navigator = useNavigation<NavigationProp<RootStackParamList>>();
-
+  const { data, isLoading } = useGetPracticesQuery();
+  console.log("data1", data?.practices)
   return (
     <MainWrapper
       iconBg="#209C92"
@@ -24,15 +26,7 @@ const Index: React.FC = () => {
       <Stack px={15} mt={9}>
         <FlatList
           showsVerticalScrollIndicator={false}
-          data={[
-            { key: "1" },
-            { key: "2" },
-            { key: "3" },
-            { key: "4" },
-            { key: "5" },
-            { key: "6" },
-            { key: "7" },
-          ]}
+          data={data && data?.practices}
           renderItem={({ item }: { item: any }) => (
             <TouchableOpacity
               onPress={() =>

@@ -39,7 +39,7 @@ const Index = ({ route }: { route: any }) => {
       {!isFullscreen && (
         <MainWrapper
           fontStyle="normal"
-          title={route.params.data.name}
+          title={route.params.data.title}
           showSearch={false}
           showHeart={true}
           type_of_header="withoutImage"
@@ -57,6 +57,7 @@ const Index = ({ route }: { route: any }) => {
               currentTime={currentTime}
               lessons={lessons}
               selectedLesson={selectedLesson}
+              data={route.params.data}
             />
           </Stack>
         </MainWrapper>

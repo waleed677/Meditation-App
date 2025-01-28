@@ -4,6 +4,7 @@ import { audioPracticeApi } from "../services/audioPractice";
 import { visualPracticeApi } from "../services/visualPractice";
 import { momentApi } from "../services/moments";
 import { resourcesApi } from "../services/resources";
+import { practicesApi } from "../services/practices";
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,8 @@ export const store = configureStore({
     [visualPracticeApi.reducerPath]: visualPracticeApi.reducer,
     [momentApi.reducerPath]: momentApi.reducer,
     [resourcesApi.reducerPath]: resourcesApi.reducer,
+    [practicesApi.reducerPath]: practicesApi.reducer,
+
   },
 
   middleware: (getDefaultMiddleware) =>
@@ -18,6 +21,7 @@ export const store = configureStore({
       .concat(audioPracticeApi.middleware)
       .concat(visualPracticeApi.middleware)
       .concat(momentApi.middleware)
+      .concat(practicesApi.middleware)
       .concat(resourcesApi.middleware),
 });
 

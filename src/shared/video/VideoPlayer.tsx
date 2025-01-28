@@ -8,6 +8,7 @@ import {
 } from "react-native-gesture-handler";
 import VideoControls from "./VideoControls";
 import * as ScreenOrientation from "expo-screen-orientation";
+import { apiUrl } from "../../constants";
 
 const playbackSpeedOptions = [0.5, 0.75, 1, 1.25, 1.5, 2];
 
@@ -19,6 +20,7 @@ const PlayLessonScreen = ({
   currentTime,
   lessons,
   selectedLesson,
+  data
 }) => {
   const videoRef = useRef(null);
   const [currentLessonIndex, setCurrentLessonIndex] = useState(0);
@@ -127,8 +129,9 @@ const PlayLessonScreen = ({
     const currentOrientation = await ScreenOrientation.getOrientationAsync();
     setOrientation(currentOrientation);
   };
-  const videoSource =
-    "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
+  // const videoSource =
+  //   "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
+  const videoSource = `${apiUrl}/${data?.file_url}`;
 
   const setVideoPosition = () => {
     if (videoRef.current) {
