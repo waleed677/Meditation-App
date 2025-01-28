@@ -23,7 +23,7 @@ const VideoCard = ({ source }: { source: number }) => {
           Deep Sleep Exercise
         </Typography>
       </Stack>
-      <Stack mt={5} flexDirection="row" gap={4}>
+      <Stack mt={5} flexDirection="row" alignItems="center" gap={4}>
         <AudioIcon />
         <Typography type="caption" style={{ color: "#FF6A00" }}>
           11:14

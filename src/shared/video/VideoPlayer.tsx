@@ -1,190 +1,203 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
+import { Dimensions, View } from "react-native";
+import { Video } from "expo-av";
 import {
-  StyleSheet,
-  View,
-  Dimensions,
-  TouchableOpacity,
-  Text,
-} from "react-native";
-import { Video, AVPlaybackStatus } from "expo-av";
-import PlayVideoButton from "../../../assets/vendors/play-video-button";
-import RepeatingIcon from "../../../assets/vendors/repeatinf-icon";
-import Stack from "../stacks/stack";
-import CrossIcon from "../../../assets/vendors/cross-icon";
-import Slider from "@react-native-community/slider";
-import PauseButton from "../../../assets/vendors/pause-button-icon";
+  Gesture,
+  GestureDetector,
+  GestureHandlerRootView,
+} from "react-native-gesture-handler";
+import VideoControls from "./VideoControls";
+import * as ScreenOrientation from "expo-screen-orientation";
 
-const videoSource =
-  "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
+const playbackSpeedOptions = [0.5, 0.75, 1, 1.25, 1.5, 2];
 
-const { width, height } = Dimensions?.get("window");
+const width = Dimensions.get("window").width;
+const PlayLessonScreen = ({
+  setIsFullscreen,
+  isFullscreen,
+  setCurrentTime,
+  currentTime,
+  lessons,
+  selectedLesson,
+}) => {
+  const videoRef = useRef(null);
+  const [currentLessonIndex, setCurrentLessonIndex] = useState(0);
+  const [orientation, setOrientation] = useState(1);
+  const [showControls, setShowControls] = useState(false);
 
-const VideoPlayer: React.FC = () => {
-  const videoRef = useRef<Video>(null);
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [isRepeating, setIsRepeating] = useState<boolean>(false);
-  const [duration, setDuration] = useState<number>(0);
-  const [currentTime, setCurrentTime] = useState<number>(0);
-  const [orientation, setOrientation] = useState<"portrait" | "landscape">(
-    "portrait"
-  );
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [playbackSpeed, setPlaybackSpeed] = useState(1);
+  const [isMuted, setIsMuted] = useState(false);
 
-  const handlePlaybackStatusUpdate = (status: AVPlaybackStatus) => {
-    if (status.isLoaded) {
-      //@ts-ignore
-      setDuration(status.durationMillis / 1000);
-      setCurrentTime(status.positionMillis / 1000);
-      if (status.didJustFinish && isRepeating) {
-        videoRef.current?.playAsync();
+  const doubleTap = Gesture.Tap()
+    .numberOfTaps(2)
+    .onStart((event) => {
+      //get the tap position on X
+      const touchX = event.absoluteX;
+      let mid = Dimensions.get("screen").width / 2;
+
+      //if tap position is before the mid point, set video back by 10s
+      if (touchX < mid) {
+        videoRef.current.getStatusAsync().then((status) => {
+          const newPosition = Math.max(status.positionMillis - 10000, 0);
+          videoRef.current.setPositionAsync(newPosition);
+        });
       }
+      //if tap position is before the mid point, set video forward by 10s
+      else {
+        videoRef.current.getStatusAsync().then((status) => {
+          const newPosition = Math.min(
+            status.positionMillis + 10000,
+            status.durationMillis
+          );
+          videoRef.current.setPositionAsync(newPosition);
+        });
+      }
+    });
+
+  const singleTap = Gesture.Tap().onStart((event) => {
+    setShowControls(!showControls);
+    // Simulate show/hide controls behavior here
+  });
+
+  //sets the current time, if video is finished, moves to the next video
+  const handlePlaybackStatusUpdate = (status) => {
+    // setCurrentTime(status.positionMillis);
+    if (status.didJustFinish) {
+      playNextVideo();
     }
   };
 
-  const toggleRepeat = (): void => {
-    setIsRepeating(!isRepeating);
-  };
-
-  const onSeek = (value: number): void => {
-    setCurrentTime(value);
-    videoRef.current?.setPositionAsync(value * 1000);
-  };
-
-  const togglePlayPause = async (): Promise<void> => {
+  const togglePlayPause = () => {
     if (isPlaying) {
-      await videoRef.current?.pauseAsync();
+      videoRef.current.pauseAsync();
     } else {
-      await videoRef.current?.playAsync();
+      videoRef.current.playAsync();
     }
     setIsPlaying(!isPlaying);
   };
 
-  useEffect(() => {
-    const updateOrientation = () => {
-      const { width, height } = Dimensions?.get("window");
-      setOrientation(width > height ? "landscape" : "portrait");
+  const playNextVideo = () => {
+    if (currentLessonIndex < lessons.length - 1) {
+      setCurrentLessonIndex((prevIndex) => prevIndex + 1);
+    }
+  };
+
+  const playPreviousVideo = () => {
+    if (currentLessonIndex > 0) {
+      setCurrentLessonIndex((prevIndex) => prevIndex - 1);
+    }
+  };
+
+  const togglePlaybackSpeed = () => {
+    //gets the next playback speed index
+    const nextSpeedIndex = playbackSpeedOptions.indexOf(playbackSpeed) + 1;
+    if (nextSpeedIndex < playbackSpeedOptions.length) {
+      videoRef.current.setRateAsync(playbackSpeedOptions[nextSpeedIndex], true);
+      setPlaybackSpeed(playbackSpeedOptions[nextSpeedIndex]);
+    }
+    //if the last option i.e. 2x speed is applied. then moves to first option
+    else {
+      videoRef.current.setRateAsync(playbackSpeedOptions[0], true);
+      setPlaybackSpeed(playbackSpeedOptions[0]);
+    }
+  };
+
+  const toggleMute = () => {
+    videoRef.current.setIsMutedAsync(isMuted);
+    setIsMuted(!isMuted);
+  };
+
+  const toggleFullscreen = async () => {
+    // Lock the orientation first before updating fullscreen state
+    if (!isFullscreen) {
+      await ScreenOrientation.lockAsync(
+        ScreenOrientation.OrientationLock.LANDSCAPE_LEFT
+      );
+      // Wait for the orientation to lock before updating fullscreen state
+      setIsFullscreen(true);
+    } else {
+      await ScreenOrientation.lockAsync(
+        ScreenOrientation.OrientationLock.PORTRAIT_UP
+      );
+      setIsFullscreen(false);
+    }
+
+    // Update the orientation state once it's locked
+    const currentOrientation = await ScreenOrientation.getOrientationAsync();
+    setOrientation(currentOrientation);
+  };
+  const videoSource =
+    "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
+
+  const setVideoPosition = () => {
+    if (videoRef.current) {
+      videoRef.current.setPositionAsync(currentTime);
+    }
+  };
+
+  const renderVideo = () => {
+    const videoStyles = {
+      flex: 1,
+      height: isFullscreen ? "100%" : 250, // Ensure fullscreen takes full height
+      width: isFullscreen ? "100%" : width - 30, // Adjust width for fullscreen
+      borderRadius: isFullscreen ? 0 : 10, // Remove border radius in fullscreen
     };
 
-    Dimensions?.addEventListener("change", updateOrientation);
-
-    return () => {
-      //@ts-ignore
-      if (Dimensions?.removeEventListener) {
-        //@ts-ignore
-        Dimensions?.removeEventListener("change", updateOrientation);
-      }
-    };
-  }, []);
-
-  const videoStyle =
-    orientation === "landscape" ? styles.landscapeVideo : styles.portraitVideo;
-
-  return (
-    <View
-      style={{
-        height: width - 190,
-        position: "relative",
-        borderRadius: 16,
-        overflow: "hidden",
-      }}
-    >
+    return (
       <Video
         ref={videoRef}
         source={{ uri: videoSource }}
-        style={videoStyle}
+        rate={playbackSpeed}
+        isMuted={false}
         shouldPlay={isPlaying}
-        isLooping={isRepeating}
+        resizeMode={isFullscreen ? "cover" : "stretch"} // "cover" for fullscreen, "stretch" for small view
         onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
-        useNativeControls={false}
+        style={videoStyles}
+        onLoad={setVideoPosition}
       />
-
-      <View style={styles.controls}>
-        <View>
-          <Slider
-            style={styles.slider}
-            minimumValue={0}
-            maximumValue={duration}
-            value={currentTime}
-            onValueChange={onSeek}
-            minimumTrackTintColor="#FF913C"
-            maximumTrackTintColor="#FFF9F0"
-            thumbTintColor="#1FB3A0"
-            thumbImage={require("../../../assets/images/thumbSmallImage.png")}
-          />
-          <Stack
-            flexDirection="row"
-            justifyContent="space-between"
-            px={10}
-            mt={-10}
-          >
-            <Text style={styles.timeText}>{formatTime(currentTime)}</Text>
-            <Text style={styles.timeText}>{formatTime(duration)}</Text>
-          </Stack>
-        </View>
-
-        <Stack
-          flexDirection="row"
-          alignItems="center"
-          justifyContent="space-around"
-        >
-          <CrossIcon />
-          <TouchableOpacity onPress={togglePlayPause}>
-            {!isPlaying ? (
-              <PlayVideoButton />
-            ) : (
-              <View
-                style={{
-                  backgroundColor: "#FF913C",
-                  height: 51,
-                  width: 51,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: 100,
-                }}
-              >
-                <PauseButton />
-              </View>
-            )}
-          </TouchableOpacity>
-          <TouchableOpacity onPress={toggleRepeat}>
-            <RepeatingIcon />
-          </TouchableOpacity>
-        </Stack>
-      </View>
-    </View>
+    );
+  };
+  return (
+    <GestureHandlerRootView
+      style={{
+        flex: isFullscreen ? 1 : 0,
+        height: isFullscreen ? "auto" : 250,
+        width: "auto",
+        position: "relative",
+      }}
+    >
+      {/* <Spinner visible={isLoading} size="large" /> */}
+      {lessons.length > 0 && (
+        <>
+          <GestureDetector gesture={Gesture.Exclusive(doubleTap, singleTap)}>
+            {renderVideo()}
+          </GestureDetector>
+          {!showControls && (
+            <VideoControls
+              onTogglePlayPause={togglePlayPause}
+              onPlayPreviousVideo={playPreviousVideo}
+              onPlayNextVideo={playNextVideo}
+              onToggleMute={toggleMute}
+              onTogglePlaybackSpeed={togglePlaybackSpeed}
+              onSeek={(value) => {
+                videoRef.current.setPositionAsync(+value);
+                setCurrentTime(+value);
+              }}
+              onToggleFullscreen={toggleFullscreen}
+              duration={+selectedLesson?.videoTotalDuration}
+              currentTime={currentTime}
+              rate={playbackSpeed}
+              shouldPlay={isPlaying}
+              fullScreenValue={isFullscreen}
+            />
+          )}
+        </>
+      )}
+      //this section is only displayed when fullscreen is not active
+      {orientation == 1 && <View>{/* Simulate other UI elements here */}</View>}
+    </GestureHandlerRootView>
   );
 };
 
-const formatTime = (seconds: number): string => {
-  const minutes = Math.floor(seconds / 60);
-  const secs = Math.floor(seconds % 60);
-  return `${minutes}:${secs < 10 ? `0${secs}` : secs}`;
-};
-
-const styles = StyleSheet.create({
-  portraitVideo: {
-    height: width - 180,
-    resizeMode: "stretch",
-    borderRadius: 16,
-  },
-  landscapeVideo: {
-    height: height,
-    width: width,
-    resizeMode: "contain",
-  },
-  controls: {
-    position: "absolute",
-    width: width - 35,
-    bottom: 10,
-  },
-  timeText: {
-    fontSize: 12,
-    color: "#000000",
-  },
-  slider: {
-    flex: 1,
-    marginHorizontal: 10,
-  },
-});
-
-export default VideoPlayer;
+export default PlayLessonScreen;

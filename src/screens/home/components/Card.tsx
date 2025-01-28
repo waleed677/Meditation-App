@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     flexDirection: "row",
     padding: 14,
+    overflow: "hidden",
   },
   text: {
     color: "#fff",

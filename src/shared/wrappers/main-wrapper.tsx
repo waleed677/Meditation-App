@@ -37,7 +37,7 @@ const MainWrapper: React.FC<MainWrapperProps> = ({
   showSearch = true,
   showHeart = false,
   fontStyle = "italic",
-  headerImage = require("../../../assets/images/home-top-header.png"),
+  headerImage = require("../../../assets/images/header_home.png"),
 }) => {
   const navigator = useNavigation();
   const renderHeaderWithImage = (
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
   headerImage: {
     resizeMode: "stretch",
     width: "100%",
-    height: 130,
+    height: 107,
   },
   headerContent: {
     position: "absolute",
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    height: 100,
+    height: 80,
     top: 30,
     width: "100%",
     gap: 10,

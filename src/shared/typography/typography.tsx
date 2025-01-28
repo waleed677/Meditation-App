@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
   },
   caption: {
     fontSize: 12,
-    lineHeight: 16,
+    // lineHeight: 16,
     fontWeight: "normal",
   },
   inputLabel: {
