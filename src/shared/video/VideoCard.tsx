@@ -23,7 +23,7 @@ const VideoCard = ({ source, title, duration }: { source: number, title?: string
           {title}
         </Typography>
       </Stack>
-      <Stack mt={5} flexDirection="row" gap={4}>
+      <Stack mt={5} flexDirection="row" alignItems="center" gap={4}>
         <AudioIcon />
         <Typography type="caption" style={{ color: "#FF6A00" }}>
           {duration != "" ? duration : "11:30"}

@@ -19,7 +19,7 @@ const Index: React.FC = () => {
       iconBg="#209C92"
       title="Practice"
       icon={<PracticeHeaderIcon />}
-      headerImage={require("../../../assets/images/practice-top-header.png")}
+      headerImage={require("../../../assets/images/header_practice.png")}
     >
       <Stack px={15} mt={9}>
         <FlatList

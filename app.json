@@ -12,14 +12,14 @@
       "resizeMode": "cover"
     },
     "ios": {
+      "requireFullScreen": true,
       "supportsTablet": true,
       "infoPlist": {
-        "UIBackgroundModes": [
-          "audio"
-        ]
+        "UIBackgroundModes": ["audio"]
       }
     },
     "android": {
+      "requireFullScreen": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff",
@@ -34,8 +34,20 @@
       
     },
     "plugins": [
-      "expo-video",
-      "expo-font"
+      [
+        "expo-video",
+        {
+          "supportsBackgroundPlayback": true,
+          "supportsPictureInPicture": true
+        }
+      ],
+      "expo-font",
+      [
+        "expo-screen-orientation",
+        {
+          "initialOrientation": "DEFAULT"
+        }
+      ]
     ]
   }
 }

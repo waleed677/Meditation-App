@@ -32,24 +32,24 @@ const Index = () => {
           <Stack flexDirection="row" gap={10} mb={10}>
             <Card
               onPress={() => navigator.navigate("VisualPractice")}
-              imageLink={require("../../../assets/images/visual-practice-card-home.png")}
+              imageLink={require("../../../assets/images/visual_practice.png")}
               text="Visual Practice"
             />
             <Card
               onPress={() => navigator.navigate("AudioPractice")}
-              imageLink={require("../../../assets/images/audio-practice.png")}
+              imageLink={require("../../../assets/images/audio_practice.png")}
               text="Audio Practice"
             />
           </Stack>
           <Stack flexDirection="row" gap={10} mb={10}>
             <Card
               onPress={() => navigator.navigate("Resources")}
-              imageLink={require("../../../assets/images/resources-card-home.png")}
+              imageLink={require("../../../assets/images/resources.png")}
               text="Resources"
             />
             <Card
               onPress={() => navigator.navigate("Moments")}
-              imageLink={require("../../../assets/images/moment-card-home.png")}
+              imageLink={require("../../../assets/images/moments.png")}
               text="Moments"
             />
           </Stack>

@@ -21,7 +21,7 @@ const Index: React.FC = () => {
       iconBg="#655BBA"
       title="Resources"
       icon={<ResourcesHeaderIcon />}
-      headerImage={require("../../../assets/images/resources-top-header.png")}
+      headerImage={require("../../../assets/images/header_resources.png")}
     >
       <Stack px={15} mt={9}>
         <FlatList
