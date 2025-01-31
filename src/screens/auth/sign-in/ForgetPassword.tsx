@@ -1,5 +1,5 @@
 import { Button, Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import MainWrapper from '../../../shared/wrappers/main-wrapper'
 import UserLabelIcon from '../../../../assets/vendors/user-label-icon'
 import Stack from '../../../shared/stacks/stack'
@@ -9,6 +9,8 @@ import SimpleInput from '../../../shared/Inputs/SimpleInput'
 import IconButton from '../../../shared/buttons/icon-button'
 import { NavigationProp, useNavigation } from '@react-navigation/native'
 import AuthWrapper from '../../../shared/wrappers/auth-wrapper'
+import { useForgotPasswordMutation } from '../../../services/auth'
+import { Toast } from 'toastify-react-native'
 
 type Inputs = {
     email: string
@@ -24,6 +26,7 @@ type RootStackParamList = {
 
 const ForgetPassword = () => {
     const navigator = useNavigation<NavigationProp<RootStackParamList>>();
+    const [forgotPassword, { isLoading, isSuccess, isError, data }] = useForgotPasswordMutation();
     const {
         register,
         control,
@@ -39,10 +42,28 @@ const ForgetPassword = () => {
         },
     })
 
-    const onSubmit = (data: Inputs) => {
+    const onSubmit = async (data: Inputs) => {
         console.log(data)
-        navigator.navigate("OtpScreen")
+        await forgotPassword(data).unwrap();
+
     }
+
+    useEffect(() => {
+        if (isSuccess) {
+            if (data) {
+                Toast.success(data.msg);
+                navigator.navigate("OtpScreen")
+            } else {
+                Toast.error("Token not found in response");
+            }
+        }
+    }, [isSuccess]);
+
+    useEffect(() => {
+        if (isError) {
+            Toast.error("Something went wrong");
+        }
+    }, [isError]);
 
     return (
         <AuthWrapper text='Enter your email to reset password.'>

@@ -9,6 +9,9 @@ import UserLabelIcon from "../../../../assets/vendors/user-label-icon";
 import { NavigationProp, RouteProp, useNavigation } from "@react-navigation/native";
 import MainWrapper from "../../../shared/wrappers/main-wrapper";
 import AuthWrapper from "../../../shared/wrappers/auth-wrapper";
+import { setLogin } from "../../../services/authSlice";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../store/store";
 
 type SignInRouteParams = {
   setCheckUserLogin: (value: boolean) => void;
@@ -26,6 +29,7 @@ type RootStackParamList = {
 const SignIn: React.FC<SignInProps> = ({ route }) => {
   const { setCheckUserLogin } = route.params;
   const navigator = useNavigation<NavigationProp<RootStackParamList>>();
+  const dispatch = useDispatch<AppDispatch>();
   return (
     <AuthWrapper text="You can sync your favourites, downloads. Start now by signing in.">
       <Stack gap={10} mb={62}>
@@ -33,7 +37,7 @@ const SignIn: React.FC<SignInProps> = ({ route }) => {
         <IconButton leftIcon={<GoogleIcon />} text="Sign in with Google" />
         <IconButton text="Sign in with Email" onPress={() => navigator.navigate("Login")} />
       </Stack>
-      <TouchableOpacity onPress={() => setCheckUserLogin(true)}>
+      <TouchableOpacity onPress={() => dispatch(setLogin())}>
         <Typography
           type="paragraph1Bold"
           style={{ textAlign: "center", textDecorationLine: "underline" }}

@@ -1,5 +1,5 @@
 import { Button, Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import MainWrapper from '../../../shared/wrappers/main-wrapper'
 import UserLabelIcon from '../../../../assets/vendors/user-label-icon'
 import Stack from '../../../shared/stacks/stack'
@@ -9,6 +9,12 @@ import SimpleInput from '../../../shared/Inputs/SimpleInput'
 import IconButton from '../../../shared/buttons/icon-button'
 import { NavigationProp, useNavigation } from '@react-navigation/native'
 import AuthWrapper from '../../../shared/wrappers/auth-wrapper'
+import { useSignupMutation } from '../../../services/auth'
+import { Toast } from 'toastify-react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { setLogin } from '../../../services/authSlice'
+import { useDispatch } from 'react-redux'
+import { AppDispatch } from '../../../store/store'
 
 type Inputs = {
     email: string
@@ -24,6 +30,9 @@ type RootStackParamList = {
 
 const SignUp = () => {
     const navigator = useNavigation<NavigationProp<RootStackParamList>>();
+    const [signup, { isLoading, isSuccess, isError, data }] = useSignupMutation();
+    const dispatch = useDispatch<AppDispatch>();
+
     const {
         register,
         control,
@@ -41,9 +50,40 @@ const SignUp = () => {
         },
     })
 
-    const onSubmit = (data: Inputs) => {
-        console.log(data)
+    const onSubmit = async (data: Inputs) => {
+        await signup(data).unwrap();
     }
+
+    const storeData = async (value: any) => {
+        try {
+            const jsonValue = JSON.stringify(value);
+            await AsyncStorage.setItem('user', jsonValue);
+        } catch (e) {
+            console.log(e)
+        }
+    };
+
+    useEffect(() => {
+        if (isSuccess) {
+            if (data && data.token) {
+                let user = {
+                    token: data.token,
+                    user: data.user
+                }
+                storeData(user);
+                dispatch(setLogin());
+                Toast.success(data.message)
+            } else {
+                Toast.error("Token not found in response");
+            }
+        }
+    }, [isSuccess]);
+
+    useEffect(() => {
+        if (isError && data) {
+            Toast.error(data.error?.message || 'Something went wrong. Please try again.');
+        }
+    }, [isError, data]);
 
     return (
         <AuthWrapper text="You can sync your favourites, downloads. Start now by signing in.">

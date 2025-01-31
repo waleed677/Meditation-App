@@ -1,5 +1,5 @@
 import { Button, Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import MainWrapper from '../../../shared/wrappers/main-wrapper'
 import UserLabelIcon from '../../../../assets/vendors/user-label-icon'
 import Stack from '../../../shared/stacks/stack'
@@ -9,6 +9,8 @@ import SimpleInput from '../../../shared/Inputs/SimpleInput'
 import IconButton from '../../../shared/buttons/icon-button'
 import { NavigationProp, useNavigation } from '@react-navigation/native'
 import AuthWrapper from '../../../shared/wrappers/auth-wrapper'
+import { useResetPasswordMutation } from '../../../services/auth'
+import { Toast } from 'toastify-react-native'
 
 type Inputs = {
     password: string
@@ -23,6 +25,7 @@ type RootStackParamList = {
 
 const ResetPassword = () => {
     const navigator = useNavigation<NavigationProp<RootStackParamList>>();
+    const [resetPassword, { isLoading, isSuccess, isError, data }] = useResetPasswordMutation();
     const {
         register,
         control,
@@ -39,10 +42,23 @@ const ResetPassword = () => {
         },
     })
 
-    const onSubmit = (data: Inputs) => {
+    const onSubmit = async (data: Inputs) => {
         console.log(data)
-        navigator.navigate("Login")
+        const requestData = { ...data };
+        await resetPassword(requestData).unwrap();
+
     }
+
+    useEffect(() => {
+        if (isSuccess) {
+            if (data) {
+                Toast.success(data.msg);
+                navigator.navigate("Login")
+            } else {
+                Toast.error("data found in response");
+            }
+        }
+    }, [isSuccess]);
 
     return (
         <AuthWrapper text='Enter your new password.'>

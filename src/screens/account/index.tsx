@@ -8,6 +8,10 @@ import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import OrangeUserIcon from "../../../assets/vendors/orange-user-icon";
 import IconButton from "../../shared/buttons/icon-button";
 import LogoutIcon from "../../../assets/vendors/logout-icon";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../store/store";
+import { setLogout } from "../../services/authSlice";
 type SignInRouteParams = {
   setCheckUserLogin: (value: boolean) => void;
 };
@@ -15,9 +19,22 @@ type SignInRouteParams = {
 type SignInProps = {
   route: RouteProp<{ params: SignInRouteParams }>;
 };
-const Index: React.FC<SignInProps> = ({ route }) => {
-  const { setCheckUserLogin } = route.params;
+const Index: React.FC<SignInProps> = () => {
   const navigator = useNavigation();
+  const dispatch = useDispatch<AppDispatch>();
+  const clearAll = async () => {
+    try {
+      await AsyncStorage.clear()
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  const onLogout = () => {
+    clearAll()
+    dispatch(setLogout());
+  }
+
   return (
     <MainWrapper showSafeArea={true}>
       <Stack
@@ -52,7 +69,7 @@ const Index: React.FC<SignInProps> = ({ route }) => {
       </Stack>
       <Stack px={15}>
         <IconButton
-          onPress={() => setCheckUserLogin(false)}
+          onPress={() => { onLogout() }}
           backgroundColor="#FFA864"
           h={48}
           text="Sign out"

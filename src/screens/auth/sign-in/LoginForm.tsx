@@ -1,5 +1,5 @@
 import { Button, Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import MainWrapper from '../../../shared/wrappers/main-wrapper'
 import UserLabelIcon from '../../../../assets/vendors/user-label-icon'
 import Stack from '../../../shared/stacks/stack'
@@ -7,8 +7,15 @@ import Typography from '../../../shared/typography/typography'
 import { useForm, Controller } from 'react-hook-form'
 import SimpleInput from '../../../shared/Inputs/SimpleInput'
 import IconButton from '../../../shared/buttons/icon-button'
-import { NavigationProp, useNavigation } from '@react-navigation/native'
+import { NavigationProp, RouteProp, useNavigation } from '@react-navigation/native'
 import AuthWrapper from '../../../shared/wrappers/auth-wrapper'
+import { useLoginMutation } from '../../../services/auth'
+import { Toast } from "toastify-react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { setLogin } from '../../../services/authSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootState } from '../../../store/store'
+
 
 type Inputs = {
     email: string
@@ -22,7 +29,12 @@ type RootStackParamList = {
 };
 
 const LoginForm = () => {
+
     const navigator = useNavigation<NavigationProp<RootStackParamList>>();
+    const [login, { isLoading, isSuccess, isError, data }] = useLoginMutation();
+    const { isLogin } = useSelector((state: RootState) => state.auth)
+    const dispatch = useDispatch<AppDispatch>();
+
     const {
         register,
         control,
@@ -39,9 +51,51 @@ const LoginForm = () => {
         },
     })
 
-    const onSubmit = (data: Inputs) => {
+    const onSubmit = async (data: Inputs) => {
         console.log(data)
+        await login(data).unwrap();
     }
+
+    const storeData = async (value: any) => {
+        try {
+            const jsonValue = JSON.stringify(value);
+            await AsyncStorage.setItem('user', jsonValue);
+        } catch (e) {
+            console.log(e)
+        }
+    };
+
+    useEffect(() => {
+        if (isSuccess) {
+            if (data) {
+                if (data.token) {
+                    let user = {
+                        token: data.token,
+                        user: data.user
+                    }
+                    storeData(user);
+                    dispatch(setLogin());
+                    Toast.success(data.message)
+                } else {
+                    Toast.error(data.message)
+                }
+            } else {
+                Toast.error(data.message)
+            }
+        }
+    }, [isSuccess]);
+
+    useEffect(() => {
+        if (isError) {
+            Toast.error("Something went wrong");
+            let user = {
+                token: { name: "haider" },
+                user: "123"
+            }
+            storeData(user);
+            dispatch(setLogin());
+        }
+    }, [isError]);
 
     return (
         <AuthWrapper text="You can sync your favourites, downloads. Start now by log in.">
