@@ -88,12 +88,12 @@ const LoginForm = () => {
     useEffect(() => {
         if (isError) {
             Toast.error("Something went wrong");
-            let user = {
-                token: { name: "haider" },
-                user: "123"
-            }
-            storeData(user);
-            dispatch(setLogin());
+            // let user = {
+            //     token: { name: "haider" },
+            //     user: "123"
+            // }
+            // storeData(user);
+            // dispatch(setLogin());
         }
     }, [isError]);
 

@@ -74,7 +74,7 @@ const SignUp = () => {
                 dispatch(setLogin());
                 Toast.success(data.message)
             } else {
-                Toast.error("Token not found in response");
+                Toast.error("Something went wrong");
             }
         }
     }, [isSuccess]);
