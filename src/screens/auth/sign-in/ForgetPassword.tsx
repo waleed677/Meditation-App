@@ -21,7 +21,7 @@ type RootStackParamList = {
     SignUp: undefined;
     ForgetPassword: undefined;
     ResetPassword: undefined
-    OtpScreen: undefined
+    OtpScreen: { email: string }
 };
 
 const ForgetPassword = () => {
@@ -50,11 +50,12 @@ const ForgetPassword = () => {
 
     useEffect(() => {
         if (isSuccess) {
-            if (data) {
+            if (data && data.status == "success") {
                 Toast.success(data.msg);
-                navigator.navigate("OtpScreen")
+                let email = getValues("email")
+                navigator.navigate("OtpScreen", { email })
             } else {
-                Toast.error("Something went wrong");
+                Toast.error(data.msg);
             }
         }
     }, [isSuccess]);

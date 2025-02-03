@@ -1,5 +1,5 @@
 import { Button, Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import MainWrapper from '../../../shared/wrappers/main-wrapper'
 import UserLabelIcon from '../../../../assets/vendors/user-label-icon'
 import Stack from '../../../shared/stacks/stack'
@@ -7,8 +7,10 @@ import Typography from '../../../shared/typography/typography'
 import { useForm, Controller } from 'react-hook-form'
 import SimpleInput from '../../../shared/Inputs/SimpleInput'
 import IconButton from '../../../shared/buttons/icon-button'
-import { NavigationProp, useNavigation } from '@react-navigation/native'
+import { NavigationProp, useNavigation, useRoute } from '@react-navigation/native'
 import AuthWrapper from '../../../shared/wrappers/auth-wrapper'
+import { useVerifyOtpMutation } from '../../../services/auth'
+import { Toast } from 'toastify-react-native'
 
 type Inputs = {
     otp: ""
@@ -18,11 +20,14 @@ type RootStackParamList = {
     Login: undefined;
     SignUp: undefined;
     ForgetPassword: undefined;
-    ResetPassword: undefined
+    ResetPassword: { email: string }
 };
 
 const OtpScreen = () => {
     const navigator = useNavigation<NavigationProp<RootStackParamList>>();
+    const [verifyOtp, { isLoading, isSuccess, isError, data }] = useVerifyOtpMutation();
+    const { email } = useRoute().params as { email: string }
+    console.log("==>", email)
     const {
         register,
         control,
@@ -38,10 +43,32 @@ const OtpScreen = () => {
         },
     })
 
-    const onSubmit = (data: Inputs) => {
+    const onSubmit = async (data: Inputs) => {
         console.log(data)
-        navigator.navigate("ResetPassword")
+        let body = {
+            email,
+            otp: data.otp
+        }
+        await verifyOtp(body).unwrap();
+
     }
+
+    useEffect(() => {
+        if (isSuccess) {
+            if (data && data.status == "success") {
+                Toast.success(data.msg);
+                navigator.navigate("ResetPassword", { email })
+            } else {
+                Toast.error(data.msg);
+            }
+        }
+    }, [isSuccess]);
+
+    useEffect(() => {
+        if (isError) {
+            Toast.error("Something went wrong");
+        }
+    }, [isError]);
 
     return (
         <AuthWrapper text='Enter otp receive on given email'>

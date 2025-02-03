@@ -19,7 +19,7 @@ import { AppDispatch } from '../../../store/store'
 type Inputs = {
     email: string
     password: string
-    userName: string
+    username: string
 }
 
 type RootStackParamList = {
@@ -46,7 +46,7 @@ const SignUp = () => {
         defaultValues: {
             email: "",
             password: "",
-            userName: ""
+            username: ""
         },
     })
 
@@ -91,7 +91,7 @@ const SignUp = () => {
             <Stack>
                 <Controller
                     control={control}
-                    name="userName"
+                    name="username"
                     rules={{ required: "User Name is required" }}
                     render={({ field: { onChange, onBlur, value } }) => (
                         <SimpleInput
@@ -104,7 +104,7 @@ const SignUp = () => {
                         />
                     )}
                 />
-                {errors.userName && <Text style={styles.errorText}>{errors.userName.message}</Text>}
+                {errors.username && <Text style={styles.errorText}>{errors.username.message}</Text>}
             </Stack>
             <Stack mt={15}>
                 <Controller
