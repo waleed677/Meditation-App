@@ -22,8 +22,9 @@ const BarCard = ({ title }: { title: string }) => {
       <Text
         style={{
           fontFamily: "Sansita-BoldItalic",
-          fontSize: 20,
+          fontSize: 19,
           color: "#2762A6",
+          textTransform: "capitalize",
         }}
       >
         {title}

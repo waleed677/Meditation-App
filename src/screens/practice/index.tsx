@@ -31,11 +31,11 @@ const Index: React.FC = () => {
             <TouchableOpacity
               onPress={() =>
                 navigator.navigate("PracticeList", {
-                  data: { name: "Mindfulness of Body" },
+                  data: item,
                 })
               }
             >
-              <BarCard title="Mindfulness of Body" />
+              <BarCard title={item?.name} />
             </TouchableOpacity>
           )}
           style={{ marginBottom: 400, height: height - 170 }}

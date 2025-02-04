@@ -30,7 +30,7 @@ const Index = () => {
               <VideoCard
                 source={require("../../../assets/images/video_box.png")}
                 title={item?.title}
-                duration={""}
+                duration={item?.duration}
               />
             </TouchableOpacity>
           )}
