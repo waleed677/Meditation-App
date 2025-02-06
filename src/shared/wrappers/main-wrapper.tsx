@@ -50,7 +50,7 @@ const MainWrapper: React.FC<MainWrapperProps> = ({
         <Text
           style={[
             styles.headerText,
-            { color: iconBg, fontFamily: "Sansita-BoldItalic" },
+            { color: iconBg, fontFamily: "Sansita-BoldItalic", textTransform: "capitalize" },
           ]}
         >
           {title}
@@ -89,6 +89,7 @@ const MainWrapper: React.FC<MainWrapperProps> = ({
             fontFamily: fontStyle !== "normal" ? "Sansita-BoldItalic" : "",
             fontSize: 20,
             marginLeft: 20,
+            textTransform: "capitalize"
           }}
         >
           {title}

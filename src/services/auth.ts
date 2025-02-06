@@ -53,6 +53,13 @@ export const authApi = createApi({
         },
       }),
     }),
+    verifyOtp: builder.mutation({
+      query: (body) => ({
+        url: `admin_auth.php?action=verify-otp`,
+        method: "POST",
+        body,
+      }),
+    }),
     resetPassword: builder.mutation({
       query: (body) => ({
         url: `admin_auth.php?action=reset-password`,
@@ -71,5 +78,6 @@ export const {
   useSignupMutation,
   useUpdateUserInfoMutation,
   useForgotPasswordMutation,
+  useVerifyOtpMutation,
   useResetPasswordMutation,
 } = authApi;

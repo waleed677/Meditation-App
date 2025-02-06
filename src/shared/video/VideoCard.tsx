@@ -16,9 +16,9 @@ const VideoCard = ({ source, title, duration }: { source: number, title?: string
         </ImageBackground>
       </View>
       <Stack gap={2}>
-        <Typography type="caption" style={{ color: "#2762A6" }}>
+        {/* <Typography type="caption" style={{ color: "#2762A6" }}>
           GUIDED MINDFULNESS
-        </Typography>
+        </Typography> */}
         <Typography type="subtitle3" style={{ color: "#2762A6" }}>
           {title}
         </Typography>

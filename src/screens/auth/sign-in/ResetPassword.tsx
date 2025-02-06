@@ -7,7 +7,7 @@ import Typography from '../../../shared/typography/typography'
 import { useForm, Controller } from 'react-hook-form'
 import SimpleInput from '../../../shared/Inputs/SimpleInput'
 import IconButton from '../../../shared/buttons/icon-button'
-import { NavigationProp, useNavigation } from '@react-navigation/native'
+import { NavigationProp, useNavigation, useRoute } from '@react-navigation/native'
 import AuthWrapper from '../../../shared/wrappers/auth-wrapper'
 import { useResetPasswordMutation } from '../../../services/auth'
 import { Toast } from 'toastify-react-native'
@@ -26,6 +26,7 @@ type RootStackParamList = {
 const ResetPassword = () => {
     const navigator = useNavigation<NavigationProp<RootStackParamList>>();
     const [resetPassword, { isLoading, isSuccess, isError, data }] = useResetPasswordMutation();
+    const { email } = useRoute().params as { email: string }
     const {
         register,
         control,
@@ -44,18 +45,22 @@ const ResetPassword = () => {
 
     const onSubmit = async (data: Inputs) => {
         console.log(data)
-        const requestData = { ...data };
+        const requestData = {
+            password: data.password,
+            password_confirmation: data.confirmPassword,
+            email: email
+        };
         await resetPassword(requestData).unwrap();
 
     }
 
     useEffect(() => {
         if (isSuccess) {
-            if (data) {
+            if (data && data.status == "success") {
                 Toast.success(data.msg);
                 navigator.navigate("Login")
             } else {
-                Toast.error("data found in response");
+                Toast.error(data.msg);
             }
         }
     }, [isSuccess]);
@@ -85,7 +90,12 @@ const ResetPassword = () => {
                 <Controller
                     control={control}
                     name="confirmPassword"
-                    rules={{ required: "Confirm Password is required" }}
+                    rules={{
+                        required: "Confirm Password is required",
+
+                        validate: (value) => value === getValues("password") || "Passwords do not match"
+
+                    }}
                     render={({ field: { onChange, onBlur, value } }) => (
                         <SimpleInput
                             label='Confirm Password'

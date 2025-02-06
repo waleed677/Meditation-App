@@ -2,6 +2,7 @@ import React from "react";
 import Stack from "../../../shared/stacks/stack";
 import { Dimensions, Image } from "react-native";
 import Typography from "../../../shared/typography/typography";
+import { apiUrl } from "../../../constants";
 
 const width = Dimensions.get("window").width;
 const MomentCard = ({ data }: { data: any }) => {
@@ -12,25 +13,23 @@ const MomentCard = ({ data }: { data: any }) => {
           style={{ fontStyle: "italic", color: "#8E8E8E" }}
           type="paragraph2"
         >
-          Seng Beng
+          {data?.title}
         </Typography>
         <Typography style={{ color: "#8E8E8E" }} type="paragraph2">
-          10 minutes ago
+          {new Date(data?.created_at).toLocaleTimeString()}
         </Typography>
       </Stack>
       <Image
         style={{ height: 440, width: width - 32 }}
-        source={require("../../../../assets/images/moment-blog-one.png")}
+        // source={require("../../../../assets/images/moment-blog-one.png")}
+        source={{ uri: `${apiUrl}/${data?.image_url}` }}
         alt=""
       />
       <Stack mt={15}>
         <Typography type="paragraph2bold">
-          02/10/2024{" "}
+          {new Date(data?.created_at).toLocaleDateString()}{" "}
           <Typography type="paragraph2">
-            Mindfulness is the practice of being fully present and engaged in
-            the current moment, without judgment. It involves paying attention
-            to your thoughts, feelings, bodily sensations, and surrounding
-            environment with openness and curiosity.
+            {data?.description}
           </Typography>
         </Typography>
       </Stack>

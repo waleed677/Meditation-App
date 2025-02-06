@@ -26,16 +26,16 @@ const Index: React.FC = () => {
       <Stack px={15} mt={9}>
         <FlatList
           showsVerticalScrollIndicator={false}
-          data={data}
+          data={data?.resources}
           renderItem={({ item }: { item: any }) => (
             <TouchableOpacity
               onPress={() =>
                 navigator.navigate("ResourcesList", {
-                  data: { name: "Mindfulness of Body" },
+                  data: item,
                 })
               }
             >
-              <BarCard title="Mindfulness of Body" />
+              <BarCard title={item?.name} />
             </TouchableOpacity>
           )}
           style={{ marginBottom: 400, height: height - 170 }}

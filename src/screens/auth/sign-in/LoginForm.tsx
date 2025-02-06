@@ -77,10 +77,10 @@ const LoginForm = () => {
                     dispatch(setLogin());
                     Toast.success(data.message)
                 } else {
-                    Toast.error(data.message)
+                    Toast.error(data.error)
                 }
             } else {
-                Toast.error(data.message)
+                Toast.error(data.error)
             }
         }
     }, [isSuccess]);
