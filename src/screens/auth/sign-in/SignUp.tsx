@@ -1,16 +1,6 @@
-import {
-  Button,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { Pressable, StyleSheet, Text } from "react-native";
 import React, { useEffect } from "react";
-import MainWrapper from "../../../shared/wrappers/main-wrapper";
-import UserLabelIcon from "../../../../assets/vendors/user-label-icon";
 import Stack from "../../../shared/stacks/stack";
-import Typography from "../../../shared/typography/typography";
 import { useForm, Controller } from "react-hook-form";
 import SimpleInput from "../../../shared/Inputs/SimpleInput";
 import IconButton from "../../../shared/buttons/icon-button";
@@ -41,14 +31,9 @@ const SignUp = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const {
-    register,
     control,
     handleSubmit,
-    watch,
-    reset,
-    setValue,
-    getValues,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<Inputs>({
     defaultValues: {
       email: "",
@@ -79,7 +64,6 @@ const SignUp = () => {
         };
         storeData(user);
         dispatch(setLogin());
-        Toast.success(data.message);
       } else {
         Toast.error("Something went wrong");
       }

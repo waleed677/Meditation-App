@@ -4,7 +4,12 @@ import MainWrapper from "../../shared/wrappers/main-wrapper";
 import Stack from "../../shared/stacks/stack";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import BackIcon from "../../../assets/vendors/back-icon";
-import { RouteProp, useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+import {
+  RouteProp,
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import OrangeUserIcon from "../../../assets/vendors/orange-user-icon";
 import IconButton from "../../shared/buttons/icon-button";
 import LogoutIcon from "../../../assets/vendors/logout-icon";
@@ -27,31 +32,31 @@ const Index: React.FC<SignInProps> = () => {
   const dispatch = useDispatch<AppDispatch>();
   const clearAll = async () => {
     try {
-      await AsyncStorage.clear()
+      await AsyncStorage.clear();
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
-  }
+  };
 
   const onLogout = () => {
-    clearAll()
+    clearAll();
     dispatch(setLogout());
-  }
+  };
 
   const checkUser = async () => {
     const userJson = await AsyncStorage.getItem("user");
+    console.log("==userJson==", userJson);
     // console.log("==userJson==", userJson)
     const user = userJson != null ? JSON.parse(userJson) : null;
     if (user !== null) {
       // console.log("==user==", user?.user)
-      setAuthUser(user?.user)
+      setAuthUser(user?.user);
     }
   };
 
-
   useFocusEffect(
     useCallback(() => {
-      checkUser()
+      checkUser();
     }, [])
   );
   return (
@@ -89,7 +94,9 @@ const Index: React.FC<SignInProps> = () => {
       </Stack>
       <Stack px={15}>
         <IconButton
-          onPress={() => { onLogout() }}
+          onPress={() => {
+            onLogout();
+          }}
           backgroundColor="#FFA864"
           h={48}
           text="Sign out"
