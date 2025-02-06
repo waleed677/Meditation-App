@@ -1,25 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import MainWrapper from "../../shared/wrappers/main-wrapper";
 import { FlatList, TouchableOpacity } from "react-native";
 import VideoCard from "../../shared/video/VideoCard";
 import Stack from "../../shared/stacks/stack";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
-import { useGetMomentQuery } from "../../services/moments";
 import { useGetVisualPracticeQuery } from "../../services/visualPractice";
+
 type RootStackParamList = {
   VideoPlayerDetail: { data: Record<string, unknown> };
 };
-const Index = () => {
+
+type Video = {
+  title: string;
+  duration: string;
+  [key: string]: any;
+};
+
+const Index: React.FC = () => {
+  const [searchQuery, setSearchQuery] = useState<string | null>(null);
   const navigator = useNavigation<NavigationProp<RootStackParamList>>();
-  const { data, isLoading } = useGetVisualPracticeQuery();
-  console.log("data::", data?.videos)
+  const { data, isLoading } = useGetVisualPracticeQuery({ searchQuery });
+
   return (
-    <MainWrapper title="Visual Practice" type_of_header="withoutImage">
+    <MainWrapper
+      setSearchQuery={setSearchQuery}
+      title="Visual Practice"
+      type_of_header="withoutImage"
+    >
       <Stack px={15} py={14}>
         <FlatList
           showsVerticalScrollIndicator={false}
-          data={data && data?.videos}
-          renderItem={({ item, index }) => (
+          data={data?.videos}
+          renderItem={({ item }: { item: Video }) => (
             <TouchableOpacity
               onPress={() =>
                 navigator.navigate("VideoPlayerDetail", {
@@ -29,8 +41,8 @@ const Index = () => {
             >
               <VideoCard
                 source={require("../../../assets/images/video_box.png")}
-                title={item?.title}
-                duration={item?.duration}
+                title={item.title}
+                duration={item.duration}
               />
             </TouchableOpacity>
           )}

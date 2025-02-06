@@ -7,8 +7,9 @@ export const visualPracticeApi = createApi({
     baseUrl: `${apiUrl}/api`, // Ensure this is your correct base URL for the API
   }),
   endpoints: (builder) => ({
-    getVisualPractice: builder.query<any, void>({
-      query: () => "visual_practice.php", // Note that this is relative to the baseUrl
+    getVisualPractice: builder.query<any, any>({
+      query: ({ searchQuery }) =>
+        `visual_practice.php${searchQuery ? `?search=${searchQuery}` : ""}`, // Note that this is relative to the baseUrl
     }),
     addVisualPractice: builder.mutation({
       query: (body) => ({

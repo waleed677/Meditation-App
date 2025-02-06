@@ -20,7 +20,7 @@ type RootStackParamList = {
 const Index = () => {
   const [selectSlot, setSelectSlot] = useState("");
   const navigator = useNavigation<NavigationProp<RootStackParamList>>();
-  const { data, isLoading } = useGetVisualPracticeQuery();
+  const { data, isLoading } = useGetVisualPracticeQuery({ searchQuery: null });
   return (
     <MainWrapper
       iconBg="#2762A6"
@@ -67,8 +67,9 @@ const Index = () => {
                 tagTextStyle={{
                   color: selectSlot == item?.value ? "#ffffff" : "#6699FF",
                 }}
-                text={`${item?.min} ${item?.min ? "-" : ">"} ${item.max
-                  } minutes`}
+                text={`${item?.min} ${item?.min ? "-" : ">"} ${
+                  item.max
+                } minutes`}
               />
             </TouchableOpacity>
           )}

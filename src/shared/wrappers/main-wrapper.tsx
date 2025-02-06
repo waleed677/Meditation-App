@@ -8,12 +8,15 @@ import {
   Text,
   TouchableOpacity,
   Dimensions,
+  ImageSourcePropType,
 } from "react-native";
 import BackIcon from "../../../assets/vendors/back-icon";
 import { useNavigation } from "@react-navigation/native";
 import SearchInput from "../filters/searchInput";
 import TopHeaderIcon from "../../../assets/vendors/top-header-icon";
+
 const width = Dimensions.get("window").width;
+
 interface MainWrapperProps {
   children: ReactNode;
   showSafeArea?: boolean;
@@ -21,10 +24,11 @@ interface MainWrapperProps {
   showHeart?: boolean;
   iconBg?: string;
   title?: string;
-  headerImage?: number;
+  headerImage?: ImageSourcePropType;
   type_of_header?: string;
   fontStyle?: string;
   icon?: ReactNode;
+  setSearchQuery?: (query: string) => void;
 }
 
 const MainWrapper: React.FC<MainWrapperProps> = ({
@@ -38,8 +42,10 @@ const MainWrapper: React.FC<MainWrapperProps> = ({
   showHeart = false,
   fontStyle = "italic",
   headerImage = require("../../../assets/images/header_home.png"),
+  setSearchQuery,
 }) => {
   const navigator = useNavigation();
+
   const renderHeaderWithImage = (
     <View style={styles.header}>
       <Image style={styles.headerImage} source={headerImage} />
@@ -50,7 +56,11 @@ const MainWrapper: React.FC<MainWrapperProps> = ({
         <Text
           style={[
             styles.headerText,
-            { color: iconBg, fontFamily: "Sansita-BoldItalic", textTransform: "capitalize" },
+            {
+              color: iconBg,
+              fontFamily: "Sansita-BoldItalic",
+              textTransform: "capitalize",
+            },
           ]}
         >
           {title}
@@ -58,6 +68,7 @@ const MainWrapper: React.FC<MainWrapperProps> = ({
       </View>
     </View>
   );
+
   const renderHeaderWithOutImage = (
     <SafeAreaView>
       <View
@@ -83,18 +94,20 @@ const MainWrapper: React.FC<MainWrapperProps> = ({
           <Text>back</Text>
         </TouchableOpacity>
         <Text
-          //@ts-ignore
           style={{
-            fontWeight: fontStyle === "normal" ? "bold" : "",
-            fontFamily: fontStyle !== "normal" ? "Sansita-BoldItalic" : "",
+            fontWeight: fontStyle === "normal" ? "bold" : undefined,
+            fontFamily:
+              fontStyle !== "normal" ? "Sansita-BoldItalic" : undefined,
             fontSize: 20,
             marginLeft: 20,
-            textTransform: "capitalize"
+            textTransform: "capitalize",
           }}
         >
           {title}
         </Text>
-        {showSearch && <SearchInput />}
+        {showSearch && setSearchQuery && (
+          <SearchInput setSearchQuery={setSearchQuery} />
+        )}
         {showHeart && <TopHeaderIcon />}
       </View>
     </SafeAreaView>
