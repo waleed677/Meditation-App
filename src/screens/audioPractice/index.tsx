@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import MainWrapper from "../../shared/wrappers/main-wrapper";
-import { FlatList, TouchableOpacity } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import VideoCard from "../../shared/video/VideoCard";
 import Stack from "../../shared/stacks/stack";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
@@ -22,28 +27,36 @@ const Index = () => {
       type_of_header="withoutImage"
     >
       <Stack px={15} py={14}>
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={data?.audios}
-          renderItem={({ item, index }) => (
-            <TouchableOpacity
-              key={index}
-              onPress={() =>
-                navigator.navigate("AudioPlayerDetail", {
-                  data: item,
-                })
-              }
-            >
-              <VideoCard
-                source={require("../../../assets/images/video_box.png")}
-                title={item?.title}
-                duration={item?.duration}
-              />
-            </TouchableOpacity>
-          )}
-          style={{ marginBottom: 50 }}
-          keyExtractor={(item, index) => index.toString()}
-        />
+        {!isLoading && (
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={data?.audios}
+            renderItem={({ item, index }) => (
+              <TouchableOpacity
+                key={index}
+                onPress={() =>
+                  navigator.navigate("AudioPlayerDetail", {
+                    data: item,
+                  })
+                }
+              >
+                <VideoCard
+                  source={require("../../../assets/images/video_box.png")}
+                  title={item?.title}
+                  duration={item?.duration}
+                  thumbnail={item?.thumbnail_url}
+                />
+              </TouchableOpacity>
+            )}
+            style={{ marginBottom: 50 }}
+            keyExtractor={(item, index) => index.toString()}
+          />
+        )}
+        {isLoading && (
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <ActivityIndicator size="large" color="#6699FF" />
+          </View>
+        )}
       </Stack>
     </MainWrapper>
   );

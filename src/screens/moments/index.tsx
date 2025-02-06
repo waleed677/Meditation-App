@@ -1,7 +1,7 @@
 import React from "react";
 import Stack from "../../shared/stacks/stack";
 import MainWrapper from "../../shared/wrappers/main-wrapper";
-import { Dimensions, FlatList } from "react-native";
+import { ActivityIndicator, Dimensions, FlatList, View } from "react-native";
 import MomentTopHeaderIcon from "../../../assets/vendors/moment-top-header-icon";
 import MomentCard from "./components/momentCard";
 import { useGetMomentQuery } from "../../services/moments";
@@ -18,15 +18,22 @@ const Index: React.FC = () => {
       headerImage={require("../../../assets/images/header_moments.png")}
     >
       <Stack px={15} mt={9}>
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={data && data?.moments}
-          renderItem={({ item, index }: { item: any; index: number }) => (
-            <MomentCard data={item} />
-          )}
-          style={{ marginBottom: 400, height: height - 170 }}
-          keyExtractor={(item, index) => index.toString()} // 'item' is typed as 'any'
-        />
+        {!isLoading && (
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={data && data?.moments}
+            renderItem={({ item, index }: { item: any; index: number }) => (
+              <MomentCard data={item} />
+            )}
+            style={{ marginBottom: 400, height: height - 170 }}
+            keyExtractor={(item, index) => index.toString()} // 'item' is typed as 'any'
+          />
+        )}
+        {isLoading && (
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <ActivityIndicator size="large" color="#6699FF" />
+          </View>
+        )}
       </Stack>
     </MainWrapper>
   );

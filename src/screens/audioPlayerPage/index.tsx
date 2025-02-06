@@ -4,6 +4,7 @@ import { Dimensions, ImageBackground } from "react-native";
 import AudioPlayer from "../../shared/audio/audioPlayer";
 import Typography from "../../shared/typography/typography";
 import Stack from "../../shared/stacks/stack";
+import { joinFileLink } from "../../helper/commonFun";
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
@@ -18,7 +19,11 @@ const Index = ({ route }: { route: any }) => {
     >
       <ImageBackground
         style={{ height: height, width: width }}
-        source={require("../../../assets/images/audio_bg.png")}
+        source={
+          route?.params?.data?.thumbnail_url
+            ? { uri: joinFileLink(route?.params?.data?.thumbnail_url) }
+            : require("../../../assets/images/audio_bg.png")
+        }
       >
         <Stack px={15}>
           <Typography type="caption">

@@ -4,12 +4,27 @@ import PlayVideoButton from "../../../assets/vendors/play-video-button";
 import Typography from "../typography/typography";
 import Stack from "../stacks/stack";
 import AudioIcon from "../../../assets/vendors/audio-icon";
+import { joinFileLink } from "../../helper/commonFun";
 const width = Dimensions.get("window").width;
-const VideoCard = ({ source, title, duration }: { source: number, title?: string, duration?: string }) => {
+const VideoCard = ({
+  source,
+  title,
+  duration,
+  thumbnail,
+}: {
+  source: number;
+  title?: string;
+  duration?: string;
+  thumbnail?: string;
+}) => {
   return (
     <View style={style.container}>
       <View style={style.card_img_wrapper}>
-        <ImageBackground style={style.card_bg} source={source} alt="bg-image">
+        <ImageBackground
+          style={style.card_bg}
+          source={thumbnail ? { uri: joinFileLink(thumbnail) } : source}
+          alt="bg-image"
+        >
           <View style={style.box_layer}>
             <PlayVideoButton />
           </View>

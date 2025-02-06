@@ -4,12 +4,17 @@ export const resourcesArticlesApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "/api",
   }),
-  tagTypes: ['ResourcesArticles'],
+  tagTypes: ["ResourcesArticles"],
   endpoints: (builder) => ({
-    getResourcesArticles: builder.query({
-      query: () => `resource_articles.php`,
-      providesTags: (result) =>
-        result ? [{ type: 'ResourcesArticles', id: 'LIST' }] : [],
+    getResourcesArticles: builder.query<any, any>({
+      query: ({ searchQuery, id }) =>
+        `resource_articles.php${
+          searchQuery || id
+            ? `?search=${searchQuery != null ? searchQuery : ""}${
+                id ? `&practices_id=${id}` : ""
+              }`
+            : ""
+        }`, // Note that this is relative to the baseUrl
     }),
     addResourcesArticles: builder.mutation({
       query: (body) => ({
@@ -17,9 +22,10 @@ export const resourcesArticlesApi = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: [{ type: 'ResourcesArticles', id: 'LIST' }],
+      invalidatesTags: [{ type: "ResourcesArticles", id: "LIST" }],
     }),
   }),
 });
 
-export const { useGetResourcesArticlesQuery, useAddResourcesArticlesMutation } = resourcesArticlesApi;
+export const { useGetResourcesArticlesQuery, useAddResourcesArticlesMutation } =
+  resourcesArticlesApi;

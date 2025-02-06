@@ -8,12 +8,12 @@ export const visualPracticeApi = createApi({
   }),
   endpoints: (builder) => ({
     getVisualPractice: builder.query<any, any>({
-      query: ({ searchQuery, min, max, anyChanges }) =>
+      query: ({ searchQuery, min, max, id }) =>
         `visual_practice.php${
-          searchQuery || (min ? min : "") || (max ? max : "")
-            ? `?search=${searchQuery}&min=${min ? min : ""}&max=${
-                max ? max : ""
-              }`
+          searchQuery || (min ? min : "") || (max ? max : "") || id
+            ? `?search=${searchQuery != null ? searchQuery : ""}&min=${
+                min ? min : ""
+              }&max=${max ? max : ""}${id ? `&practices_id=${id}` : ""}`
             : ""
         }`, // Note that this is relative to the baseUrl
     }),

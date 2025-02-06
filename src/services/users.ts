@@ -4,12 +4,11 @@ export const usersApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "/api",
   }),
-  tagTypes: ['Users'],
+  tagTypes: ["Users"],
   endpoints: (builder) => ({
     getUsers: builder.query({
       query: () => `users.php`,
-      providesTags: (result) =>
-        result ? [{ type: 'Users', id: 'LIST' }] : [],
+      providesTags: (result) => (result ? [{ type: "Users", id: "LIST" }] : []),
     }),
     addUsers: builder.mutation({
       query: (body) => ({
@@ -17,10 +16,14 @@ export const usersApi = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: [{ type: 'Users', id: 'LIST' }],
+      invalidatesTags: [{ type: "Users", id: "LIST" }],
+    }),
+    getSettings: builder.query({
+      query: () => `settings.php`,
+      providesTags: (result) => (result ? [{ type: "Users", id: "LIST" }] : []),
     }),
   }),
 });
 
-export const { useGetUsersQuery, useAddUsersMutation } =
+export const { useGetUsersQuery, useAddUsersMutation, useGetSettingsQuery } =
   usersApi;

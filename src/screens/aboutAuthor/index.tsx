@@ -6,9 +6,11 @@ import { Text, TouchableOpacity, View } from "react-native";
 import BackIcon from "../../../assets/vendors/back-icon";
 import { useNavigation } from "@react-navigation/native";
 import BlueBgUserIcon from "../../../assets/vendors/blue-bg-user-icon";
+import { useGetSettingsQuery } from "../../services/resources";
 
 const Index = () => {
   const navigator = useNavigation();
+  const { data } = useGetSettingsQuery({});
   return (
     <MainWrapper showSafeArea={true}>
       <Stack
@@ -30,7 +32,7 @@ const Index = () => {
           <Text>back</Text>
         </TouchableOpacity>
         <Typography style={{ textAlign: "center" }} type="paragraph1Bold">
-          About Dr. Seng Beng
+          About {data?.settings?.author_name}
         </Typography>
         <View>
           <Text>{"           "}</Text>
@@ -55,26 +57,10 @@ const Index = () => {
           style={{ fontStyle: "italic", color: "#2762A6" }}
           type="title2"
         >
-          Dr. Tan Seng Beng
+          {data?.settings?.author_name}
         </Typography>
         <Typography style={{ textAlign: "left" }} type="paragraph1">
-          Introduction about you, your practices, your expertises, and how the
-          app will benefit the users.
-        </Typography>
-        <Typography type="paragraph1">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Eu
-          consequat ac felis donec et odio pellentesque diam volutpat. Pharetra
-          convallis posuere morbi leo urna. Vitae turpis massa sed elementum
-          tempus egestas sed sed risus. Porttitor eget dolor morbi non arcu
-          risus quis. Euismod nisi porta lorem mollis aliquam ut. In tellus
-          integer feugiat scelerisque.
-        </Typography>
-        <Typography type="paragraph1">
-          Tempor nec feugiat nisl pretium fusce id. Maecenas accumsan lacus vel
-          facilisis volutpat est velit egestas. Pretium viverra suspendisse
-          potenti nullam ac tortor vitae purus. Sagittis nisl rhoncus mattis
-          rhoncus urna neque viverra.
+          {data?.settings?.about_author}
         </Typography>
       </Stack>
     </MainWrapper>

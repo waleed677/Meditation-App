@@ -7,6 +7,7 @@ import { resourcesApi } from "../services/resources";
 import { practicesApi } from "../services/practices";
 import { authApi } from "../services/auth";
 import authSlice from "../services/authSlice";
+import { resourcesArticlesApi } from "../services/resourcesArticles";
 export const store = configureStore({
   reducer: {
     auth: authSlice,
@@ -14,6 +15,7 @@ export const store = configureStore({
     [visualPracticeApi.reducerPath]: visualPracticeApi.reducer,
     [momentApi.reducerPath]: momentApi.reducer,
     [resourcesApi.reducerPath]: resourcesApi.reducer,
+    [resourcesArticlesApi.reducerPath]: resourcesArticlesApi.reducer,
     [practicesApi.reducerPath]: practicesApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
   },
@@ -25,7 +27,8 @@ export const store = configureStore({
       .concat(momentApi.middleware)
       .concat(practicesApi.middleware)
       .concat(authApi.middleware)
-      .concat(resourcesApi.middleware),
+      .concat(resourcesApi.middleware)
+      .concat(resourcesArticlesApi.middleware),
 });
 
 setupListeners(store.dispatch);

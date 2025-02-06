@@ -6,9 +6,12 @@ import { Text, TouchableOpacity, View } from "react-native";
 import BackIcon from "../../../assets/vendors/back-icon";
 import { useNavigation } from "@react-navigation/native";
 import OrangeUserIcon from "../../../assets/vendors/orange-user-icon";
+import { useGetSettingsQuery } from "../../services/resources";
 
 const Index = () => {
   const navigator = useNavigation();
+  const { data } = useGetSettingsQuery({});
+
   return (
     <MainWrapper showSafeArea={true}>
       <Stack
@@ -44,22 +47,7 @@ const Index = () => {
         >
           Blue Whale Mindfulness
         </Typography>
-        <Typography type="paragraph1">Introduction about your app </Typography>
-        <Typography style={{ textAlign: "center" }} type="paragraph1">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Eu
-          consequat ac felis donec et odio pellentesque diam volutpat. Pharetra
-          convallis posuere morbi leo urna. Vitae turpis massa sed elementum
-          tempus egestas sed sed risus. Porttitor eget dolor morbi non arcu
-          risus quis. Euismod nisi porta lorem mollis aliquam ut. In tellus
-          integer feugiat scelerisque.
-        </Typography>
-        <Typography style={{ textAlign: "center" }} type="paragraph1">
-          Tempor nec feugiat nisl pretium fusce id. Maecenas accumsan lacus vel
-          facilisis volutpat est velit egestas. Pretium viverra suspendisse
-          potenti nullam ac tortor vitae purus. Sagittis nisl rhoncus mattis
-          rhoncus urna neque viverra.
-        </Typography>
+        <Typography type="paragraph1">{data?.settings?.about_app}</Typography>
       </Stack>
     </MainWrapper>
   );
