@@ -1,8 +1,9 @@
 import React from "react";
 import Stack from "../../shared/stacks/stack";
 import { Image, Text } from "react-native";
+import { joinFileLink } from "../../helper/commonFun";
 
-const BarCard = ({ title }: { title: string }) => {
+const BarCard = ({ title, url }: { title: string; url: string }) => {
   return (
     <Stack
       px={15}
@@ -16,7 +17,13 @@ const BarCard = ({ title }: { title: string }) => {
     >
       <Image
         style={{ borderRadius: 100, width: 58, height: 58 }}
-        source={require("../../../assets/images/practice_image.png")}
+        source={
+          url
+            ? {
+                uri: joinFileLink(url),
+              }
+            : require("../../../assets/images/practice_image.png")
+        }
         alt=""
       />
       <Text

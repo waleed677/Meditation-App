@@ -105,9 +105,7 @@ const MainWrapper: React.FC<MainWrapperProps> = ({
         >
           {title}
         </Text>
-        {showSearch && setSearchQuery && (
-          <SearchInput setSearchQuery={setSearchQuery} />
-        )}
+        {showSearch && <SearchInput setSearchQuery={setSearchQuery} />}
         {showHeart && <TopHeaderIcon />}
       </View>
     </SafeAreaView>

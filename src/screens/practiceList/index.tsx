@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import MainWrapper from "../../shared/wrappers/main-wrapper";
 import { FlatList, TouchableOpacity } from "react-native";
 import VideoCard from "../../shared/video/VideoCard";
@@ -11,10 +11,15 @@ type RootStackParamList = {
 };
 
 const Index = ({ route }: { route: any }) => {
+  const [searchQuery, setSearchQuery] = useState<string | null>(null);
   const navigator = useNavigation<NavigationProp<RootStackParamList>>();
   const { data, isLoading } = useGetVisualPracticeQuery();
   return (
-    <MainWrapper title={route.params.data.name} type_of_header="withoutImage">
+    <MainWrapper
+      setSearchQuery={setSearchQuery}
+      title={route.params.data.name}
+      type_of_header="withoutImage"
+    >
       <Stack px={15} py={14}>
         <FlatList
           showsVerticalScrollIndicator={false}

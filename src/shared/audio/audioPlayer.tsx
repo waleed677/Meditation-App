@@ -58,8 +58,7 @@ const AudioPlayer = ({ data }: { data: any }) => {
 
   const loadAudio = async () => {
     try {
-      console.log("Loading Sound");
-      const audioUrl = `${apiUrl}/${data?.file_url}`
+      const audioUrl = `${apiUrl}/${data?.file_url}`;
       const { sound } = await Audio.Sound.createAsync(
         { uri: audioUrl },
         { shouldPlay: false },
@@ -76,7 +75,6 @@ const AudioPlayer = ({ data }: { data: any }) => {
 
     return () => {
       if (sound) {
-        console.log("Unloading Sound");
         sound.unloadAsync();
       }
     };

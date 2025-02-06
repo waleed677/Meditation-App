@@ -60,7 +60,6 @@ const LoginForm = () => {
   });
 
   const onSubmit = async (data: Inputs) => {
-    console.log(data);
     await login(data).unwrap();
   };
 

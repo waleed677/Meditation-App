@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import MainWrapper from "../../shared/wrappers/main-wrapper";
 import { FlatList, TouchableOpacity } from "react-native";
 import VideoCard from "../../shared/video/VideoCard";
@@ -11,10 +11,16 @@ type RootStackParamList = {
 
 const Index = () => {
   const navigator = useNavigation<NavigationProp<RootStackParamList>>();
+  const [searchQuery, setSearchQuery] = useState<string | null>(null);
+
   const { data, isLoading } = useGetAudioPracticeQuery();
-  console.log("data::", data?.audios)
+
   return (
-    <MainWrapper title="Audio Practice" type_of_header="withoutImage">
+    <MainWrapper
+      setSearchQuery={setSearchQuery}
+      title="Audio Practice"
+      type_of_header="withoutImage"
+    >
       <Stack px={15} py={14}>
         <FlatList
           showsVerticalScrollIndicator={false}
@@ -35,6 +41,7 @@ const Index = () => {
               />
             </TouchableOpacity>
           )}
+          style={{ marginBottom: 50 }}
           keyExtractor={(item, index) => index.toString()}
         />
       </Stack>

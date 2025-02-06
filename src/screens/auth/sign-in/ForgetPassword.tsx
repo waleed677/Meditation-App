@@ -51,7 +51,6 @@ const ForgetPassword = () => {
   });
 
   const onSubmit = async (data: Inputs) => {
-    console.log(data);
     await forgotPassword(data).unwrap();
   };
 

@@ -1,14 +1,13 @@
 import Typography from "../../shared/typography/typography";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import MainWrapper from "../../shared/wrappers/main-wrapper";
 import Stack from "../../shared/stacks/stack";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import BackIcon from "../../../assets/vendors/back-icon";
 import {
   RouteProp,
   useFocusEffect,
   useNavigation,
-  useRoute,
 } from "@react-navigation/native";
 import OrangeUserIcon from "../../../assets/vendors/orange-user-icon";
 import IconButton from "../../shared/buttons/icon-button";
@@ -17,8 +16,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store/store";
 import { setLogout } from "../../services/authSlice";
-import { set } from "react-hook-form";
-import { apiUrl } from "../../constants";
 type SignInRouteParams = {
   setCheckUserLogin: (value: boolean) => void;
 };
@@ -45,11 +42,8 @@ const Index: React.FC<SignInProps> = () => {
 
   const checkUser = async () => {
     const userJson = await AsyncStorage.getItem("user");
-    console.log("==userJson==", userJson);
-    // console.log("==userJson==", userJson)
     const user = userJson != null ? JSON.parse(userJson) : null;
     if (user !== null) {
-      // console.log("==user==", user?.user)
       setAuthUser(user?.user);
     }
   };
@@ -88,7 +82,6 @@ const Index: React.FC<SignInProps> = () => {
       </Stack>
       <Stack px={15} my={33} alignItems="center" gap={10}>
         <OrangeUserIcon />
-        {/* <Image width={100} source={{ uri: `${apiUrl}/${authUser?.profile_logo}` }} alt="profile" /> */}
         <Typography type="title">{authUser?.username}</Typography>
         <Typography type="subtitle2">{authUser?.email}</Typography>
       </Stack>

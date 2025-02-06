@@ -1,16 +1,6 @@
-import {
-  Button,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { StyleSheet, Text } from "react-native";
 import React, { useEffect } from "react";
-import MainWrapper from "../../../shared/wrappers/main-wrapper";
-import UserLabelIcon from "../../../../assets/vendors/user-label-icon";
 import Stack from "../../../shared/stacks/stack";
-import Typography from "../../../shared/typography/typography";
 import { useForm, Controller } from "react-hook-form";
 import SimpleInput from "../../../shared/Inputs/SimpleInput";
 import IconButton from "../../../shared/buttons/icon-button";
@@ -40,14 +30,10 @@ const ResetPassword = () => {
     useResetPasswordMutation();
   const { email } = useRoute().params as { email: string };
   const {
-    register,
     control,
     handleSubmit,
-    watch,
-    reset,
-    setValue,
     getValues,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<Inputs>({
     defaultValues: {
       password: "",
@@ -56,7 +42,6 @@ const ResetPassword = () => {
   });
 
   const onSubmit = async (data: Inputs) => {
-    console.log(data);
     const requestData = {
       password: data.password,
       password_confirmation: data.confirmPassword,

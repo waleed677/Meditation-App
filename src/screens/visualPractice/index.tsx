@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MainWrapper from "../../shared/wrappers/main-wrapper";
 import { FlatList, TouchableOpacity } from "react-native";
 import VideoCard from "../../shared/video/VideoCard";
@@ -19,7 +19,16 @@ type Video = {
 const Index: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string | null>(null);
   const navigator = useNavigation<NavigationProp<RootStackParamList>>();
-  const { data, isLoading } = useGetVisualPracticeQuery({ searchQuery });
+  const { data, isLoading } = useGetVisualPracticeQuery(
+    {
+      searchQuery: searchQuery,
+    },
+    {
+      // pollingInterval: 3000,
+      refetchOnMountOrArgChange: true,
+      skip: false,
+    }
+  );
 
   return (
     <MainWrapper
@@ -46,6 +55,7 @@ const Index: React.FC = () => {
               />
             </TouchableOpacity>
           )}
+          style={{ marginBottom: 50 }}
           keyExtractor={(item, index) => index.toString()}
         />
       </Stack>

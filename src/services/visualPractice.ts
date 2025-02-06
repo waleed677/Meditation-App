@@ -8,8 +8,14 @@ export const visualPracticeApi = createApi({
   }),
   endpoints: (builder) => ({
     getVisualPractice: builder.query<any, any>({
-      query: ({ searchQuery }) =>
-        `visual_practice.php${searchQuery ? `?search=${searchQuery}` : ""}`, // Note that this is relative to the baseUrl
+      query: ({ searchQuery, min, max, anyChanges }) =>
+        `visual_practice.php${
+          searchQuery || (min ? min : "") || (max ? max : "")
+            ? `?search=${searchQuery}&min=${min ? min : ""}&max=${
+                max ? max : ""
+              }`
+            : ""
+        }`, // Note that this is relative to the baseUrl
     }),
     addVisualPractice: builder.mutation({
       query: (body) => ({

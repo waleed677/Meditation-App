@@ -1,9 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Stack from "../../shared/stacks/stack";
 import MainWrapper from "../../shared/wrappers/main-wrapper";
 import SelectHomeIcon from "../../../assets/vendors/select-home-icon";
 import Card from "./components/Card";
-import { FlatList, TouchableOpacity } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { timeSlots } from "../../../dummyData";
 import Tag from "./components/Tag";
 import VideoCard from "../../shared/video/VideoCard";
@@ -18,9 +24,22 @@ type RootStackParamList = {
 };
 
 const Index = () => {
-  const [selectSlot, setSelectSlot] = useState("");
+  const [selectSlot, setSelectSlot] = useState({ min: 0, max: 0 });
   const navigator = useNavigation<NavigationProp<RootStackParamList>>();
-  const { data, isLoading } = useGetVisualPracticeQuery({ searchQuery: null });
+  const { data, isLoading } = useGetVisualPracticeQuery(
+    {
+      searchQuery: "",
+      min: selectSlot?.min,
+      max: selectSlot?.max,
+    },
+    {
+      // pollingInterval: 3000,
+      refetchOnMountOrArgChange: true,
+      skip: false,
+    }
+  );
+
+  useEffect(() => {}, [selectSlot.min, selectSlot.max]);
   return (
     <MainWrapper
       iconBg="#2762A6"
@@ -58,17 +77,28 @@ const Index = () => {
           data={timeSlots}
           horizontal={true}
           renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => setSelectSlot(item?.value)}>
+            <TouchableOpacity
+              onPress={() =>
+                setSelectSlot({ min: Number(item?.min), max: item?.max })
+              }
+            >
               <Tag
                 tagStyle={{
                   backgroundColor:
-                    selectSlot == item?.value ? "#6699FF" : "#FFF9F0",
+                    `${selectSlot.min}-${selectSlot.max}` ===
+                    `${item?.min}-${item?.max}`
+                      ? "#6699FF"
+                      : "#FFF9F0",
                 }}
                 tagTextStyle={{
-                  color: selectSlot == item?.value ? "#ffffff" : "#6699FF",
+                  color:
+                    `${selectSlot.min}-${selectSlot.max}` ===
+                    `${item?.min}-${item?.max}`
+                      ? "#ffffff"
+                      : "#6699FF",
                 }}
                 text={`${item?.min} ${item?.min ? "-" : ">"} ${
-                  item.max
+                  item?.max
                 } minutes`}
               />
             </TouchableOpacity>
@@ -78,27 +108,39 @@ const Index = () => {
         />
       </Stack>
       <Stack px={15} mt={9}>
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={data && data?.videos}
-          renderItem={({ item, index }) => (
-            <TouchableOpacity
-              onPress={() =>
-                navigator.navigate("VideoPlayerDetail", {
-                  data: item,
-                })
-              }
-            >
-              <VideoCard
-                source={require("../../../assets/images/video_box.png")}
-                title={item?.title}
-                duration={item?.duration}
-              />
-            </TouchableOpacity>
-          )}
-          style={{ marginBottom: 400 }}
-          keyExtractor={(item, index) => index.toString()}
-        />
+        {!isLoading && (
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={data && data?.videos}
+            ListEmptyComponent={
+              <View>
+                <Text>0 results</Text>
+              </View>
+            }
+            renderItem={({ item, index }) => (
+              <TouchableOpacity
+                onPress={() =>
+                  navigator.navigate("VideoPlayerDetail", {
+                    data: item,
+                  })
+                }
+              >
+                <VideoCard
+                  source={require("../../../assets/images/video_box.png")}
+                  title={item?.title}
+                  duration={item?.duration}
+                />
+              </TouchableOpacity>
+            )}
+            style={{ marginBottom: 450 }}
+            keyExtractor={(item, index) => index.toString()}
+          />
+        )}
+        {isLoading && (
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <ActivityIndicator size="large" color="#6699FF" />
+          </View>
+        )}
       </Stack>
     </MainWrapper>
   );

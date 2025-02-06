@@ -15,7 +15,6 @@ type RootStackParamList = {
 const Index: React.FC = () => {
   const navigator = useNavigation<NavigationProp<RootStackParamList>>();
   const { data, isLoading } = useGetResourcesQuery();
-  console.log(data)
   return (
     <MainWrapper
       iconBg="#655BBA"
@@ -35,7 +34,7 @@ const Index: React.FC = () => {
                 })
               }
             >
-              <BarCard title={item?.name} />
+              <BarCard url={item?.image_url} title={item?.name} />
             </TouchableOpacity>
           )}
           style={{ marginBottom: 400, height: height - 170 }}

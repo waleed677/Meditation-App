@@ -1,16 +1,6 @@
-import {
-  Button,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { StyleSheet, Text } from "react-native";
 import React, { useEffect } from "react";
-import MainWrapper from "../../../shared/wrappers/main-wrapper";
-import UserLabelIcon from "../../../../assets/vendors/user-label-icon";
 import Stack from "../../../shared/stacks/stack";
-import Typography from "../../../shared/typography/typography";
 import { useForm, Controller } from "react-hook-form";
 import SimpleInput from "../../../shared/Inputs/SimpleInput";
 import IconButton from "../../../shared/buttons/icon-button";
@@ -39,16 +29,11 @@ const OtpScreen = () => {
   const [verifyOtp, { isLoading, isSuccess, isError, data }] =
     useVerifyOtpMutation();
   const { email } = useRoute().params as { email: string };
-  console.log("==>", email);
+
   const {
-    register,
     control,
     handleSubmit,
-    watch,
-    reset,
-    setValue,
-    getValues,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<Inputs>({
     defaultValues: {
       otp: "",
@@ -56,7 +41,6 @@ const OtpScreen = () => {
   });
 
   const onSubmit = async (data: Inputs) => {
-    console.log(data);
     let body = {
       email,
       otp: data.otp,
