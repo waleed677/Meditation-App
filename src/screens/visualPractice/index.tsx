@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import MainWrapper from "../../shared/wrappers/main-wrapper";
 import { FlatList, TouchableOpacity } from "react-native";
 import VideoCard from "../../shared/video/VideoCard";
@@ -10,8 +10,9 @@ type RootStackParamList = {
   VideoPlayerDetail: { data: Record<string, unknown> };
 };
 const Index = () => {
+  const [search, setSearch] = useState(null);
   const navigator = useNavigation<NavigationProp<RootStackParamList>>();
-  const { data, isLoading } = useGetVisualPracticeQuery();
+  const { data, isLoading } = useGetVisualPracticeQuery({ search });  // Update this line
   console.log("data::", data?.videos)
   return (
     <MainWrapper title="Visual Practice" type_of_header="withoutImage">
