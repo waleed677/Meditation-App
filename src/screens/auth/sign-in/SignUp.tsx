@@ -57,13 +57,15 @@ const SignUp = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      if (data && data.token) {
+      if (data && data.status == "success" && data.token) {
         let user = {
           token: data.token,
           user: data.user,
         };
         storeData(user);
         dispatch(setLogin());
+      } else if (data && data.status == "fail") {
+        Toast.error(data.msg);
       } else {
         Toast.error("Something went wrong");
       }

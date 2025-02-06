@@ -83,10 +83,10 @@ const LoginForm = () => {
           storeData(user);
           dispatch(setLogin());
         } else {
-          Toast.error(data.error);
+          Toast.error(data.msg);
         }
       } else {
-        Toast.error(data.error);
+        Toast.error(data.msg);
       }
     }
   }, [isSuccess]);
