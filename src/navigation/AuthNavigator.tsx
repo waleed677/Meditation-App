@@ -19,7 +19,7 @@ const AuthNavigator: React.FC<AuthNavigatorProps> = ({ setCheckUserLogin }) => {
       screenOptions={{
         contentStyle: { backgroundColor: "#FFF9F0" },
       }}
-      initialRouteName="SignIn"
+      initialRouteName="Login"
     >
       <AuthStack.Screen
         options={{ headerShown: false }}

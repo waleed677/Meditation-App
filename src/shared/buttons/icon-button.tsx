@@ -6,6 +6,7 @@ import {
   ViewStyle,
   TextStyle,
   View,
+  ActivityIndicator,
 } from "react-native";
 
 interface IconButtonProps {
@@ -23,6 +24,7 @@ interface IconButtonProps {
   fontWeight?: TextStyle["fontWeight"];
   rightIcon?: ReactNode;
   leftIcon?: ReactNode;
+  isLoading?: boolean;
 }
 
 const IconButton: React.FC<IconButtonProps> = ({
@@ -40,6 +42,7 @@ const IconButton: React.FC<IconButtonProps> = ({
   h = 38,
   rightIcon,
   leftIcon,
+  isLoading,
 }) => {
   // Style for the button container
   const buttonStyle: ViewStyle = {
@@ -65,11 +68,14 @@ const IconButton: React.FC<IconButtonProps> = ({
   return (
     <TouchableOpacity
       onPress={onPress}
+      disabled={isLoading}
       style={[styles.button, buttonStyle, style]}
     >
       {leftIcon && <View style={{ marginBottom: 2 }}>{leftIcon}</View>}
-      <Text style={[styles.title, buttonTitleStyle, titleStyle]}>{text}</Text>
-      {rightIcon && <View>{rightIcon}</View>}
+      <Text style={[styles.title, buttonTitleStyle, titleStyle]}>
+        {text} {isLoading && <ActivityIndicator color="#fff" />}
+      </Text>
+      {rightIcon && <View>{rightIcon} </View>}
     </TouchableOpacity>
   );
 };
@@ -80,6 +86,11 @@ const styles = StyleSheet.create({
   },
   title: {
     textAlign: "center",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 2,
   },
 });
 
