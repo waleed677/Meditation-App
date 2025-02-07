@@ -7,8 +7,8 @@ export const audioPracticeApi = createApi({
     baseUrl: `${apiUrl}/api`,
   }),
   endpoints: (builder) => ({
-    getAudioPractice: builder.query<any, void>({
-      query: () => `audio_practice.php`,
+    getAudioPractice: builder.query<any, any>({
+      query: ({ searchQuery }) => `audio_practice.php${searchQuery ? `?search=${searchQuery != null ? searchQuery : ""}` : ""}`,
     }),
     addAudioPractice: builder.mutation({
       query: (body) => ({

@@ -18,7 +18,15 @@ const Index = () => {
   const navigator = useNavigation<NavigationProp<RootStackParamList>>();
   const [searchQuery, setSearchQuery] = useState<string | null>(null);
 
-  const { data, isLoading } = useGetAudioPracticeQuery();
+  const { data, isLoading } = useGetAudioPracticeQuery(
+    {
+      searchQuery: searchQuery,
+    },
+    {
+      refetchOnMountOrArgChange: true,
+      skip: false,
+    }
+  );
 
   return (
     <MainWrapper
