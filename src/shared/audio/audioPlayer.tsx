@@ -18,8 +18,17 @@ import { apiUrl } from "../../constants";
 
 const { width } = Dimensions.get("window");
 
-const AudioPlayer = ({ data, setModalVisible }: { data: any, setModalVisible?: any }) => {
-  const [sound, setSound] = useState<any>(null);
+const AudioPlayer = ({
+  data,
+  setModalVisible,
+  setSound,
+  sound,
+}: {
+  data: any;
+  setModalVisible?: any;
+  setSound?: any;
+  sound?: any;
+}) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isRepeating, setIsRepeating] = useState<boolean>(false);
   const [duration, setDuration] = useState<number>(0);
@@ -88,7 +97,7 @@ const AudioPlayer = ({ data, setModalVisible }: { data: any, setModalVisible?: a
   };
 
   return (
-    <View style={{ height: 150, position: "relative" }}>
+    <View style={{ height: 200, position: "relative" }}>
       <View style={styles.controls}>
         <View>
           <Slider
@@ -145,6 +154,8 @@ const AudioPlayer = ({ data, setModalVisible }: { data: any, setModalVisible?: a
             <RepeatingIcon />
           </TouchableOpacity>
         </Stack>
+
+        {/* Custom Volume Control */}
       </View>
     </View>
   );

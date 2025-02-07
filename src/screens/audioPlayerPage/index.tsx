@@ -10,15 +10,12 @@ const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
 const Index = ({ route }: { route: any }) => {
+  const [volume, setVolume] = useState<number>(1);
+  const [sound, setSound] = useState<number>(1);
   const [modalVisible, setModalVisible] = useState(false);
-  const bgImages: any[] = [
-    require("../../../assets/images/bg_audio_1.jpeg"),
-    require("../../../assets/images/bg_audio_2.jpeg"),
-    require("../../../assets/images/bg_audio_3.jpeg"),
-    require("../../../assets/images/bg_audio_4.jpeg"),
-    require("../../../assets/images/bg_audio_5.png"),
-  ];
-  const [selectImage, setSelectedImages] = useState(null);
+  const [selectImage, setSelectedImages] = useState(
+    require("../../../assets/images/bg_audio_5.png")
+  );
   return (
     <React.Fragment>
       <MainWrapper
@@ -30,11 +27,7 @@ const Index = ({ route }: { route: any }) => {
       >
         <ImageBackground
           style={{ height: height, width: width }}
-          source={
-            route?.params?.data?.thumbnail_url
-              ? { uri: joinFileLink(route?.params?.data?.thumbnail_url) }
-              : require("../../../assets/images/audio_bg.png")
-          }
+          source={selectImage}
         >
           <Stack px={15}>
             <Typography type="caption">
@@ -42,13 +35,26 @@ const Index = ({ route }: { route: any }) => {
               understand what is it about. Make quick decision if they want to
               play this.
             </Typography>
-            <AudioPlayer data={route?.params?.data} setModalVisible={setModalVisible} />
+            <AudioPlayer
+              data={route?.params?.data}
+              setModalVisible={setModalVisible}
+              setVolume={setVolume}
+              volume={volume}
+              setSound={setSound}
+              sound={sound}
+            />
           </Stack>
         </ImageBackground>
       </MainWrapper>
       <ActionSheet
         setModalVisible={setModalVisible}
         modalVisible={modalVisible}
+        setSelectedImages={setSelectedImages}
+        selectImage={selectImage}
+        setSound={setSound}
+        sound={sound}
+        volume={volume}
+        setVolume={setVolume}
       />
     </React.Fragment>
   );
