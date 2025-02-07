@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import MainWrapper from "../../shared/wrappers/main-wrapper";
 import { Dimensions, ImageBackground } from "react-native";
 import AudioPlayer from "../../shared/audio/audioPlayer";
@@ -9,6 +9,14 @@ const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
 const Index = ({ route }: { route: any }) => {
+  const bgImages: any[] = [
+    require("../../../assets/images/bg_audio_1.jpeg"),
+    require("../../../assets/images/bg_audio_2.jpeg"),
+    require("../../../assets/images/bg_audio_3.jpeg"),
+    require("../../../assets/images/bg_audio_4.jpeg"),
+    require("../../../assets/images/bg_audio_5.png"),
+  ];
+  const [selectImage, setSelectedImages] = useState(null);
   return (
     <MainWrapper
       fontStyle="normal"
