@@ -15,9 +15,7 @@
       "requireFullScreen": true,
       "supportsTablet": true,
       "infoPlist": {
-        "UIBackgroundModes": [
-          "audio"
-        ]
+        "UIBackgroundModes": ["audio"]
       }
     },
     "android": {
@@ -32,11 +30,7 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "extra": {
-      "eas": {
-        "projectId": "eb300846-3f97-4560-91be-a219016caab8"
-      }
-    },
+    "extra": {},
     "plugins": [
       [
         "expo-video",

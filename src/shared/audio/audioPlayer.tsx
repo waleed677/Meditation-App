@@ -5,6 +5,7 @@ import {
   Text,
   TouchableOpacity,
   Dimensions,
+  Pressable,
 } from "react-native";
 import { Audio } from "expo-av";
 import PlayVideoButton from "../../../assets/vendors/play-video-button";
@@ -17,7 +18,7 @@ import { apiUrl } from "../../constants";
 
 const { width } = Dimensions.get("window");
 
-const AudioPlayer = ({ data }: { data: any }) => {
+const AudioPlayer = ({ data, setModalVisible }: { data: any, setModalVisible?: any }) => {
   const [sound, setSound] = useState<any>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isRepeating, setIsRepeating] = useState<boolean>(false);
@@ -117,7 +118,9 @@ const AudioPlayer = ({ data }: { data: any }) => {
           alignItems="center"
           justifyContent="space-around"
         >
-          <CrossIcon />
+          <Pressable onPress={() => setModalVisible(true)}>
+            <CrossIcon />
+          </Pressable>
           <TouchableOpacity onPress={togglePlayPause}>
             {!isPlaying ? (
               <PlayVideoButton />

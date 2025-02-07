@@ -42,7 +42,7 @@ const Index = ({ route }: { route: any }) => {
               understand what is it about. Make quick decision if they want to
               play this.
             </Typography>
-            <AudioPlayer data={route?.params?.data} />
+            <AudioPlayer data={route?.params?.data} setModalVisible={setModalVisible} />
           </Stack>
         </ImageBackground>
       </MainWrapper>
