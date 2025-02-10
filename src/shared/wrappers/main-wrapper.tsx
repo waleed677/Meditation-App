@@ -103,7 +103,7 @@ const MainWrapper: React.FC<MainWrapperProps> = ({
             textTransform: "capitalize",
           }}
         >
-          {title}
+          {title?.length > 20 ? title?.slice(0, 20) + "..." : title}
         </Text>
         {showSearch && (
           <SearchInput
