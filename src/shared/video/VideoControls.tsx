@@ -1,46 +1,48 @@
-// VideoControls.js
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { AntDesign, MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { Slider } from "@miblanchard/react-native-slider";
 import PlayVideoButton from "../../../assets/vendors/play-video-button";
 import PauseButton from "../../../assets/vendors/pause-button-icon";
 import RepeatingIcon from "../../../assets/vendors/repeatinf-icon";
 import CrossIcon from "../../../assets/vendors/cross-icon";
 import ResizeScreenIcon from "../../../assets/vendors/resize-screen-icon";
+import { useNavigation } from "@react-navigation/native";
 const VideoControls = ({
   onTogglePlayPause,
-  onPlayPreviousVideo,
-  onPlayNextVideo,
-  onToggleMute,
-  onTogglePlaybackSpeed,
   onSeek,
   onToggleFullscreen,
   duration,
   currentTime: time,
-  rate,
-  isMuted,
   shouldPlay,
-  fullScreenValue,
+  loopValue,
+  setIsLooping,
 }) => {
+  const navigator = useNavigation();
   const formatTime = (timeInMillis) => {
     if (!isNaN(timeInMillis)) {
       const totalSeconds = Math.floor(timeInMillis / 1000);
       const minutes = Math.floor(totalSeconds / 60);
       const seconds = totalSeconds % 60;
-
       return `${minutes < 10 ? "0" : ""}${minutes}:${
         seconds < 10 ? "0" : ""
       }${seconds}`;
     }
-
     return "00:00";
   };
-
   return (
     <>
       <View style={styles.controls}>
-        <CrossIcon />
+        <TouchableOpacity
+          onPress={() => {
+            if (shouldPlay) {
+              onTogglePlayPause();
+            }
+            navigator.goBack();
+          }}
+        >
+          <CrossIcon />
+        </TouchableOpacity>
+
         <TouchableOpacity
           onPress={() => {
             onTogglePlayPause();
@@ -61,55 +63,13 @@ const VideoControls = ({
                 borderRadius: 100,
               }}
             >
-              :<PauseButton />
+              <PauseButton />
             </View>
           )}
         </TouchableOpacity>
-        <RepeatingIcon />
-        {/* <TouchableOpacity
-          onPress={() => {
-            onTogglePlayPause();
-          }}
-          style={styles.controlButton}
-        >
-          <Ionicons
-            name={shouldPlay ? "pause" : "play-sharp"}
-            size={24}
-            color="white"
-          />
+        <TouchableOpacity onPress={() => setIsLooping(!loopValue)}>
+          <RepeatingIcon />
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={onPlayPreviousVideo}
-          style={styles.controlButton}
-        >
-          <AntDesign name="stepbackward" size={24} color="white" />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={onPlayNextVideo}
-          style={styles.controlButton}
-        >
-          <AntDesign name="stepforward" size={24} color="white" />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            onToggleMute();
-          }}
-          style={styles.controlButton}
-        >
-          <Ionicons
-            name={isMuted ? "volume-mute" : "volume-high"}
-            size={24}
-            color="white"
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            onTogglePlaybackSpeed();
-          }}
-          style={styles.controlButton}
-        >
-          <Text style={styles.playbackSpeedText}>{`${rate}x`}</Text>
-        </TouchableOpacity> */}
       </View>
       <View style={styles.progressContainer}>
         <Slider
@@ -151,17 +111,18 @@ const VideoControls = ({
     </>
   );
 };
-
 const styles = StyleSheet.create({
   controls: {
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "flex-end",
     justifyContent: "space-around",
     position: "absolute",
-    bottom: 15,
+    zIndex: 100000,
     width: "100%",
+    height: "100%",
+    paddingBottom: 30,
+    backgroundColor: "#ffffff10",
   },
-
   playbackSpeedText: {
     color: "white",
     fontSize: 16,
@@ -170,6 +131,7 @@ const styles = StyleSheet.create({
     width: "90%",
     alignSelf: "center",
     position: "absolute",
+    zIndex: 100000,
     bottom: 60,
   },
   slider: {
@@ -191,7 +153,11 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    zIndex: 100000,
+  },
+  controlButton: {
+    top: 15,
+    zIndex: 100000,
   },
 });
-
 export default VideoControls;

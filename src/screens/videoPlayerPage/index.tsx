@@ -3,13 +3,18 @@ import MainWrapper from "../../shared/wrappers/main-wrapper";
 import VideoPlayer from "../../shared/video/VideoPlayer";
 import Typography from "../../shared/typography/typography";
 import Stack from "../../shared/stacks/stack";
+import { IMAGE_BASE_URL } from "../../constants";
 
 const Index = ({ route }: { route: any }) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [lessons, setLessons] = useState([]);
   const [selectedLesson, setSelectedLesson] = useState({});
-
+  const [isLooping, setIsLooping] = useState(false);
+  const convertTimeToSeconds = (time: string) => {
+    let [minutes, seconds] = time.split(":").map(Number);
+    return minutes * 60 + seconds;
+  };
   useEffect(() => {
     // Simulate fetching lessons by course
     const fakeLessons = [
@@ -18,22 +23,15 @@ const Index = ({ route }: { route: any }) => {
         lessonVideoUrl: "https://example.com/video1.mp4",
         lessonTitle: "Lesson 1",
         lessonDescription: "Introduction to React Native 1",
-        videoTotalDuration: "600",
+        videoTotalDuration: convertTimeToSeconds(route?.params?.data?.duration),
         lessonThumbnailImageUrl: "https://example.com/thumbnail1.jpg",
       },
-      {
-        lessonId: "2",
-        lessonVideoUrl: "https://example.com/video2.mp4",
-        lessonTitle: "Lesson 2",
-        lessonDescription: "Introduction to React Native 2",
-        videoTotalDuration: "800",
-        lessonThumbnailImageUrl: "https://example.com/thumbnail2.jpg",
-      },
+
       // Add more lessons here
     ];
     setLessons(fakeLessons);
     setSelectedLesson(fakeLessons[0]);
-  }, []);
+  }, [route?.params?.data?.duration]);
   return (
     <React.Fragment>
       {!isFullscreen && (
@@ -57,7 +55,9 @@ const Index = ({ route }: { route: any }) => {
               currentTime={currentTime}
               lessons={lessons}
               selectedLesson={selectedLesson}
-              data={route.params.data}
+              videoSource={`${IMAGE_BASE_URL}${route?.params?.data?.file_url}`}
+              setIsLooping={setIsLooping}
+              isLooping={isLooping}
             />
           </Stack>
         </MainWrapper>
@@ -70,6 +70,9 @@ const Index = ({ route }: { route: any }) => {
           currentTime={currentTime}
           lessons={lessons}
           selectedLesson={selectedLesson}
+          videoSource={`${IMAGE_BASE_URL}${route?.params?.data?.file_url}`}
+          setIsLooping={setIsLooping}
+          isLooping={isLooping}
         />
       )}
     </React.Fragment>

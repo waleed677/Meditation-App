@@ -6,12 +6,17 @@ import Typography from "../../shared/typography/typography";
 import Stack from "../../shared/stacks/stack";
 import { joinFileLink } from "../../helper/commonFun";
 import ActionSheet from "./components/ActionSheet";
+import { Audio } from "expo-av";
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
 const Index = ({ route }: { route: any }) => {
   const [volume, setVolume] = useState<number>(1);
-  const [sound, setSound] = useState<number>(1);
+  const [sound, setSound] = useState<Audio.Sound | null>(null);
+  const [backgroundVolume, setBackgroundVolume] = useState<number>(1);
+  const [backgroundSound, setBackgroundSound] = useState<Audio.Sound | null>(
+    null
+  );
   const [modalVisible, setModalVisible] = useState(false);
   const [selectImage, setSelectedImages] = useState(
     require("../../../assets/images/bg_audio_5.png")
@@ -42,6 +47,10 @@ const Index = ({ route }: { route: any }) => {
               volume={volume}
               setSound={setSound}
               sound={sound}
+              setBackgroundSound={setBackgroundSound}
+              backgroundSound={backgroundSound}
+              setBackgroundVolume={setBackgroundVolume}
+              backgroundVolume={backgroundVolume}
             />
           </Stack>
         </ImageBackground>
@@ -55,6 +64,9 @@ const Index = ({ route }: { route: any }) => {
         sound={sound}
         volume={volume}
         setVolume={setVolume}
+        backgroundSound={backgroundSound}
+        setBackgroundVolume={setBackgroundVolume}
+        backgroundVolume={backgroundVolume}
       />
     </React.Fragment>
   );

@@ -8,10 +8,7 @@ import {
 } from "react-native-gesture-handler";
 import VideoControls from "./VideoControls";
 import * as ScreenOrientation from "expo-screen-orientation";
-import { apiUrl } from "../../constants";
-
 const playbackSpeedOptions = [0.5, 0.75, 1, 1.25, 1.5, 2];
-
 const width = Dimensions.get("window").width;
 const PlayLessonScreen = ({
   setIsFullscreen,
@@ -20,24 +17,23 @@ const PlayLessonScreen = ({
   currentTime,
   lessons,
   selectedLesson,
-  data
+  videoSource,
+  setIsLooping,
+  isLooping,
 }) => {
   const videoRef = useRef(null);
   const [currentLessonIndex, setCurrentLessonIndex] = useState(0);
   const [orientation, setOrientation] = useState(1);
   const [showControls, setShowControls] = useState(false);
-
   const [isPlaying, setIsPlaying] = useState(true);
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
   const [isMuted, setIsMuted] = useState(false);
-
   const doubleTap = Gesture.Tap()
     .numberOfTaps(2)
     .onStart((event) => {
       //get the tap position on X
       const touchX = event.absoluteX;
       let mid = Dimensions.get("screen").width / 2;
-
       //if tap position is before the mid point, set video back by 10s
       if (touchX < mid) {
         videoRef.current.getStatusAsync().then((status) => {
@@ -56,20 +52,19 @@ const PlayLessonScreen = ({
         });
       }
     });
-
   const singleTap = Gesture.Tap().onStart((event) => {
     setShowControls(!showControls);
     // Simulate show/hide controls behavior here
   });
-
   //sets the current time, if video is finished, moves to the next video
   const handlePlaybackStatusUpdate = (status) => {
-    // setCurrentTime(status.positionMillis);
-    if (status.didJustFinish) {
-      playNextVideo();
+    setCurrentTime(status.positionMillis);
+    if (status.didJustFinish && !isLooping) {
+      setCurrentTime(0);
+      videoRef?.current?.setPositionAsync(0);
+      setIsPlaying(false);
     }
   };
-
   const togglePlayPause = () => {
     if (isPlaying) {
       videoRef.current.pauseAsync();
@@ -78,19 +73,16 @@ const PlayLessonScreen = ({
     }
     setIsPlaying(!isPlaying);
   };
-
   const playNextVideo = () => {
     if (currentLessonIndex < lessons.length - 1) {
       setCurrentLessonIndex((prevIndex) => prevIndex + 1);
     }
   };
-
   const playPreviousVideo = () => {
     if (currentLessonIndex > 0) {
       setCurrentLessonIndex((prevIndex) => prevIndex - 1);
     }
   };
-
   const togglePlaybackSpeed = () => {
     //gets the next playback speed index
     const nextSpeedIndex = playbackSpeedOptions.indexOf(playbackSpeed) + 1;
@@ -104,12 +96,10 @@ const PlayLessonScreen = ({
       setPlaybackSpeed(playbackSpeedOptions[0]);
     }
   };
-
   const toggleMute = () => {
     videoRef.current.setIsMutedAsync(isMuted);
     setIsMuted(!isMuted);
   };
-
   const toggleFullscreen = async () => {
     // Lock the orientation first before updating fullscreen state
     if (!isFullscreen) {
@@ -124,21 +114,16 @@ const PlayLessonScreen = ({
       );
       setIsFullscreen(false);
     }
-
     // Update the orientation state once it's locked
     const currentOrientation = await ScreenOrientation.getOrientationAsync();
     setOrientation(currentOrientation);
   };
-  // const videoSource =
-  //   "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
-  const videoSource = `${apiUrl}/${data?.file_url}`;
 
   const setVideoPosition = () => {
     if (videoRef.current) {
       videoRef.current.setPositionAsync(currentTime);
     }
   };
-
   const renderVideo = () => {
     const videoStyles = {
       flex: 1,
@@ -146,13 +131,13 @@ const PlayLessonScreen = ({
       width: isFullscreen ? "100%" : width - 30, // Adjust width for fullscreen
       borderRadius: isFullscreen ? 0 : 10, // Remove border radius in fullscreen
     };
-
     return (
       <Video
         ref={videoRef}
         source={{ uri: videoSource }}
         rate={playbackSpeed}
         isMuted={false}
+        isLooping={isLooping}
         shouldPlay={isPlaying}
         resizeMode={isFullscreen ? "cover" : "stretch"} // "cover" for fullscreen, "stretch" for small view
         onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
@@ -184,7 +169,7 @@ const PlayLessonScreen = ({
               onToggleMute={toggleMute}
               onTogglePlaybackSpeed={togglePlaybackSpeed}
               onSeek={(value) => {
-                videoRef.current.setPositionAsync(+value);
+                videoRef?.current?.setPositionAsync(+value);
                 setCurrentTime(+value);
               }}
               onToggleFullscreen={toggleFullscreen}
@@ -193,14 +178,15 @@ const PlayLessonScreen = ({
               rate={playbackSpeed}
               shouldPlay={isPlaying}
               fullScreenValue={isFullscreen}
+              setIsLooping={setIsLooping}
+              loopValue={isLooping}
             />
           )}
         </>
       )}
-      //this section is only displayed when fullscreen is not active
+
       {orientation == 1 && <View>{/* Simulate other UI elements here */}</View>}
     </GestureHandlerRootView>
   );
 };
-
 export default PlayLessonScreen;

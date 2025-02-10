@@ -23,6 +23,8 @@ const AudioPlayer = ({
   setModalVisible,
   setSound,
   sound,
+  setBackgroundSound,
+  backgroundSound,
 }: {
   data: any;
   setModalVisible?: any;
@@ -33,15 +35,28 @@ const AudioPlayer = ({
   const [isRepeating, setIsRepeating] = useState<boolean>(false);
   const [duration, setDuration] = useState<number>(0);
   const [currentTime, setCurrentTime] = useState<number>(0);
+  const [isBackgroundPlaying, setIsBackgroundPlaying] =
+    useState<boolean>(false);
 
   const togglePlayPause = async () => {
     if (!sound) return;
 
+    // Toggle main audio play/pause
     if (isPlaying) {
       await sound.pauseAsync();
     } else {
       await sound.playAsync();
     }
+
+    // Toggle background audio play/pause
+    if (!backgroundSound) return;
+    if (isBackgroundPlaying) {
+      await backgroundSound.pauseAsync();
+    } else {
+      await backgroundSound.playAsync();
+    }
+
+    setIsBackgroundPlaying(!isBackgroundPlaying);
     setIsPlaying(!isPlaying);
   };
 
@@ -49,21 +64,18 @@ const AudioPlayer = ({
     if (status.isLoaded) {
       setDuration(status.durationMillis / 1000);
       setCurrentTime(status.positionMillis / 1000);
-      if (status.didJustFinish && isRepeating) {
-        sound.playAsync();
+
+      // Check if main audio finished
+      if (status.didJustFinish) {
+        if (isRepeating) {
+          sound.playAsync();
+          backgroundSound.playAsync(); // Restart background audio
+        } else {
+          // Stop background audio when main audio finishes
+          backgroundSound.pauseAsync();
+        }
       }
     }
-  };
-
-  const onSeek = async (value: number) => {
-    setCurrentTime(value);
-    if (sound) {
-      await sound.setPositionAsync(value * 1000);
-    }
-  };
-
-  const toggleRepeat = () => {
-    setIsRepeating(!isRepeating);
   };
 
   const loadAudio = async () => {
@@ -80,12 +92,40 @@ const AudioPlayer = ({
     }
   };
 
+  const loadBackgroundAudio = async () => {
+    try {
+      const backgroundAudioUrl = `https://www.chosic.com/wp-content/uploads/2024/08/Rescue-Me-chosic.com_.mp3`; // Replace with actual background audio URL
+      const { sound } = await Audio.Sound.createAsync(
+        { uri: backgroundAudioUrl },
+        { shouldPlay: false }
+      );
+      setBackgroundSound(sound);
+    } catch (error) {
+      console.error("Error loading background sound:", error);
+    }
+  };
+
+  const onSeek = async (value: number) => {
+    setCurrentTime(value);
+    if (sound) {
+      await sound.setPositionAsync(value * 1000);
+    }
+  };
+
+  const toggleRepeat = () => {
+    setIsRepeating(!isRepeating);
+  };
+
   useEffect(() => {
     loadAudio();
+    loadBackgroundAudio();
 
     return () => {
       if (sound) {
         sound.unloadAsync();
+      }
+      if (backgroundSound) {
+        backgroundSound.unloadAsync();
       }
     };
   }, []);
@@ -97,7 +137,7 @@ const AudioPlayer = ({
   };
 
   return (
-    <View style={{ height: 200, position: "relative" }}>
+    <View style={{ height: 250, position: "relative" }}>
       <View style={styles.controls}>
         <View>
           <Slider
@@ -154,8 +194,6 @@ const AudioPlayer = ({
             <RepeatingIcon />
           </TouchableOpacity>
         </Stack>
-
-        {/* Custom Volume Control */}
       </View>
     </View>
   );
@@ -174,6 +212,10 @@ const styles = StyleSheet.create({
   slider: {
     flex: 1,
     marginHorizontal: 10,
+  },
+  backgroundAudioControls: {
+    marginTop: 20,
+    alignItems: "center",
   },
 });
 

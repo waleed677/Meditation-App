@@ -21,6 +21,10 @@ const ActionSheet = ({
   sound,
   volume,
   setVolume,
+  backgroundSound,
+  setBackgroundVolume,
+  backgroundVolume,
+  setModalVisible,
 }) => {
   const bgImages: any[] = [
     require("../../../../assets/images/bg_audio_1.jpeg"),
@@ -48,6 +52,13 @@ const ActionSheet = ({
         );
       }
     });
+  };
+
+  const handleBackgroundVolumeChange = async (value: number) => {
+    setBackgroundVolume(value);
+    if (backgroundSound) {
+      await backgroundSound.setVolumeAsync(value);
+    }
   };
 
   return (
@@ -80,6 +91,7 @@ const ActionSheet = ({
                   thumbImage={require("../../../../assets/images/thumbSmallImage.png")}
                 />
               </Stack>
+
               {/* <Typography
               type="title2"
               style={{ color: "#2762A6", textAlign: "center" }}
@@ -162,14 +174,9 @@ const ActionSheet = ({
                 <Slider
                   style={styles.slider}
                   minimumValue={0}
-                  maximumValue={1}
-                  value={volume}
-                  onValueChange={async (value) => {
-                    setVolume(value);
-                    if (sound) {
-                      await sound.setVolumeAsync(value); // Update the sound's volume
-                    }
-                  }}
+                  maximumValue={100}
+                  value={backgroundVolume}
+                  onValueChange={handleBackgroundVolumeChange}
                   minimumTrackTintColor="#FF913C"
                   maximumTrackTintColor="#FFF9F0"
                   thumbTintColor="#1FB3A0"
@@ -253,6 +260,14 @@ const ActionSheet = ({
               text="Sound Control"
               backgroundColor="#2762A6"
               borderRadius={6}
+            />
+            <IconButton
+              text="Close"
+              backgroundColor="#2762A6"
+              borderRadius={6}
+              onPress={() => {
+                setModalVisible(false);
+              }}
             />
           </Stack>
         </View>
