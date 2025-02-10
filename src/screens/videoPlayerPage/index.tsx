@@ -44,9 +44,7 @@ const Index = ({ route }: { route: any }) => {
         >
           <Stack px={15} gap={10}>
             <Typography type="caption">
-              Introduction about the practice session. Summarisation so they
-              understand what is it about. Make quick decision if they want to
-              play this.
+              {route?.params?.data?.description}
             </Typography>
             <VideoPlayer
               setIsFullscreen={setIsFullscreen}

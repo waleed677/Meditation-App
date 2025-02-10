@@ -52,6 +52,7 @@ const Index: React.FC = () => {
                 source={require("../../../assets/images/video_box.png")}
                 title={item.title}
                 duration={item.duration}
+                thumbnail={item?.thumbnail_url}
               />
             </TouchableOpacity>
           )}
