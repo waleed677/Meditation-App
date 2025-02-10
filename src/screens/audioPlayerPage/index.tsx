@@ -36,9 +36,7 @@ const Index = ({ route }: { route: any }) => {
         >
           <Stack px={15}>
             <Typography type="caption">
-              Introduction about the practice session. Summarisation so they
-              understand what is it about. Make quick decision if they want to
-              play this.
+              {route?.params?.data?.description}
             </Typography>
             <AudioPlayer
               data={route?.params?.data}
