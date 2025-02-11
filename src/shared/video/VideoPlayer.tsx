@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Dimensions, View } from "react-native";
+import { ActivityIndicator, Dimensions, Text, View } from "react-native";
 import { Video } from "expo-av";
 import {
   Gesture,
@@ -8,6 +8,7 @@ import {
 } from "react-native-gesture-handler";
 import VideoControls from "./VideoControls";
 import * as ScreenOrientation from "expo-screen-orientation";
+import { useNavigation } from "@react-navigation/native";
 const playbackSpeedOptions = [0.5, 0.75, 1, 1.25, 1.5, 2];
 const width = Dimensions.get("window").width;
 const PlayLessonScreen = ({
@@ -21,7 +22,9 @@ const PlayLessonScreen = ({
   setIsLooping,
   isLooping,
 }) => {
+  const navigation = useNavigation();
   const videoRef = useRef(null);
+  const [loading, setLoading] = useState(false);
   const [currentLessonIndex, setCurrentLessonIndex] = useState(0);
   const [orientation, setOrientation] = useState(1);
   const [showControls, setShowControls] = useState(false);
@@ -120,6 +123,7 @@ const PlayLessonScreen = ({
   };
 
   const setVideoPosition = () => {
+    setLoading(true);
     if (videoRef.current) {
       videoRef.current.setPositionAsync(currentTime);
     }
@@ -131,21 +135,51 @@ const PlayLessonScreen = ({
       width: isFullscreen ? "100%" : width - 30, // Adjust width for fullscreen
       borderRadius: isFullscreen ? 0 : 10, // Remove border radius in fullscreen
     };
+
     return (
-      <Video
-        ref={videoRef}
-        source={{ uri: videoSource }}
-        rate={playbackSpeed}
-        isMuted={false}
-        isLooping={isLooping}
-        shouldPlay={isPlaying}
-        resizeMode={isFullscreen ? "cover" : "stretch"} // "cover" for fullscreen, "stretch" for small view
-        onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
-        style={videoStyles}
-        onLoad={setVideoPosition}
-      />
+      <>
+        <Video
+          ref={videoRef}
+          source={{ uri: videoSource }}
+          rate={playbackSpeed}
+          isMuted={false}
+          isLooping={isLooping}
+          shouldPlay={isPlaying}
+          resizeMode={isFullscreen ? "cover" : "stretch"} // "cover" for fullscreen, "stretch" for small view
+          onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
+          style={videoStyles}
+          onLoad={setVideoPosition}
+        />
+
+        {!loading && (
+          <View
+            style={{
+              ...videoStyles,
+              justifyContent: "center",
+              alignItems: "center",
+
+              position: "absolute",
+              zIndex: 10000000000,
+            }}
+          >
+            <ActivityIndicator size="large" color="#6699FF" />
+          </View>
+        )}
+      </>
     );
   };
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("beforeRemove", async (e) => {
+      await ScreenOrientation.lockAsync(
+        ScreenOrientation.OrientationLock.PORTRAIT_UP
+      );
+      setIsFullscreen(false);
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
   return (
     <GestureHandlerRootView
       style={{

@@ -67,30 +67,6 @@ const AudioPlayer = ({
     if (status.isLoaded) {
       setDuration(status.durationMillis / 1000);
       setCurrentTime(status.positionMillis / 1000);
-
-      // When audio finishes playing
-      if (status.didJustFinish) {
-        if (isRepeating) {
-          // Loop both sound and bgSound
-          await sound?.playAsync();
-          await bgSound?.playAsync();
-          sound?.setPositionAsync(0);
-          bgSound?.setPositionAsync(0);
-          setDuration(0); // Reset the duration to 0 for a new loop
-          setIsPlaying(true);
-          setPlayAudio(true);
-        } else {
-          // Pause and reset both sound and bgSound when repeat is off
-          await sound?.setPositionAsync(0);
-          await bgSound?.setPositionAsync(0);
-          await sound?.pauseAsync();
-          await bgSound?.pauseAsync();
-          setCurrentTime(0);
-          setDuration(0);
-          setIsPlaying(false);
-          setPlayAudio(false);
-        }
-      }
     }
   };
 
@@ -99,7 +75,7 @@ const AudioPlayer = ({
       const audioUrl = `${apiUrl}/${data?.file_url}`;
       const { sound } = await Audio.Sound.createAsync(
         { uri: audioUrl },
-        { shouldPlay: false, isLooping: isRepeating },
+        { shouldPlay: false },
         handlePlaybackStatusUpdate
       );
       setSound(sound);
@@ -116,7 +92,7 @@ const AudioPlayer = ({
   };
 
   const toggleRepeat = () => {
-    setIsRepeating(!isRepeating);
+    setIsRepeating((prev) => !prev);
   };
 
   useEffect(() => {
@@ -135,6 +111,33 @@ const AudioPlayer = ({
     return `${minutes}:${secs < 10 ? `0${secs}` : secs}`;
   };
 
+  useEffect(() => {
+    const handleRepeat = async () => {
+      if (currentTime === duration) {
+        if (isRepeating) {
+          await sound?.setPositionAsync(0); // Reset position to start
+          await bgSound?.setPositionAsync(0); // Reset position for background sound
+          await sound?.playAsync(); // Play from the start
+          await bgSound?.playAsync(); // Play background sound again
+          setIsPlaying(true); // Set isPlaying to true after the audio starts
+          setPlayAudio(true);
+        } else {
+          await sound?.setPositionAsync(0);
+          await bgSound?.setPositionAsync(0);
+          await sound?.pauseAsync();
+          await bgSound?.pauseAsync();
+          setCurrentTime(0);
+          loadAudio();
+          setDuration(0);
+          setIsPlaying(false);
+          setPlayAudio(false);
+        }
+      }
+    };
+
+    handleRepeat();
+  }, [currentTime === duration]);
+
   return (
     <View style={{ height: 170, position: "relative" }}>
       <View style={styles.controls}>
@@ -144,7 +147,8 @@ const AudioPlayer = ({
             minimumValue={0}
             maximumValue={duration}
             value={currentTime} // The slider is controlled by the current time of the audio
-            onSlidingComplete={onSeek} // Allows seeking within the audio
+            onSlidingComplete={onSeek}
+            // Allows seeking within the audio
             minimumTrackTintColor="#FF913C"
             maximumTrackTintColor="#FFF9F0"
             thumbImage={require("../../../assets/images/thumbSmallImage.png")}
@@ -210,11 +214,11 @@ const styles = StyleSheet.create({
   slider: {
     flex: 1,
     marginHorizontal: 10,
+    marginBottom: 10,
     width: "100%",
   },
   backgroundAudioControls: {
     marginTop: 20,
-
     alignItems: "center",
   },
 });
