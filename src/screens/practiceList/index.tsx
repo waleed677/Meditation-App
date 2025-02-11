@@ -29,7 +29,7 @@ const Index = ({ route }: { route: any }) => {
       skip: false,
     }
   );
-  console.log("===route.params.data===", route.params.data?.id);
+
   return (
     <MainWrapper
       setSearchQuery={setSearchQuery}

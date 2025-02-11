@@ -77,6 +77,7 @@ const Index = ({ route }: { route: any }) => {
           bgVolume={bgVolume}
           setBgVolume={setBgVolume}
           playAudio={playAudio}
+          setPlayAudio={setPlayAudio}
         />
       )}
     </>

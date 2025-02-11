@@ -1,19 +1,13 @@
 import React from "react";
 import MainWrapper from "../../shared/wrappers/main-wrapper";
 import Stack from "../../shared/stacks/stack";
-import { Dimensions, Image, ScrollView } from "react-native";
-import Constants from "expo-constants";
+import { Dimensions, Image } from "react-native";
 import { joinFileLink } from "../../helper/commonFun";
 import WebView from "react-native-webview";
 
 const width = Dimensions.get("window").width;
 
 const Index = ({ route }: { route: any }) => {
-  console.log(
-    "===oute?.params?.data.image_url===",
-    route?.params?.data.image_url,
-    joinFileLink(route?.params?.data.image_url)
-  );
   return (
     <MainWrapper
       showHeart={true}

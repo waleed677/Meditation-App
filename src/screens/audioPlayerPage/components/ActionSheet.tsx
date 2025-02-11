@@ -45,6 +45,7 @@ const ActionSheet: React.FC<ActionSheetProps> = ({
   setBgVolume,
   selectSoundTab,
   setSelectSoundTab,
+  playAudio,
 }) => {
   const bgImages = [
     require("../../../../assets/images/bg_audio_1.jpeg"),
@@ -122,14 +123,14 @@ const ActionSheet: React.FC<ActionSheetProps> = ({
                       minimumValue={0}
                       maximumValue={1}
                       value={volume}
-                      onValueChange={(value) => {
+                      onSlidingComplete={(value) => {
                         setVolume(value);
                         if (sound) {
                           sound.setVolumeAsync(value); // Update the sound's volume
                         }
                       }}
                       minimumTrackTintColor="#FF913C"
-                      maximumTrackTintColor="#FFF9F0"
+                      maximumTrackTintColor="#ffffff"
                       thumbImage={require("../../../../assets/images/thumbSmallImage.png")}
                     />
                   </Stack>
@@ -147,9 +148,9 @@ const ActionSheet: React.FC<ActionSheetProps> = ({
                         minimumValue={0}
                         maximumValue={1}
                         value={bgVolume}
-                        onValueChange={onVolumeChange}
+                        onSlidingComplete={onVolumeChange}
                         minimumTrackTintColor="#FF913C"
-                        maximumTrackTintColor="#FFF9F0"
+                        maximumTrackTintColor="#ffffff"
                         thumbImage={require("../../../../assets/images/thumbSmallImage.png")}
                       />
                     </Stack>
@@ -185,7 +186,10 @@ const ActionSheet: React.FC<ActionSheetProps> = ({
                       {bgSong.map((item, index) => (
                         <Pressable
                           key={index}
-                          onPress={() => {
+                          onPress={async () => {
+                            if (playAudio) {
+                              await bgSound?.playAsync();
+                            }
                             setSelectSoundTab(item?.value);
                           }}
                           style={{ paddingBottom: 1, marginTop: 5 }}
@@ -274,7 +278,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalView: {
-    backgroundColor: "white",
+    backgroundColor: "#FFDDBD",
     height: 545,
     width: "100%",
     borderTopLeftRadius: 20,

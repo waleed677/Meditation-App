@@ -22,7 +22,6 @@ type ArticlesProps = {
 };
 
 const Index = ({ route }: { route: any }) => {
-  console.log("===route.params.data===", route.params.data?.id);
   const [searchQuery, setSearchQuery] = useState<string | null>(null);
   const { data, isLoading } = useGetResourcesArticlesQuery(
     {

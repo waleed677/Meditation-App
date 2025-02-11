@@ -8,31 +8,29 @@ const SimpleAudioPlayer = ({
   setBgSound,
   bgSound,
   playAudio,
-  bgVolume,
   setBgVolume,
+  setPlayAudio,
 }: {
   setBgSound?: any;
   bgSound?: any;
 }) => {
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  // const togglePlayPause = async () => {
+  //   if (!bgSound) return;
 
-  const togglePlayPause = async () => {
-    if (!bgSound) return;
+  //   if (playAudio) {
+  //     await bgSound.playAsync();
+  //   } else {
+  //     await bgSound.pauseAsync();
+  //   }
 
-    if (isPlaying) {
-      await bgSound.pauseAsync();
-    } else {
-      await bgSound.playAsync();
-    }
-
-    setIsPlaying(!isPlaying);
-  };
+  //   setPlayAudio((prev: boolean) => !prev);
+  // };
 
   const loadAudio = async () => {
     try {
       const { sound } = await Audio.Sound.createAsync(
         require("../../../assets/audio/Hello.mp3"),
-        { shouldPlay: false, isLooping: true }
+        { shouldPlay: playAudio, isLooping: true }
       );
       setBgSound(sound);
     } catch (error) {
@@ -60,7 +58,8 @@ const SimpleAudioPlayer = ({
   useEffect(() => {
     const handlePlayPause = async () => {
       if (playAudio) {
-        togglePlayPause();
+        // togglePlayPause();
+        return;
       } else {
         await bgSound.pauseAsync();
       }

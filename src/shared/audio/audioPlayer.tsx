@@ -13,8 +13,8 @@ import PauseButton from "../../../assets/vendors/pause-button-icon";
 import RepeatingIcon from "../../../assets/vendors/repeatinf-icon";
 import Slider from "@react-native-community/slider";
 import Stack from "../stacks/stack";
-import CrossIcon from "../../../assets/vendors/cross-icon";
 import { apiUrl } from "../../constants";
+import MusicListIcon from "../../../assets/vendors/musice-list-icon";
 
 const { width } = Dimensions.get("window");
 
@@ -27,9 +27,11 @@ const AudioPlayer = ({
   bgSound,
 }: {
   data: any;
-  setModalVisible?: any;
-  setSound?: any;
-  sound?: any;
+  setModalVisible: (visible: boolean) => void;
+  setSound: (sound: Audio.Sound | null) => void;
+  sound: Audio.Sound | null;
+  setPlayAudio: (play: boolean) => void;
+  bgSound?: Audio.Sound | null;
 }) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isRepeating, setIsRepeating] = useState<boolean>(false);
@@ -40,29 +42,53 @@ const AudioPlayer = ({
     if (!sound) return;
 
     if (isPlaying) {
-      setPlayAudio(false);
+      // Pause both sound and bgSound
       await sound.pauseAsync();
+      await bgSound?.pauseAsync();
     } else {
-      setPlayAudio(true);
+      if (currentTime === duration) {
+        // If currentTime is equal to duration, reset to start
+        await sound.setPositionAsync(0);
+        await bgSound?.setPositionAsync(0);
+        setCurrentTime(0); // Reset the slider to 0
+      }
+
+      // Play both sound and bgSound
       await sound.playAsync();
+      await bgSound?.playAsync();
     }
 
     setIsPlaying(!isPlaying);
+    //@ts-ignore
+    setPlayAudio((prev: boolean) => !prev);
   };
 
-  const handlePlaybackStatusUpdate = (status: any) => {
+  const handlePlaybackStatusUpdate = async (status: any) => {
     if (status.isLoaded) {
       setDuration(status.durationMillis / 1000);
       setCurrentTime(status.positionMillis / 1000);
+
+      // When audio finishes playing
       if (status.didJustFinish) {
         if (isRepeating) {
-          sound.playAsync();
+          // Loop both sound and bgSound
+          await sound?.playAsync();
+          await bgSound?.playAsync();
           sound?.setPositionAsync(0);
           bgSound?.setPositionAsync(0);
+          setDuration(0); // Reset the duration to 0 for a new loop
+          setIsPlaying(true);
+          setPlayAudio(true);
         } else {
-          sound?.setPositionAsync(0);
-          bgSound?.setPositionAsync(0);
+          // Pause and reset both sound and bgSound when repeat is off
+          await sound?.setPositionAsync(0);
+          await bgSound?.setPositionAsync(0);
+          await sound?.pauseAsync();
+          await bgSound?.pauseAsync();
+          setCurrentTime(0);
+          setDuration(0);
           setIsPlaying(false);
+          setPlayAudio(false);
         }
       }
     }
@@ -117,11 +143,10 @@ const AudioPlayer = ({
             style={styles.slider}
             minimumValue={0}
             maximumValue={duration}
-            value={currentTime}
-            onValueChange={onSeek}
+            value={currentTime} // The slider is controlled by the current time of the audio
+            onSlidingComplete={onSeek} // Allows seeking within the audio
             minimumTrackTintColor="#FF913C"
             maximumTrackTintColor="#FFF9F0"
-            thumbTintColor="#1FB3A0"
             thumbImage={require("../../../assets/images/thumbSmallImage.png")}
           />
           <Stack
@@ -141,7 +166,7 @@ const AudioPlayer = ({
           justifyContent="space-around"
         >
           <Pressable onPress={() => setModalVisible(true)}>
-            <CrossIcon />
+            <MusicListIcon />
           </Pressable>
           <TouchableOpacity onPress={togglePlayPause}>
             {!isPlaying ? (
