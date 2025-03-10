@@ -25,6 +25,8 @@ const AudioPlayer = ({
   sound,
   setPlayAudio,
   bgSound,
+  pauseGoBack,
+  setPauseGoBack,
 }: {
   data: any;
   setModalVisible: (visible: boolean) => void;
@@ -32,6 +34,7 @@ const AudioPlayer = ({
   sound: Audio.Sound | null;
   setPlayAudio: (play: boolean) => void;
   bgSound?: Audio.Sound | null;
+  pauseGoBack?: boolean;
 }) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isRepeating, setIsRepeating] = useState<boolean>(false);
@@ -138,6 +141,13 @@ const AudioPlayer = ({
     handleRepeat();
   }, [currentTime === duration]);
 
+  useEffect(() => {
+    if (pauseGoBack) {
+      setPauseGoBack(false);
+      togglePlayPause();
+    }
+  }, [pauseGoBack]);
+
   return (
     <View style={{ height: 170, position: "relative" }}>
       <View style={styles.controls}>
@@ -193,7 +203,7 @@ const AudioPlayer = ({
           </TouchableOpacity>
 
           <TouchableOpacity onPress={toggleRepeat}>
-            <RepeatingIcon />
+            <RepeatingIcon fill={isRepeating ? "#FF913C" : "#FFA864"} />
           </TouchableOpacity>
         </Stack>
       </View>

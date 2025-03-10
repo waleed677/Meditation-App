@@ -68,7 +68,7 @@ const VideoControls = ({
           )}
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setIsLooping(!loopValue)}>
-          <RepeatingIcon />
+          <RepeatingIcon fill={loopValue ? "#FF913C" : "#FFA864"} />
         </TouchableOpacity>
       </View>
       <View style={styles.progressContainer}>

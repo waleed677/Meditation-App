@@ -1,16 +1,27 @@
 import React, { useState } from "react";
 import MainWrapper from "../../shared/wrappers/main-wrapper";
-import { Dimensions, ImageBackground } from "react-native";
+import {
+  Dimensions,
+  ImageBackground,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import AudioPlayer from "../../shared/audio/audioPlayer";
 import Typography from "../../shared/typography/typography";
 import Stack from "../../shared/stacks/stack";
 import ActionSheet from "./components/ActionSheet";
 import { Audio } from "expo-av";
 import SimpleAudioPlayer from "../../shared/audio/simpleAudioPlayer";
+import { useNavigation } from "@react-navigation/native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import BackIcon from "../../../assets/vendors/back-icon";
+import TopHeaderIcon from "../../../assets/vendors/top-header-icon";
 
 const { height, width } = Dimensions.get("window");
 
 const Index = ({ route }: { route: any }) => {
+  const navigator = useNavigation();
   const [volume, setVolume] = useState<number>(1);
   const [sound, setSound] = useState<Audio.Sound | null>(null);
   const [bgSound, setBgSound] = useState<Audio.Sound | null>(null);
@@ -18,6 +29,7 @@ const Index = ({ route }: { route: any }) => {
   const [selectSoundTab, setSelectSoundTab] = useState<string>("no-sound");
   const [modalVisible, setModalVisible] = useState(false);
   const [playAudio, setPlayAudio] = useState(false);
+  const [pauseGoBack, setPauseGoBack] = useState(false);
   const [actionListTab, setActionListTab] = useState(1);
   const [selectImage, setSelectedImages] = useState(
     require("../../../assets/images/bg_audio_5.png")
@@ -25,32 +37,79 @@ const Index = ({ route }: { route: any }) => {
 
   return (
     <>
-      <MainWrapper
+      <SafeAreaView>
+        <View
+          style={{
+            height: 32,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            flexDirection: "row",
+            width: width - 32,
+            marginHorizontal: 16,
+          }}
+        >
+          <TouchableOpacity
+            onPress={async () => {
+              setPauseGoBack(true);
+              navigator.goBack();
+              await sound.pauseAsync();
+              await bgSound?.pauseAsync();
+            }}
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <BackIcon />
+            <Text>back</Text>
+          </TouchableOpacity>
+          <Text
+            style={{
+              fontWeight: "normal",
+              fontSize: 20,
+              marginLeft: 20,
+              textTransform: "capitalize",
+            }}
+          >
+            {route?.params?.data?.title}
+          </Text>
+
+          <TopHeaderIcon />
+        </View>
+      </SafeAreaView>
+      <ImageBackground style={{ height, width }} source={selectImage}>
+        <Stack px={15}>
+          <Typography type="caption">
+            {route?.params?.data?.description}
+          </Typography>
+
+          <AudioPlayer
+            data={route?.params?.data}
+            setModalVisible={setModalVisible}
+            setVolume={setVolume}
+            volume={volume}
+            setSound={setSound}
+            bgSound={bgSound}
+            sound={sound}
+            playAudio={playAudio}
+            setPlayAudio={setPlayAudio}
+            pauseGoBack={pauseGoBack}
+            setPauseGoBack={setPauseGoBack}
+          />
+        </Stack>
+      </ImageBackground>
+      {/* <MainWrapper
         fontStyle="normal"
         title={route?.params?.data?.title}
         showSearch={false}
         showHeart={true}
         type_of_header="withoutImage"
-      >
-        <ImageBackground style={{ height, width }} source={selectImage}>
-          <Stack px={15}>
-            <Typography type="caption">
-              {route?.params?.data?.description}
-            </Typography>
-            <AudioPlayer
-              data={route?.params?.data}
-              setModalVisible={setModalVisible}
-              setVolume={setVolume}
-              volume={volume}
-              setSound={setSound}
-              bgSound={bgSound}
-              sound={sound}
-              playAudio={playAudio}
-              setPlayAudio={setPlayAudio}
-            />
-          </Stack>
-        </ImageBackground>
-      </MainWrapper>
+        setPauseGoBack={setPauseGoBack}
+      > */}
+
+      {/* </MainWrapper> */}
       <ActionSheet
         setModalVisible={setModalVisible}
         modalVisible={modalVisible}

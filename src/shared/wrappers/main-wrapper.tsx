@@ -43,6 +43,7 @@ const MainWrapper: React.FC<MainWrapperProps> = ({
   fontStyle = "italic",
   headerImage = require("../../../assets/images/header_home.png"),
   setSearchQuery,
+  setPauseGoBack,
 }) => {
   const navigator = useNavigation();
 
@@ -83,7 +84,12 @@ const MainWrapper: React.FC<MainWrapperProps> = ({
         }}
       >
         <TouchableOpacity
-          onPress={() => navigator.goBack()}
+          onPress={() => {
+            if (setPauseGoBack) {
+              setPauseGoBack(true);
+            }
+            navigator.goBack();
+          }}
           style={{
             display: "flex",
             flexDirection: "row",
