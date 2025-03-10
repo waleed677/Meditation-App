@@ -5,17 +5,20 @@ import Typography from "../typography/typography";
 import Stack from "../stacks/stack";
 import AudioIcon from "../../../assets/vendors/audio-icon";
 import { joinFileLink } from "../../helper/commonFun";
+import VideoIcon from "../../../assets/vendors/video-icon";
 const width = Dimensions.get("window").width;
 const VideoCard = ({
   source,
   title,
   duration,
   thumbnail,
+  type,
 }: {
   source: number;
   title?: string;
   duration?: string;
   thumbnail?: string;
+  type?: string;
 }) => {
   return (
     <View style={style.container}>
@@ -39,7 +42,7 @@ const VideoCard = ({
         </Typography>
       </Stack>
       <Stack mt={5} flexDirection="row" alignItems="center" gap={4}>
-        <AudioIcon />
+        {type === "audio" ? <AudioIcon /> : <VideoIcon />}
         <Typography type="caption" style={{ color: "#FF6A00", marginTop: -2 }}>
           {duration != "" ? duration : "11:30"}
         </Typography>

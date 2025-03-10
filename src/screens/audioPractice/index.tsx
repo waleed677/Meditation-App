@@ -53,6 +53,7 @@ const Index = () => {
                   title={item?.title}
                   duration={item?.duration}
                   thumbnail={item?.thumbnail_url}
+                  type="audio"
                 />
               </TouchableOpacity>
             )}
