@@ -52,12 +52,12 @@ const Index = () => {
             <Card
               onPress={() => navigator.navigate("VisualPractice")}
               imageLink={require("../../../assets/images/visual_practice.png")}
-              text="Visual Practice"
+              text="Visual Practices"
             />
             <Card
               onPress={() => navigator.navigate("AudioPractice")}
               imageLink={require("../../../assets/images/audio_practice.png")}
-              text="Audio Practice"
+              text="Audio Practices"
             />
           </Stack>
           <Stack flexDirection="row" gap={10} mb={10}>
@@ -97,7 +97,7 @@ const Index = () => {
                       ? "#ffffff"
                       : "#6699FF",
                 }}
-                text={`${item?.min} ${item?.min ? "-" : ">"} ${
+                text={`${item?.min} ${item?.min ? "-" : item?.sign} ${
                   item?.max
                 } minutes`}
               />
