@@ -55,6 +55,8 @@ const Index = ({ route }: { route: any }) => {
               navigator.goBack();
               await sound.pauseAsync();
               await bgSound?.pauseAsync();
+              await sound?.setPositionAsync(0);
+              await bgSound?.setPositionAsync(0);
             }}
             style={{
               display: "flex",
@@ -72,15 +74,23 @@ const Index = ({ route }: { route: any }) => {
               marginLeft: 20,
               textTransform: "capitalize",
             }}
-          >
-            {route?.params?.data?.title}
-          </Text>
+          ></Text>
 
           <TopHeaderIcon />
         </View>
       </SafeAreaView>
       <ImageBackground style={{ height, width }} source={selectImage}>
         <Stack px={15}>
+          <Text
+            style={{
+              fontSize: 20,
+              marginTop: -20,
+              marginBottom: 10,
+              fontWeight: "bold",
+            }}
+          >
+            {route.params.data.title}
+          </Text>
           <Typography type="caption">
             {route?.params?.data?.description}
           </Typography>

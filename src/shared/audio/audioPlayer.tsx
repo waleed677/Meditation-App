@@ -142,10 +142,22 @@ const AudioPlayer = ({
   }, [currentTime === duration]);
 
   useEffect(() => {
-    if (pauseGoBack) {
-      setPauseGoBack(false);
-      togglePlayPause();
-    }
+    const handlePauseGoBack = async () => {
+      if (pauseGoBack) {
+        await sound?.setPositionAsync(0);
+        await bgSound?.setPositionAsync(0);
+        await sound?.pauseAsync();
+        await bgSound?.pauseAsync();
+        setCurrentTime(0);
+        loadAudio();
+        setDuration(0);
+        setIsPlaying(false);
+        setPlayAudio(false);
+      }
+    };
+
+    loadAudio();
+    handlePauseGoBack();
   }, [pauseGoBack]);
 
   return (

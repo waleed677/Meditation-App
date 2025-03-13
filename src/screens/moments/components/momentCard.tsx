@@ -8,15 +8,22 @@ const width = Dimensions.get("window").width;
 const MomentCard = ({ data }: { data: any }) => {
   return (
     <Stack py={10}>
-      <Stack mb={4} flexDirection="row" justifyContent="space-between">
+      <Stack mb={6} flexDirection="row" justifyContent="space-between">
         <Typography
-          style={{ fontStyle: "italic", color: "#8E8E8E" }}
+          style={{
+            fontStyle: "italic",
+            color: "#8E8E8E",
+            fontWeight: "bold",
+            fontSize: 13,
+          }}
           type="paragraph2"
         >
           {data?.title}
         </Typography>
-        <Typography style={{ color: "#8E8E8E" }} type="paragraph2">
-          {new Date(data?.created_at).toLocaleTimeString()}
+        <Typography type="caption" style={{ color: "#8E8E8E", fontSize: 10 }}>
+          {new Date(data?.created_at).toLocaleTimeString("en-US", {
+            timeZone: "Asia/Kuala_Lumpur",
+          })}
         </Typography>
       </Stack>
       <Image
@@ -28,9 +35,7 @@ const MomentCard = ({ data }: { data: any }) => {
       <Stack mt={15}>
         <Typography type="paragraph2bold">
           {new Date(data?.created_at).toLocaleDateString()}{" "}
-          <Typography type="paragraph2">
-            {data?.description}
-          </Typography>
+          <Typography type="paragraph2">{data?.description}</Typography>
         </Typography>
       </Stack>
     </Stack>

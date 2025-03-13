@@ -38,9 +38,9 @@ const ArticleCard = ({
       </Stack>
       <Stack mt={5} flexDirection="row" gap={4}>
         <ArticleIcon />
-        <Typography type="caption" style={{ color: "#FF6A00" }}>
+        {/* <Typography type="caption" style={{ color: "#FF6A00" }}>
           {data.duration || "00:00"}
-        </Typography>
+        </Typography> */}
       </Stack>
     </View>
   );
