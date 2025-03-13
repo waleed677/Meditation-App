@@ -3,6 +3,7 @@ import MainWrapper from "../../shared/wrappers/main-wrapper";
 import {
   Dimensions,
   ImageBackground,
+  Platform,
   Text,
   TouchableOpacity,
   View,
@@ -37,7 +38,7 @@ const Index = ({ route }: { route: any }) => {
 
   return (
     <>
-      <SafeAreaView>
+      <ImageBackground style={{ height, width }} source={selectImage}>
         <View
           style={{
             height: 32,
@@ -47,6 +48,7 @@ const Index = ({ route }: { route: any }) => {
             flexDirection: "row",
             width: width - 32,
             marginHorizontal: 16,
+            marginTop: Platform.OS === "ios" ? 40 : 30,
           }}
         >
           <TouchableOpacity
@@ -78,13 +80,11 @@ const Index = ({ route }: { route: any }) => {
 
           <TopHeaderIcon />
         </View>
-      </SafeAreaView>
-      <ImageBackground style={{ height, width }} source={selectImage}>
         <Stack px={15}>
           <Text
             style={{
               fontSize: 20,
-              marginTop: -20,
+
               marginBottom: 10,
               fontWeight: "bold",
             }}

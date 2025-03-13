@@ -4,7 +4,7 @@ import MainWrapper from "../../shared/wrappers/main-wrapper";
 import Typography from "../../shared/typography/typography";
 import Stack from "../../shared/stacks/stack";
 // import { IMAGE_BASE_URL } from "../../constants";
-import { Text } from "react-native";
+import { Platform, Text } from "react-native";
 import ExpoVideoPlayer from "../../shared/video/ExpoVideoPlayer";
 
 const Index = ({ route }: { route: any }) => {
@@ -43,7 +43,7 @@ const Index = ({ route }: { route: any }) => {
         showHeart={true}
         type_of_header="withoutImage"
       >
-        <Stack px={15} gap={10} mt={-20}>
+        <Stack px={15} gap={10} mt={Platform.OS === "ios" ? -24 : 10}>
           {route?.params?.data?.file_url && (
             <ExpoVideoPlayer videoUrl={route?.params?.data?.file_url} />
           )}

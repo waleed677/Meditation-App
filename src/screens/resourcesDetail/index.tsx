@@ -1,15 +1,19 @@
 import React from "react";
 import MainWrapper from "../../shared/wrappers/main-wrapper";
 import Stack from "../../shared/stacks/stack";
-import { Dimensions, Image, Text } from "react-native";
+import {
+  Dimensions,
+  Image,
+  Platform,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
 import { joinFileLink } from "../../helper/commonFun";
-import QuillEditor from "react-native-cn-quill";
 import Typography from "../../shared/typography/typography";
 const width = Dimensions.get("window").width;
 
 const Index = ({ route }: { route: any }) => {
-  const _editor = React.createRef();
-
   return (
     <MainWrapper
       showHeart={true}
@@ -18,7 +22,13 @@ const Index = ({ route }: { route: any }) => {
       fontStyle="normal"
     >
       <Stack flex={1} px={15} gap={18}>
-        <Text style={{ fontSize: 20, marginTop: -20, fontWeight: "bold" }}>
+        <Text
+          style={{
+            fontSize: 20,
+            marginTop: Platform.OS === "ios" ? -20 : 0,
+            fontWeight: "bold",
+          }}
+        >
           {route?.params?.data?.title}
         </Text>
         <Image
@@ -36,16 +46,12 @@ const Index = ({ route }: { route: any }) => {
           }
           alt=""
         />
-        <QuillEditor
-          style={{
-            flex: 1,
-            backgroundColor: "#FFF9F0",
-          }}
-          ref={_editor}
-          initialHtml={route?.params?.data?.content}
-          theme={{ background: "#FFF9F0" }}
-          readonly
-        />
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <Typography style={{ marginTop: 10, fontSize: 15 }} type="paragraph1">
+            {route?.params?.data?.content}
+          </Typography>
+          <View style={{ height: 100 }}></View>
+        </ScrollView>
       </Stack>
     </MainWrapper>
   );
