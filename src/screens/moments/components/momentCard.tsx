@@ -15,6 +15,7 @@ const MomentCard = ({ data }: { data: any }) => {
             color: "#8E8E8E",
             fontWeight: "bold",
             fontSize: 13,
+            width: width - 80,
           }}
           type="paragraph2"
         >

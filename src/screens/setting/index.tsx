@@ -7,6 +7,7 @@ import UserAccountIcon from "../../../assets/vendors/user-account-icon";
 import AboutIconApp from "../../../assets/vendors/about-the-app-icon";
 import DiamondUserIcon from "../../../assets/vendors/diamond-user-icon";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
+import FavIcon from "../../../assets/vendors/fav-icon";
 type RootStackParamList = {
   AboutApp: undefined;
   AboutAuthor: undefined;
@@ -48,6 +49,17 @@ const Index = () => {
           backgroundColor="#FFA864"
           text="About The App"
           leftIcon={<AboutIconApp />}
+        />
+        <IconButton
+          // onPress={() => navigator.navigate("AboutAuthor")}
+          style={{
+            justifyContent: "flex-start",
+            paddingHorizontal: 24,
+            height: 50,
+          }}
+          backgroundColor="#FFA864"
+          text="My Favourites"
+          leftIcon={<FavIcon />}
         />
         <IconButton
           onPress={() => navigator.navigate("AboutAuthor")}

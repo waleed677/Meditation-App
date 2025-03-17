@@ -10,6 +10,7 @@ const SimpleAudioPlayer = ({
   playAudio,
   setBgVolume,
   setPlayAudio,
+  selectSoundTab,
 }: {
   setBgSound?: any;
   bgSound?: any;
@@ -25,12 +26,21 @@ const SimpleAudioPlayer = ({
 
   //   setPlayAudio((prev: boolean) => !prev);
   // };
-
+  const soundArray = [
+    require("../../../assets/audio/audio_bg/Bird_Chirping_Morning.mp3"),
+    require("../../../assets/audio/audio_bg/Night_Ambience.mp3"),
+    require("../../../assets/audio/audio_bg/Ocean_Waves.mp3"),
+    require("../../../assets/audio/audio_bg/Rainny_Days.mp3"),
+    require("../../../assets/audio/audio_bg/River_Flowing.mp3"),
+  ];
   const loadAudio = async () => {
     try {
       const { sound } = await Audio.Sound.createAsync(
-        require("../../../assets/audio/Hello.mp3"),
-        { shouldPlay: playAudio, isLooping: true }
+        soundArray[selectSoundTab],
+        {
+          shouldPlay: playAudio,
+          isLooping: true,
+        }
       );
       setBgSound(sound);
     } catch (error) {
@@ -53,13 +63,12 @@ const SimpleAudioPlayer = ({
         bgSound.unloadAsync();
       }
     };
-  }, []);
+  }, [soundArray[selectSoundTab]]);
 
   useEffect(() => {
     const handlePlayPause = async () => {
       if (playAudio) {
-        // togglePlayPause();
-        return;
+        await bgSound.playAsync();
       } else {
         await bgSound.pauseAsync();
       }

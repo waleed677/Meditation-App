@@ -78,7 +78,7 @@ const TabNavigator: React.FC<TabNavigatorProps> = ({ setCheckUserLogin }) => {
             tabBarIcon: ({ color, focused }) =>
               focused ? <SelectPracticeIcon /> : <UnSelectPracticeIcon />,
           })}
-          name="Practice"
+          name="Practices"
           component={PracticeNavigator}
         />
         <BottomTab.Screen

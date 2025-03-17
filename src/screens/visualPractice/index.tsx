@@ -38,7 +38,7 @@ const Index: React.FC = () => {
   return (
     <MainWrapper
       setSearchQuery={setSearchQuery}
-      title="Visual Practice"
+      title="Visual Practices"
       type_of_header="withoutImage"
     >
       <Stack px={15} py={14}>

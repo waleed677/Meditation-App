@@ -24,7 +24,7 @@ const Index: React.FC = () => {
   return (
     <MainWrapper
       iconBg="#209C92"
-      title="Practice"
+      title="Practices"
       icon={<PracticeHeaderIcon />}
       headerImage={require("../../../assets/images/header_practice.png")}
     >

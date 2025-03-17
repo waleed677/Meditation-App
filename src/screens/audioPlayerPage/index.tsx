@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MainWrapper from "../../shared/wrappers/main-wrapper";
 import {
+  Alert,
+  BackHandler,
   Dimensions,
   ImageBackground,
   Platform,
@@ -15,7 +17,6 @@ import ActionSheet from "./components/ActionSheet";
 import { Audio } from "expo-av";
 import SimpleAudioPlayer from "../../shared/audio/simpleAudioPlayer";
 import { useNavigation } from "@react-navigation/native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import BackIcon from "../../../assets/vendors/back-icon";
 import TopHeaderIcon from "../../../assets/vendors/top-header-icon";
 
@@ -33,12 +34,28 @@ const Index = ({ route }: { route: any }) => {
   const [pauseGoBack, setPauseGoBack] = useState(false);
   const [actionListTab, setActionListTab] = useState(1);
   const [selectImage, setSelectedImages] = useState(
-    require("../../../assets/images/bg_audio_5.png")
+    require("../../../assets/images/audio_bg/bg_1.jpg")
   );
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        setPauseGoBack(true);
+        return true; // Prevents the default back action
+      }
+    );
+
+    // Cleanup the event listener when the component unmounts
+    return () => backHandler.remove();
+  }, [navigator]);
 
   return (
     <>
-      <ImageBackground style={{ height, width }} source={selectImage}>
+      <ImageBackground
+        style={{ height: height + 50, width }}
+        source={selectImage}
+      >
         <View
           style={{
             height: 32,
@@ -52,13 +69,8 @@ const Index = ({ route }: { route: any }) => {
           }}
         >
           <TouchableOpacity
-            onPress={async () => {
+            onPress={() => {
               setPauseGoBack(true);
-              navigator.goBack();
-              await sound.pauseAsync();
-              await bgSound?.pauseAsync();
-              await sound?.setPositionAsync(0);
-              await bgSound?.setPositionAsync(0);
             }}
             style={{
               display: "flex",
@@ -107,6 +119,7 @@ const Index = ({ route }: { route: any }) => {
             setPlayAudio={setPlayAudio}
             pauseGoBack={pauseGoBack}
             setPauseGoBack={setPauseGoBack}
+            navigator={navigator}
           />
         </Stack>
       </ImageBackground>
@@ -147,6 +160,7 @@ const Index = ({ route }: { route: any }) => {
           setBgVolume={setBgVolume}
           playAudio={playAudio}
           setPlayAudio={setPlayAudio}
+          selectSoundTab={selectSoundTab}
         />
       )}
     </>

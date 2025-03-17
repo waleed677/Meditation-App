@@ -15,6 +15,7 @@ import Slider from "@react-native-community/slider";
 import Stack from "../stacks/stack";
 import { apiUrl } from "../../constants";
 import MusicListIcon from "../../../assets/vendors/musice-list-icon";
+import { useFocusEffect } from "@react-navigation/native";
 
 const { width } = Dimensions.get("window");
 
@@ -26,6 +27,7 @@ const AudioPlayer = ({
   setPlayAudio,
   bgSound,
   pauseGoBack,
+  navigator,
   setPauseGoBack,
 }: {
   data: any;
@@ -61,8 +63,7 @@ const AudioPlayer = ({
       await bgSound?.playAsync();
     }
 
-    setIsPlaying(!isPlaying);
-    //@ts-ignore
+    setIsPlaying((prev) => !prev);
     setPlayAudio((prev: boolean) => !prev);
   };
 
@@ -106,7 +107,7 @@ const AudioPlayer = ({
         sound.unloadAsync();
       }
     };
-  }, []);
+  }, [data]);
 
   const formatTime = (seconds: number): string => {
     const minutes = Math.floor(seconds / 60);
@@ -116,48 +117,34 @@ const AudioPlayer = ({
 
   useEffect(() => {
     const handleRepeat = async () => {
-      if (currentTime === duration) {
-        if (isRepeating) {
-          await sound?.setPositionAsync(0); // Reset position to start
-          await bgSound?.setPositionAsync(0); // Reset position for background sound
-          await sound?.playAsync(); // Play from the start
-          await bgSound?.playAsync(); // Play background sound again
-          setIsPlaying(true); // Set isPlaying to true after the audio starts
-          setPlayAudio(true);
-        } else {
-          await sound?.setPositionAsync(0);
-          await bgSound?.setPositionAsync(0);
-          await sound?.pauseAsync();
-          await bgSound?.pauseAsync();
-          setCurrentTime(0);
-          loadAudio();
-          setDuration(0);
-          setIsPlaying(false);
-          setPlayAudio(false);
-        }
+      if (currentTime === duration && isRepeating) {
+        await sound?.setPositionAsync(0);
+        await bgSound?.setPositionAsync(0);
+        await sound?.playAsync();
+        await bgSound?.playAsync();
+        setIsPlaying(true);
+        setPlayAudio(true);
       }
     };
 
     handleRepeat();
-  }, [currentTime === duration]);
+  }, [currentTime]);
+
+  const direstCallGoBack = async () => {
+    if (pauseGoBack) {
+      setPauseGoBack(false);
+      setIsPlaying(false);
+      setPlayAudio(false);
+      await sound?.pauseAsync();
+      await bgSound?.pauseAsync();
+      navigator.goBack();
+    }
+  };
 
   useEffect(() => {
-    const handlePauseGoBack = async () => {
-      if (pauseGoBack) {
-        await sound?.setPositionAsync(0);
-        await bgSound?.setPositionAsync(0);
-        await sound?.pauseAsync();
-        await bgSound?.pauseAsync();
-        setCurrentTime(0);
-        loadAudio();
-        setDuration(0);
-        setIsPlaying(false);
-        setPlayAudio(false);
-      }
-    };
-
-    loadAudio();
-    handlePauseGoBack();
+    if (pauseGoBack) {
+      direstCallGoBack();
+    }
   }, [pauseGoBack]);
 
   return (
@@ -168,9 +155,8 @@ const AudioPlayer = ({
             style={styles.slider}
             minimumValue={0}
             maximumValue={duration}
-            value={currentTime} // The slider is controlled by the current time of the audio
+            value={currentTime}
             onSlidingComplete={onSeek}
-            // Allows seeking within the audio
             minimumTrackTintColor="#FF913C"
             maximumTrackTintColor="#FFF9F0"
             thumbImage={require("../../../assets/images/thumbSmallImage.png")}

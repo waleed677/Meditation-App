@@ -46,13 +46,14 @@ const ActionSheet: React.FC<ActionSheetProps> = ({
   selectSoundTab,
   setSelectSoundTab,
   playAudio,
+  setBgSound,
 }) => {
   const bgImages = [
-    require("../../../../assets/images/bg_audio_1.jpeg"),
-    require("../../../../assets/images/bg_audio_2.jpeg"),
-    require("../../../../assets/images/bg_audio_3.jpeg"),
-    require("../../../../assets/images/bg_audio_4.jpeg"),
-    require("../../../../assets/images/bg_audio_5.png"),
+    require("../../../../assets/images/audio_bg/bg_1.jpg"),
+    require("../../../../assets/images/audio_bg/bg_2.jpg"),
+    require("../../../../assets/images/audio_bg/bg_3.jpg"),
+    require("../../../../assets/images/audio_bg/bg_4.jpg"),
+    require("../../../../assets/images/audio_bg/bg_5.jpg"),
   ];
 
   const bgSong = [
@@ -61,20 +62,24 @@ const ActionSheet: React.FC<ActionSheetProps> = ({
       value: "no-sound",
     },
     {
-      name: "Raining",
-      value: "raining",
+      name: "Bird Chirping Morning",
+      value: 0,
     },
     {
-      name: "Fire",
-      value: "fire",
+      name: "Night Ambience",
+      value: 1,
     },
     {
-      name: "Stream",
-      value: "stream",
+      name: "Ocean Waves",
+      value: 2,
     },
     {
-      name: "Nature",
-      value: "nature",
+      name: "Rainny Days",
+      value: 3,
+    },
+    {
+      name: "River Flowing",
+      value: 4,
     },
   ];
 
@@ -187,10 +192,18 @@ const ActionSheet: React.FC<ActionSheetProps> = ({
                         <Pressable
                           key={index}
                           onPress={async () => {
-                            if (playAudio) {
-                              await bgSound?.playAsync();
+                            if (item?.value === "no-sound") {
+                              if (playAudio) {
+                                await bgSound?.pauseAsync();
+                                setSelectSoundTab(item?.value);
+                                setBgSound(null);
+                              }
+                            } else {
+                              if (playAudio) {
+                                await bgSound?.playAsync();
+                              }
+                              setSelectSoundTab(item?.value);
                             }
-                            setSelectSoundTab(item?.value);
                           }}
                           style={{ paddingBottom: 1, marginTop: 5 }}
                         >

@@ -31,7 +31,7 @@ const Index = () => {
   return (
     <MainWrapper
       setSearchQuery={setSearchQuery}
-      title="Audio Practice"
+      title="Audio Practices"
       type_of_header="withoutImage"
     >
       <Stack px={15} py={14}>
