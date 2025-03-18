@@ -12,6 +12,7 @@ type RootStackParamList = {
   AboutApp: undefined;
   AboutAuthor: undefined;
   Account: undefined;
+  Favorites: undefined;
 };
 const Index = () => {
   const navigator = useNavigation<NavigationProp<RootStackParamList>>();
@@ -51,7 +52,7 @@ const Index = () => {
           leftIcon={<AboutIconApp />}
         />
         <IconButton
-          // onPress={() => navigator.navigate("AboutAuthor")}
+          onPress={() => navigator.navigate("Favorites")}
           style={{
             justifyContent: "flex-start",
             paddingHorizontal: 24,

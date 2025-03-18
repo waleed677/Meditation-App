@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import MainWrapper from "../../shared/wrappers/main-wrapper";
 // import VideoPlayer from "../../shared/video/VideoPlayer";
 import Typography from "../../shared/typography/typography";
@@ -8,6 +8,9 @@ import { Platform, Text } from "react-native";
 import ExpoVideoPlayer from "../../shared/video/ExpoVideoPlayer";
 
 const Index = ({ route }: { route: any }) => {
+  const [checkFav, setCheckFav] = useState(
+    route?.params?.data?.is_favourite == 1 ? true : false
+  );
   // const [isFullscreen, setIsFullscreen] = useState(false);
   // const [currentTime, setCurrentTime] = useState(0);
   // const [lessons, setLessons] = useState([]);
@@ -42,6 +45,10 @@ const Index = ({ route }: { route: any }) => {
         showSearch={false}
         showHeart={true}
         type_of_header="withoutImage"
+        type_name="video"
+        activity_id={route?.params?.data?.id}
+        setCheckFav={setCheckFav}
+        checkFav={checkFav}
       >
         <Stack px={15} gap={10} mt={Platform.OS === "ios" ? -24 : 10}>
           {route?.params?.data?.file_url && (

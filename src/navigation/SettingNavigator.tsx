@@ -4,6 +4,10 @@ import Setting from "../screens/setting";
 import AboutApp from "../screens/aboutApp";
 import AboutAuthor from "../screens/aboutAuthor";
 import Account from "../screens/account";
+import Favorites from "../screens/favourites";
+import VideoPlayerPage from "../screens/videoPlayerPage";
+import AudioPlayerPage from "../screens/audioPlayerPage";
+import ResourcesDetail from "../screens/resourcesDetail";
 import { RouteProp } from "@react-navigation/native";
 
 type SignInRouteParams = {
@@ -45,6 +49,28 @@ const SettingNavigator: React.FC<SettingNavigatorProps> = ({ route }) => {
         //@ts-ignore
         component={Account}
         initialParams={{ setCheckUserLogin }}
+      />
+      <SettingStack.Screen
+        options={{ headerShown: false }}
+        name="Favorites"
+        //@ts-ignore
+        component={Favorites}
+        initialParams={{ setCheckUserLogin }}
+      />
+      <SettingStack.Screen
+        options={{ headerShown: false }}
+        name="ResourcesDetail"
+        component={ResourcesDetail}
+      />
+      <SettingStack.Screen
+        options={{ headerShown: false }}
+        name="VideoPlayerDetail"
+        component={VideoPlayerPage}
+      />
+      <SettingStack.Screen
+        options={{ headerShown: false }}
+        name="AudioPlayerDetail"
+        component={AudioPlayerPage}
       />
     </SettingStack.Navigator>
   );

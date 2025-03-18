@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
@@ -14,6 +14,8 @@ import BackIcon from "../../../assets/vendors/back-icon";
 import { useNavigation } from "@react-navigation/native";
 import SearchInput from "../filters/searchInput";
 import TopHeaderIcon from "../../../assets/vendors/top-header-icon";
+import { useAddFavouritesMutation } from "../../services/favourites";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const width = Dimensions.get("window").width;
 
@@ -27,8 +29,13 @@ interface MainWrapperProps {
   headerImage?: ImageSourcePropType;
   type_of_header?: string;
   fontStyle?: string;
+  type_name?: string;
+  activity_id?: string;
   icon?: ReactNode;
+  setPauseGoBack?: any;
   setSearchQuery?: (query: string) => void;
+  checkFav?: boolean;
+  setCheckFav?: any;
 }
 
 const MainWrapper: React.FC<MainWrapperProps> = ({
@@ -44,9 +51,15 @@ const MainWrapper: React.FC<MainWrapperProps> = ({
   headerImage = require("../../../assets/images/header_home.png"),
   setSearchQuery,
   setPauseGoBack,
+  type_name,
+  activity_id,
+  checkFav,
+  setCheckFav,
 }) => {
+  const [authUser, setAuthUser] = useState<any>(null);
   const navigator = useNavigation();
-
+  const [addFavourites, { isLoading, isSuccess, isError, data }] =
+    useAddFavouritesMutation();
   const renderHeaderWithImage = (
     <View style={styles.header}>
       <Image style={styles.headerImage} source={headerImage} />
@@ -117,11 +130,34 @@ const MainWrapper: React.FC<MainWrapperProps> = ({
             setSearchQuery={setSearchQuery}
           />
         )}
-        {showHeart && <TopHeaderIcon />}
+        {showHeart && (
+          <TouchableOpacity
+            onPress={async () => {
+              await addFavourites({
+                user_id: authUser?.id,
+                type_name: type_name,
+                activity_id: activity_id,
+              }).unwrap();
+              setCheckFav(!checkFav);
+            }}
+          >
+            <TopHeaderIcon fill={checkFav ? "red" : "white"} />
+          </TouchableOpacity>
+        )}
       </View>
     </SafeAreaView>
   );
+  const checkUser = async () => {
+    const userJson = await AsyncStorage.getItem("user");
+    const user = userJson != null ? JSON.parse(userJson) : null;
+    if (user !== null) {
+      setAuthUser(user?.user);
+    }
+  };
 
+  useEffect(() => {
+    checkUser();
+  }, []);
   return (
     <>
       {showSafeArea ? (

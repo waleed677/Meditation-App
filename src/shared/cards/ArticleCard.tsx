@@ -12,7 +12,7 @@ const ArticleCard = ({
 }: {
   source: number;
   data: any;
-  type: string;
+  type?: string;
 }) => {
   return (
     <View style={style.container}>
@@ -20,18 +20,26 @@ const ArticleCard = ({
         <Image
           style={style.card_bg}
           source={
-            data?.image_url ? { uri: joinFileLink(data?.image_url) } : source
+            data?.image_url || data?.duration
+              ? {
+                  uri: data?.image_url
+                    ? joinFileLink(data?.image_url)
+                    : joinFileLink(data?.duration),
+                }
+              : source
           }
           alt="bg-image"
         />
       </View>
       <Stack gap={2}>
-        <Typography
-          type="caption"
-          style={{ color: "#2762A6", textTransform: "capitalize" }}
-        >
-          {type}
-        </Typography>
+        {type && (
+          <Typography
+            type="caption"
+            style={{ color: "#2762A6", textTransform: "capitalize" }}
+          >
+            {type}
+          </Typography>
+        )}
         <Typography type="subtitle3" style={{ color: "#2762A6" }}>
           {data?.title}
         </Typography>

@@ -5,6 +5,7 @@ import { visualPracticeApi } from "../services/visualPractice";
 import { momentApi } from "../services/moments";
 import { resourcesApi } from "../services/resources";
 import { practicesApi } from "../services/practices";
+import { favouritesApi } from "../services/favourites";
 import { authApi } from "../services/auth";
 import authSlice from "../services/authSlice";
 import { resourcesArticlesApi } from "../services/resourcesArticles";
@@ -17,6 +18,7 @@ export const store = configureStore({
     [resourcesApi.reducerPath]: resourcesApi.reducer,
     [resourcesArticlesApi.reducerPath]: resourcesArticlesApi.reducer,
     [practicesApi.reducerPath]: practicesApi.reducer,
+    [favouritesApi.reducerPath]: favouritesApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
   },
 
@@ -26,6 +28,7 @@ export const store = configureStore({
       .concat(visualPracticeApi.middleware)
       .concat(momentApi.middleware)
       .concat(practicesApi.middleware)
+      .concat(favouritesApi.middleware)
       .concat(authApi.middleware)
       .concat(resourcesApi.middleware)
       .concat(resourcesArticlesApi.middleware),

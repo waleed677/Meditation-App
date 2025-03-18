@@ -19,11 +19,17 @@ import SimpleAudioPlayer from "../../shared/audio/simpleAudioPlayer";
 import { useNavigation } from "@react-navigation/native";
 import BackIcon from "../../../assets/vendors/back-icon";
 import TopHeaderIcon from "../../../assets/vendors/top-header-icon";
+import { useAddFavouritesMutation } from "../../services/favourites";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { height, width } = Dimensions.get("window");
 
 const Index = ({ route }: { route: any }) => {
   const navigator = useNavigation();
+  const [checkFav, setCheckFav] = useState(
+    route?.params?.data?.is_favourite == 1 ? true : false
+  );
+  const [authUser, setAuthUser] = useState<any>(null);
   const [volume, setVolume] = useState<number>(1);
   const [sound, setSound] = useState<Audio.Sound | null>(null);
   const [bgSound, setBgSound] = useState<Audio.Sound | null>(null);
@@ -36,6 +42,8 @@ const Index = ({ route }: { route: any }) => {
   const [selectImage, setSelectedImages] = useState(
     require("../../../assets/images/audio_bg/bg_1.jpg")
   );
+  const [addFavourites, { isLoading, isSuccess, isError, data }] =
+    useAddFavouritesMutation();
 
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
@@ -49,6 +57,18 @@ const Index = ({ route }: { route: any }) => {
     // Cleanup the event listener when the component unmounts
     return () => backHandler.remove();
   }, [navigator]);
+
+  const checkUser = async () => {
+    const userJson = await AsyncStorage.getItem("user");
+    const user = userJson != null ? JSON.parse(userJson) : null;
+    if (user !== null) {
+      setAuthUser(user?.user);
+    }
+  };
+
+  useEffect(() => {
+    checkUser();
+  }, []);
 
   return (
     <>
@@ -89,8 +109,18 @@ const Index = ({ route }: { route: any }) => {
               textTransform: "capitalize",
             }}
           ></Text>
-
-          <TopHeaderIcon />
+          <TouchableOpacity
+            onPress={async () => {
+              await addFavourites({
+                user_id: authUser?.id,
+                type_name: "audio",
+                activity_id: route?.params?.data?.id,
+              }).unwrap();
+              setCheckFav(!checkFav);
+            }}
+          >
+            <TopHeaderIcon fill={checkFav ? "red" : "white"} />
+          </TouchableOpacity>
         </View>
         <Stack px={15}>
           <Text
