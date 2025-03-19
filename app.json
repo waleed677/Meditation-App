@@ -54,10 +54,10 @@
           "imageWidth": 1000,
           "ios": {
             "image": "./assets/splash.png",
-            "backgroundColor": "#FFFFFF"
+            "backgroundColor": "#ffffff"
           },
           "android": {
-            "backgroundColor": "#FFFFFF",
+            "backgroundColor": "#ffffff",
             "image": "./assets/splash.png",
             "imageWidth": 1000
           }
