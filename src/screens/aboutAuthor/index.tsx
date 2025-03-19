@@ -29,7 +29,7 @@ const Index = () => {
           }}
         >
           <BackIcon />
-          <Text>back</Text>
+          <Text allowFontScaling={false}>back</Text>
         </TouchableOpacity>
         <Typography style={{ textAlign: "center" }} type="paragraph1Bold">
           About {data?.settings?.author_name}

@@ -12,6 +12,7 @@ const SearchInput: FC<SearchInputProps> = ({ setSearchQuery }) => {
   return (
     <View style={styles.input_container}>
       <TextInput
+        allowFontScaling={false}
         placeholder="Search"
         style={styles.input}
         onChangeText={(text) => {

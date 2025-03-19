@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MainWrapper from "../../shared/wrappers/main-wrapper";
 import {
+  ActivityIndicator,
   Alert,
   BackHandler,
   Dimensions,
@@ -99,7 +100,7 @@ const Index = ({ route }: { route: any }) => {
             }}
           >
             <BackIcon />
-            <Text>back</Text>
+            <Text allowFontScaling={false}>back</Text>
           </TouchableOpacity>
           <Text
             style={{
@@ -109,24 +110,28 @@ const Index = ({ route }: { route: any }) => {
               textTransform: "capitalize",
             }}
           ></Text>
-          <TouchableOpacity
-            onPress={async () => {
-              await addFavourites({
-                user_id: authUser?.id,
-                type_name: "audio",
-                activity_id: route?.params?.data?.id,
-              }).unwrap();
-              setCheckFav(!checkFav);
-            }}
-          >
-            <TopHeaderIcon fill={checkFav ? "red" : "white"} />
-          </TouchableOpacity>
+          {!isLoading ? (
+            <TouchableOpacity
+              onPress={async () => {
+                await addFavourites({
+                  user_id: authUser?.id,
+                  type_name: "audio",
+                  activity_id: route?.params?.data?.id,
+                }).unwrap();
+                setCheckFav(!checkFav);
+              }}
+            >
+              <TopHeaderIcon fill={checkFav ? "red" : "none"} />
+            </TouchableOpacity>
+          ) : (
+            <ActivityIndicator size="small" />
+          )}
         </View>
         <Stack px={15}>
           <Text
+            allowFontScaling={false}
             style={{
               fontSize: 20,
-
               marginBottom: 10,
               fontWeight: "bold",
             }}

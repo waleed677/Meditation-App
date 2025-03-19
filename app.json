@@ -11,9 +11,7 @@
       "requireFullScreen": true,
       "supportsTablet": true,
       "infoPlist": {
-        "UIBackgroundModes": [
-          "audio"
-        ]
+        "UIBackgroundModes": ["audio"]
       }
     },
     "android": {
@@ -56,10 +54,10 @@
           "imageWidth": 1000,
           "ios": {
             "image": "./assets/splash.png",
-            "backgroundColor": "#72AEFD"
+            "backgroundColor": "#FFFFFF"
           },
           "android": {
-            "backgroundColor": "#72AEFD",
+            "backgroundColor": "#FFFFFF",
             "image": "./assets/splash.png",
             "imageWidth": 1000
           }

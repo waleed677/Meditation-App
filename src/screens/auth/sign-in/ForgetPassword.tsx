@@ -94,7 +94,9 @@ const ForgetPassword = () => {
           )}
         />
         {errors.email && (
-          <Text style={styles.errorText}>{errors.email.message}</Text>
+          <Text allowFontScaling={false} style={styles.errorText}>
+            {errors.email.message}
+          </Text>
         )}
       </Stack>
 
@@ -112,6 +114,7 @@ const ForgetPassword = () => {
           onPress={() => navigator.navigate("Login")}
         >
           <Text
+            allowFontScaling={false}
             style={{
               fontSize: 16,
               textDecorationLine: "underline",

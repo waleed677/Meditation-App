@@ -120,7 +120,9 @@ const LoginForm = () => {
           )}
         />
         {errors.email && (
-          <Text style={styles.errorText}>{errors.email.message}</Text>
+          <Text allowFontScaling={false} style={styles.errorText}>
+            {errors.email.message}
+          </Text>
         )}
       </Stack>
 
@@ -142,7 +144,9 @@ const LoginForm = () => {
           )}
         />
         {errors.password && (
-          <Text style={styles.errorText}>{errors.password.message}</Text>
+          <Text allowFontScaling={false} style={styles.errorText}>
+            {errors.password.message}
+          </Text>
         )}
       </Stack>
 
@@ -151,6 +155,7 @@ const LoginForm = () => {
         onPress={() => navigator.navigate("ForgetPassword")}
       >
         <Text
+          allowFontScaling={false}
           style={{
             fontSize: 16,
             textDecorationLine: "underline",
@@ -181,6 +186,7 @@ const LoginForm = () => {
           onPress={() => navigator.navigate("SignUp")}
         >
           <Text
+            allowFontScaling={false}
             style={{
               fontSize: 16,
               textDecorationLine: "underline",

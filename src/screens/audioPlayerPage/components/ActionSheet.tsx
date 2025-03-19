@@ -122,7 +122,9 @@ const ActionSheet: React.FC<ActionSheetProps> = ({
                     justifyContent="center"
                     mt={10}
                   >
-                    <Text style={styles.timeText}>Volume</Text>
+                    <Text allowFontScaling={false} style={styles.timeText}>
+                      Voice
+                    </Text>
                     <Slider
                       style={styles.slider}
                       minimumValue={0}
@@ -146,7 +148,9 @@ const ActionSheet: React.FC<ActionSheetProps> = ({
                       justifyContent="center"
                       mt={10}
                     >
-                      <Text style={styles.timeText}>Volume</Text>
+                      <Text allowFontScaling={false} style={styles.timeText}>
+                        Background
+                      </Text>
 
                       <Slider
                         style={styles.slider}
@@ -323,10 +327,10 @@ const styles = StyleSheet.create({
   timeText: {
     fontSize: 12,
     color: "#000000",
+    width: 80,
   },
   slider: {
     flex: 1,
-    marginHorizontal: 10,
   },
 });
 

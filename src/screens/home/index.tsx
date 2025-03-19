@@ -96,10 +96,11 @@ const Index = () => {
                     `${item?.min}-${item?.max}`
                       ? "#ffffff"
                       : "#6699FF",
+                  fontSize: 10,
                 }}
-                text={`${item?.min} ${item?.min ? "-" : item?.sign} ${
-                  item?.max
-                } minutes`}
+                text={`${item?.min !== 0 ? item?.min : ""} ${
+                  item?.min ? "-" : item?.sign
+                } ${item?.max} minutes`}
               />
             </TouchableOpacity>
           )}
@@ -114,7 +115,7 @@ const Index = () => {
             data={data && data?.videos}
             ListEmptyComponent={
               <View>
-                <Text>0 results</Text>
+                <Text allowFontScaling={false}>0 results</Text>
               </View>
             }
             renderItem={({ item, index }) => (

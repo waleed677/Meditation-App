@@ -1,31 +1,20 @@
-import React, { useState, useEffect } from "react";
-import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
+import React, { useEffect } from "react";
+import { StyleSheet } from "react-native";
 import { Audio } from "expo-av";
-import Slider from "@react-native-community/slider";
-import { apiUrl } from "../../constants";
 
 const SimpleAudioPlayer = ({
   setBgSound,
   bgSound,
   playAudio,
   setBgVolume,
-  setPlayAudio,
   selectSoundTab,
 }: {
   setBgSound?: any;
   bgSound?: any;
+  playAudio?: boolean;
+  setBgVolume?: any;
+  selectSoundTab?: any;
 }) => {
-  // const togglePlayPause = async () => {
-  //   if (!bgSound) return;
-
-  //   if (playAudio) {
-  //     await bgSound.playAsync();
-  //   } else {
-  //     await bgSound.pauseAsync();
-  //   }
-
-  //   setPlayAudio((prev: boolean) => !prev);
-  // };
   const soundArray = [
     require("../../../assets/audio/audio_bg/Bird_Chirping_Morning.mp3"),
     require("../../../assets/audio/audio_bg/Night_Ambience.mp3"),
@@ -33,8 +22,16 @@ const SimpleAudioPlayer = ({
     require("../../../assets/audio/audio_bg/Rainny_Days.mp3"),
     require("../../../assets/audio/audio_bg/River_Flowing.mp3"),
   ];
+
   const loadAudio = async () => {
     try {
+      // Stop the previous audio if it is playing
+      if (bgSound) {
+        await bgSound.stopAsync(); // Stop the previous audio
+        await bgSound.unloadAsync(); // Unload it before loading a new one
+      }
+
+      // Now load the new audio
       const { sound } = await Audio.Sound.createAsync(
         soundArray[selectSoundTab],
         {
@@ -63,7 +60,7 @@ const SimpleAudioPlayer = ({
         bgSound.unloadAsync();
       }
     };
-  }, [soundArray[selectSoundTab]]);
+  }, [selectSoundTab]); // Trigger loadAudio when selectSoundTab changes
 
   useEffect(() => {
     const handlePlayPause = async () => {
@@ -75,20 +72,10 @@ const SimpleAudioPlayer = ({
     };
 
     handlePlayPause();
-  }, [playAudio]);
+  }, [playAudio, bgSound]); // Trigger play/pause on playAudio or bgSound change
 
   return (
-    <React.Fragment>
-      {/* <View style={styles.container}> */}
-      {/* <View style={styles.controls}> */}
-      {/* Play/Pause button */}
-      {/* <TouchableOpacity onPress={togglePlayPause} style={styles.button}>
-            <Text>{isPlaying ? "Pause" : "Play"}</Text>
-          </TouchableOpacity> */}
-
-      {/* </View>
-      </View> */}
-    </React.Fragment>
+    <React.Fragment>{/* Add controls or UI components here */}</React.Fragment>
   );
 };
 

@@ -92,7 +92,9 @@ const OtpScreen = () => {
           )}
         />
         {errors.otp && (
-          <Text style={styles.errorText}>{errors.otp.message}</Text>
+          <Text allowFontScaling={false} style={styles.errorText}>
+            {errors.otp.message}
+          </Text>
         )}
       </Stack>
 

@@ -38,7 +38,10 @@ const SimpleInput: React.FC<StackProps> = ({
   return (
     <View>
       <Typography type={"paragraph1"} style={styles.label}>
-        <Text style={{ color: "red" }}>{required && "*"}</Text> {label}
+        <Text allowFontScaling={false} style={{ color: "red" }}>
+          {required && "*"}
+        </Text>{" "}
+        {label}
       </Typography>
       <View style={[styles.inputContainer, customStyle]}>
         <TextInput

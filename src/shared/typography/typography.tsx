@@ -56,7 +56,11 @@ const Typography: React.FC<TypographyProps> = ({ children, type, style }) => {
     }
   };
 
-  return <Text style={[getTextStyle(type), style]}>{children}</Text>;
+  return (
+    <Text allowFontScaling={false} style={[getTextStyle(type), style]}>
+      {children}
+    </Text>
+  );
 };
 
 const styles = StyleSheet.create({

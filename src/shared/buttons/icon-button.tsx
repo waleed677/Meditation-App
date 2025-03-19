@@ -72,7 +72,10 @@ const IconButton: React.FC<IconButtonProps> = ({
       style={[styles.button, buttonStyle, style]}
     >
       {leftIcon && <View style={{ marginBottom: 2 }}>{leftIcon}</View>}
-      <Text style={[styles.title, buttonTitleStyle, titleStyle]}>
+      <Text
+        allowFontScaling={false}
+        style={[styles.title, buttonTitleStyle, titleStyle]}
+      >
         {text} {isLoading && <ActivityIndicator color="#fff" />}
       </Text>
       {rightIcon && <View>{rightIcon} </View>}

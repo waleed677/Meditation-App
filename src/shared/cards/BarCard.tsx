@@ -27,6 +27,7 @@ const BarCard = ({ title, url }: { title: string; url: string }) => {
         alt=""
       />
       <Text
+        allowFontScaling={false}
         style={{
           fontFamily: "Sansita-BoldItalic",
           fontSize: 19,

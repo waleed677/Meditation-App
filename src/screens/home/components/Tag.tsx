@@ -12,7 +12,9 @@ const Tag = ({
 }) => {
   return (
     <View style={[style.tag, tagStyle]}>
-      <Text style={[style.tag_text, tagTextStyle]}>{text}</Text>
+      <Text allowFontScaling={false} style={[style.tag_text, tagTextStyle]}>
+        {text}
+      </Text>
     </View>
   );
 };

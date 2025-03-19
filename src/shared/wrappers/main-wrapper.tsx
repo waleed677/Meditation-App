@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   Dimensions,
   ImageSourcePropType,
+  ActivityIndicator,
 } from "react-native";
 import BackIcon from "../../../assets/vendors/back-icon";
 import { useNavigation } from "@react-navigation/native";
@@ -48,7 +49,7 @@ const MainWrapper: React.FC<MainWrapperProps> = ({
   showSearch = true,
   showHeart = false,
   fontStyle = "italic",
-  headerImage = require("../../../assets/images/header_home.png"),
+  headerImage = require("../../../assets/images/header_bg/Background_Header_Home.png"),
   setSearchQuery,
   setPauseGoBack,
   type_name,
@@ -68,6 +69,7 @@ const MainWrapper: React.FC<MainWrapperProps> = ({
           {icon}
         </View>
         <Text
+          allowFontScaling={false}
           style={[
             styles.headerText,
             {
@@ -110,9 +112,10 @@ const MainWrapper: React.FC<MainWrapperProps> = ({
           }}
         >
           <BackIcon />
-          <Text>back</Text>
+          <Text allowFontScaling={false}>back</Text>
         </TouchableOpacity>
         <Text
+          allowFontScaling={false}
           style={{
             fontWeight: fontStyle === "normal" ? "bold" : undefined,
             fontFamily:
@@ -131,18 +134,24 @@ const MainWrapper: React.FC<MainWrapperProps> = ({
           />
         )}
         {showHeart && (
-          <TouchableOpacity
-            onPress={async () => {
-              await addFavourites({
-                user_id: authUser?.id,
-                type_name: type_name,
-                activity_id: activity_id,
-              }).unwrap();
-              setCheckFav(!checkFav);
-            }}
-          >
-            <TopHeaderIcon fill={checkFav ? "red" : "white"} />
-          </TouchableOpacity>
+          <>
+            {!isLoading ? (
+              <TouchableOpacity
+                onPress={async () => {
+                  await addFavourites({
+                    user_id: authUser?.id,
+                    type_name: type_name,
+                    activity_id: activity_id,
+                  }).unwrap();
+                  setCheckFav(!checkFav);
+                }}
+              >
+                <TopHeaderIcon fill={checkFav ? "red" : "none"} />
+              </TouchableOpacity>
+            ) : (
+              <ActivityIndicator size="small" />
+            )}
+          </>
         )}
       </View>
     </SafeAreaView>

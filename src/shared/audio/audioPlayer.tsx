@@ -167,8 +167,12 @@ const AudioPlayer = ({
             px={10}
             mt={-10}
           >
-            <Text style={styles.timeText}>{formatTime(currentTime)}</Text>
-            <Text style={styles.timeText}>{formatTime(duration)}</Text>
+            <Text allowFontScaling={false} style={styles.timeText}>
+              {formatTime(currentTime)}
+            </Text>
+            <Text allowFontScaling={false} style={styles.timeText}>
+              {formatTime(duration)}
+            </Text>
           </Stack>
         </View>
 

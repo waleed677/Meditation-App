@@ -15,7 +15,7 @@ const Index: React.FC = () => {
       iconBg="#FF913C"
       title="Moments"
       icon={<MomentTopHeaderIcon />}
-      headerImage={require("../../../assets/images/header_moments.png")}
+      headerImage={require("../../../assets/images/header_bg/Background_Header_Moments.png")}
     >
       <Stack px={15} mt={9}>
         {!isLoading && (

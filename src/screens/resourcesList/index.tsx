@@ -63,6 +63,7 @@ const Index = ({ route }: { route: any }) => {
                 />
               </TouchableOpacity>
             )}
+            style={{ marginBottom: 50 }}
             keyExtractor={(item) => item?.key}
           />
         )}

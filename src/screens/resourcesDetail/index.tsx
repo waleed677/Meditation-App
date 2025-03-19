@@ -30,6 +30,7 @@ const Index = ({ route }: { route: any }) => {
     >
       <Stack flex={1} px={15} gap={18}>
         <Text
+          allowFontScaling={false}
           style={{
             fontSize: 20,
             marginTop: Platform.OS === "ios" ? -20 : 0,

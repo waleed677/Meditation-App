@@ -96,8 +96,12 @@ const VideoControls = ({
             flexDirection: "row",
           }}
         >
-          <Text style={styles.timeText}>{formatTime(time)}</Text>
-          <Text style={styles.timeText}>{formatTime(duration * 1000)}</Text>
+          <Text allowFontScaling={false} style={styles.timeText}>
+            {formatTime(time)}
+          </Text>
+          <Text allowFontScaling={false} style={styles.timeText}>
+            {formatTime(duration * 1000)}
+          </Text>
         </View>
       </View>
       <TouchableOpacity

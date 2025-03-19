@@ -54,7 +54,10 @@ const Index = ({ route }: { route: any }) => {
           {route?.params?.data?.file_url && (
             <ExpoVideoPlayer videoUrl={route?.params?.data?.file_url} />
           )}
-          <Text style={{ fontSize: 20, marginTop: 10, fontWeight: "bold" }}>
+          <Text
+            allowFontScaling={false}
+            style={{ fontSize: 20, marginTop: 10, fontWeight: "bold" }}
+          >
             {route.params.data.title}
           </Text>
           <Typography type="caption">

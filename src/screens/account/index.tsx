@@ -71,7 +71,7 @@ const Index: React.FC<SignInProps> = () => {
           }}
         >
           <BackIcon />
-          <Text>back</Text>
+          <Text allowFontScaling={false}>back</Text>
         </TouchableOpacity>
         <Typography style={{ textAlign: "center" }} type="paragraph1Bold">
           My Account

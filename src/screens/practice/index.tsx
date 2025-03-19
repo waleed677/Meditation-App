@@ -26,7 +26,7 @@ const Index: React.FC = () => {
       iconBg="#209C92"
       title="Practices"
       icon={<PracticeHeaderIcon />}
-      headerImage={require("../../../assets/images/header_practice.png")}
+      headerImage={require("../../../assets/images/header_bg/Background_Header_Practice.png")}
     >
       <Stack px={15} mt={9}>
         {!isLoading && (

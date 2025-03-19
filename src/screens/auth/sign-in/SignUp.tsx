@@ -99,7 +99,9 @@ const SignUp = () => {
           )}
         />
         {errors.username && (
-          <Text style={styles.errorText}>{errors.username.message}</Text>
+          <Text allowFontScaling={false} style={styles.errorText}>
+            {errors.username.message}
+          </Text>
         )}
       </Stack>
       <Stack mt={15}>
@@ -122,7 +124,9 @@ const SignUp = () => {
           )}
         />
         {errors.email && (
-          <Text style={styles.errorText}>{errors.email.message}</Text>
+          <Text allowFontScaling={false} style={styles.errorText}>
+            {errors.email.message}
+          </Text>
         )}
       </Stack>
 
@@ -144,7 +148,9 @@ const SignUp = () => {
           )}
         />
         {errors.password && (
-          <Text style={styles.errorText}>{errors.password.message}</Text>
+          <Text allowFontScaling={false} style={styles.errorText}>
+            {errors.password.message}
+          </Text>
         )}
       </Stack>
 
@@ -162,6 +168,7 @@ const SignUp = () => {
           onPress={() => navigator.navigate("Login")}
         >
           <Text
+            allowFontScaling={false}
             style={{
               fontSize: 16,
               textDecorationLine: "underline",

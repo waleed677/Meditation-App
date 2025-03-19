@@ -81,7 +81,9 @@ const ResetPassword = () => {
           )}
         />
         {errors.password && (
-          <Text style={styles.errorText}>{errors.password.message}</Text>
+          <Text allowFontScaling={false} style={styles.errorText}>
+            {errors.password.message}
+          </Text>
         )}
       </Stack>
       <Stack mt={15}>
@@ -107,7 +109,9 @@ const ResetPassword = () => {
           )}
         />
         {errors.confirmPassword && (
-          <Text style={styles.errorText}>{errors.confirmPassword.message}</Text>
+          <Text allowFontScaling={false} style={styles.errorText}>
+            {errors.confirmPassword.message}
+          </Text>
         )}
       </Stack>
       <Stack mt={20}>

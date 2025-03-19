@@ -15,10 +15,11 @@ const MomentCard = ({ data }: { data: any }) => {
             color: "#8E8E8E",
             fontWeight: "bold",
             fontSize: 13,
-            width: width - 80,
+            width: width - 120,
           }}
           type="paragraph2"
         >
+          {data?.title}
           {data?.title}
         </Typography>
         <Typography type="caption" style={{ color: "#8E8E8E", fontSize: 10 }}>
