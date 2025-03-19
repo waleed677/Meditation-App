@@ -36,6 +36,7 @@ interface MainWrapperProps {
   setPauseGoBack?: any;
   setSearchQuery?: (query: string) => void;
   checkFav?: boolean;
+  favIconLoading?: boolean;
   setCheckFav?: any;
 }
 
@@ -56,6 +57,7 @@ const MainWrapper: React.FC<MainWrapperProps> = ({
   activity_id,
   checkFav,
   setCheckFav,
+  favIconLoading,
 }) => {
   const [authUser, setAuthUser] = useState<any>(null);
   const navigator = useNavigation();
@@ -135,19 +137,25 @@ const MainWrapper: React.FC<MainWrapperProps> = ({
         )}
         {showHeart && (
           <>
-            {!isLoading ? (
-              <TouchableOpacity
-                onPress={async () => {
-                  await addFavourites({
-                    user_id: authUser?.id,
-                    type_name: type_name,
-                    activity_id: activity_id,
-                  }).unwrap();
-                  setCheckFav(!checkFav);
-                }}
-              >
-                <TopHeaderIcon fill={checkFav ? "red" : "none"} />
-              </TouchableOpacity>
+            {!favIconLoading ? (
+              <>
+                {!isLoading ? (
+                  <TouchableOpacity
+                    onPress={async () => {
+                      await addFavourites({
+                        user_id: authUser?.id,
+                        type_name: type_name,
+                        activity_id: activity_id,
+                      }).unwrap();
+                      setCheckFav(!checkFav);
+                    }}
+                  >
+                    <TopHeaderIcon fill={checkFav ? "red" : "none"} />
+                  </TouchableOpacity>
+                ) : (
+                  <ActivityIndicator size="small" />
+                )}
+              </>
             ) : (
               <ActivityIndicator size="small" />
             )}

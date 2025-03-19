@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import MainWrapper from "../../shared/wrappers/main-wrapper";
 import {
   ActivityIndicator,
@@ -17,19 +17,20 @@ import Stack from "../../shared/stacks/stack";
 import ActionSheet from "./components/ActionSheet";
 import { Audio } from "expo-av";
 import SimpleAudioPlayer from "../../shared/audio/simpleAudioPlayer";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import BackIcon from "../../../assets/vendors/back-icon";
 import TopHeaderIcon from "../../../assets/vendors/top-header-icon";
-import { useAddFavouritesMutation } from "../../services/favourites";
+import {
+  useAddFavouritesMutation,
+  useGetFavouritesQuery,
+} from "../../services/favourites";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { height, width } = Dimensions.get("window");
 
 const Index = ({ route }: { route: any }) => {
   const navigator = useNavigation();
-  const [checkFav, setCheckFav] = useState(
-    route?.params?.data?.is_favourite == 1 ? true : false
-  );
+  const [checkFav, setCheckFav] = useState(false);
   const [authUser, setAuthUser] = useState<any>(null);
   const [volume, setVolume] = useState<number>(1);
   const [sound, setSound] = useState<Audio.Sound | null>(null);
@@ -43,9 +44,19 @@ const Index = ({ route }: { route: any }) => {
   const [selectImage, setSelectedImages] = useState(
     require("../../../assets/images/audio_bg/bg_1.jpg")
   );
-  const [addFavourites, { isLoading, isSuccess, isError, data }] =
-    useAddFavouritesMutation();
-
+  const [addFavourites, { isLoading }] = useAddFavouritesMutation();
+  const {
+    data: getFavourites,
+    refetch,
+    isFetching,
+  } = useGetFavouritesQuery(
+    {
+      userId: authUser?.id,
+      activityId: route?.params?.data?.id,
+      typeName: "audio",
+    },
+    { refetchOnMountOrArgChange: true, skip: false, refetchOnFocus: true }
+  );
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
@@ -67,9 +78,17 @@ const Index = ({ route }: { route: any }) => {
     }
   };
 
+  useFocusEffect(
+    useCallback(() => {
+      checkUser();
+      refetch();
+    }, [])
+  );
   useEffect(() => {
-    checkUser();
-  }, []);
+    if (getFavourites?.total_records == 1) {
+      setCheckFav(true);
+    }
+  }, [getFavourites?.total_records]);
 
   return (
     <>
@@ -110,19 +129,25 @@ const Index = ({ route }: { route: any }) => {
               textTransform: "capitalize",
             }}
           ></Text>
-          {!isLoading ? (
-            <TouchableOpacity
-              onPress={async () => {
-                await addFavourites({
-                  user_id: authUser?.id,
-                  type_name: "audio",
-                  activity_id: route?.params?.data?.id,
-                }).unwrap();
-                setCheckFav(!checkFav);
-              }}
-            >
-              <TopHeaderIcon fill={checkFav ? "red" : "none"} />
-            </TouchableOpacity>
+          {!isFetching ? (
+            <>
+              {!isLoading ? (
+                <TouchableOpacity
+                  onPress={async () => {
+                    await addFavourites({
+                      user_id: authUser?.id,
+                      type_name: "audio",
+                      activity_id: route?.params?.data?.id,
+                    }).unwrap();
+                    setCheckFav(!checkFav);
+                  }}
+                >
+                  <TopHeaderIcon fill={checkFav ? "red" : "none"} />
+                </TouchableOpacity>
+              ) : (
+                <ActivityIndicator size="small" />
+              )}
+            </>
           ) : (
             <ActivityIndicator size="small" />
           )}

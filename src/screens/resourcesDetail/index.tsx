@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import MainWrapper from "../../shared/wrappers/main-wrapper";
 import Stack from "../../shared/stacks/stack";
 import {
@@ -11,12 +11,43 @@ import {
 } from "react-native";
 import { joinFileLink } from "../../helper/commonFun";
 import Typography from "../../shared/typography/typography";
+import { useFocusEffect } from "@react-navigation/native";
+import { useGetFavouritesQuery } from "../../services/favourites";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const width = Dimensions.get("window").width;
 
 const Index = ({ route }: { route: any }) => {
-  const [checkFav, setCheckFav] = useState(
-    route?.params?.data?.is_favourite == 1 ? true : false
+  const [authUser, setAuthUser] = useState<any>(null);
+  const { data, isLoading, isError, error, refetch, isFetching } =
+    useGetFavouritesQuery(
+      {
+        userId: authUser?.id,
+        activityId: route?.params?.data?.id,
+        typeName: "article",
+      },
+      { refetchOnMountOrArgChange: true, skip: false, refetchOnFocus: true }
+    );
+  const [checkFav, setCheckFav] = useState(false);
+
+  const checkUser = async () => {
+    const userJson = await AsyncStorage.getItem("user");
+    const user = userJson != null ? JSON.parse(userJson) : null;
+    if (user !== null) {
+      setAuthUser(user?.user);
+    }
+  };
+  useFocusEffect(
+    useCallback(() => {
+      checkUser();
+      refetch();
+    }, [])
   );
+  useEffect(() => {
+    if (data?.total_records == 1) {
+      setCheckFav(true);
+    }
+  }, [data?.total_records]);
+
   return (
     <MainWrapper
       showHeart={true}
@@ -27,6 +58,7 @@ const Index = ({ route }: { route: any }) => {
       type_name="article"
       setCheckFav={setCheckFav}
       checkFav={checkFav}
+      favIconLoading={isFetching}
     >
       <Stack flex={1} px={15} gap={18}>
         <Text

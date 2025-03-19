@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Stack from "../../shared/stacks/stack";
 import MainWrapper from "../../shared/wrappers/main-wrapper";
 import SelectHomeIcon from "../../../assets/vendors/select-home-icon";
@@ -13,7 +13,11 @@ import {
 import { timeSlots } from "../../../dummyData";
 import Tag from "./components/Tag";
 import VideoCard from "../../shared/video/VideoCard";
-import { NavigationProp, useNavigation } from "@react-navigation/native";
+import {
+  NavigationProp,
+  useFocusEffect,
+  useNavigation,
+} from "@react-navigation/native";
 import { useGetVisualPracticeQuery } from "../../services/visualPractice";
 type RootStackParamList = {
   VisualPractice: undefined;
@@ -26,7 +30,7 @@ type RootStackParamList = {
 const Index = () => {
   const [selectSlot, setSelectSlot] = useState({ min: 0, max: 0 });
   const navigator = useNavigation<NavigationProp<RootStackParamList>>();
-  const { data, isLoading } = useGetVisualPracticeQuery(
+  const { data, isLoading, refetch } = useGetVisualPracticeQuery(
     {
       searchQuery: "",
       min: selectSlot?.min,
@@ -36,9 +40,15 @@ const Index = () => {
       // pollingInterval: 3000,
       refetchOnMountOrArgChange: true,
       skip: false,
+      refetchOnFocus: true,
     }
   );
 
+  useFocusEffect(
+    useCallback(() => {
+      refetch();
+    }, [])
+  );
   useEffect(() => {}, [selectSlot.min, selectSlot.max]);
   return (
     <MainWrapper

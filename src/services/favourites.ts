@@ -13,7 +13,9 @@ export const favouritesApi = createApi({
           searchQuery || userId
             ? `?search=${
                 searchQuery != null ? searchQuery : ""
-              }&user_id=${userId}`
+              }&user_id=${userId}${typeName ? `&type_name=${typeName}` : ""}${
+                activityId ? `&activity_id=${activityId}` : ""
+              }`
             : ""
         }`,
     }),
