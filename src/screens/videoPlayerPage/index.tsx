@@ -102,7 +102,9 @@ const Index = ({ route }: { route: any }) => {
             {route.params.data.title}
           </Text>
           <Typography type="caption">
-            {route?.params?.data?.description}
+            {route?.params?.data?.description != "undefined"
+              ? route?.params?.data?.description
+              : ""}
           </Typography>
         </Stack>
       </MainWrapper>
