@@ -108,8 +108,8 @@ const Index = () => {
                       : "#6699FF",
                   fontSize: 10,
                 }}
-                text={`${item?.min !== 0 ? item?.min : ""} ${
-                  item?.min ? "-" : item?.sign
+                text={`${item?.min !== 0.1 ? item?.min : ""} ${
+                  item?.min !== 0.1 ? "-" : item?.sign
                 } ${item?.max} minutes`}
               />
             </TouchableOpacity>

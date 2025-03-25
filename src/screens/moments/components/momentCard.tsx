@@ -20,7 +20,6 @@ const MomentCard = ({ data }: { data: any }) => {
           type="paragraph2"
         >
           {data?.title}
-          {data?.title}
         </Typography>
         <Typography type="caption" style={{ color: "#8E8E8E", fontSize: 10 }}>
           {new Date(data?.created_at).toLocaleTimeString("en-US", {

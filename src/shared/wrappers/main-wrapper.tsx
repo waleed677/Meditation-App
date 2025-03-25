@@ -111,6 +111,8 @@ const MainWrapper: React.FC<MainWrapperProps> = ({
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
+            height: 40,
+            width: 60,
           }}
         >
           <BackIcon />
