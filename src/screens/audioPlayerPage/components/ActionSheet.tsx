@@ -74,7 +74,7 @@ const ActionSheet: React.FC<ActionSheetProps> = ({
       value: 2,
     },
     {
-      name: "Rainny Days",
+      name: "Rainy Days",
       value: 3,
     },
     {
