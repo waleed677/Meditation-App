@@ -5,7 +5,17 @@ import { IMAGE_BASE_URL } from "../../constants";
 const width = Dimensions.get("window").width;
 
 export default function ExpoVideoPlayer({ videoUrl }: { videoUrl: string }) {
-  const videoSource = `${IMAGE_BASE_URL}${videoUrl}`;
+  function isAbsoluteUrl(url: string) {
+    try {
+      new URL(url);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+  const videoSource = isAbsoluteUrl(videoUrl)
+    ? videoUrl
+    : `${IMAGE_BASE_URL}${videoUrl}`;
   const player = useVideoPlayer(videoSource, (player) => {
     player.loop = true;
     player.play();

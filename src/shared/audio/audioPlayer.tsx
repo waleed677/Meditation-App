@@ -15,7 +15,6 @@ import Slider from "@react-native-community/slider";
 import Stack from "../stacks/stack";
 import { apiUrl } from "../../constants";
 import MusicListIcon from "../../../assets/vendors/musice-list-icon";
-import { useFocusEffect } from "@react-navigation/native";
 
 const { width } = Dimensions.get("window");
 
@@ -37,11 +36,22 @@ const AudioPlayer = ({
   setPlayAudio: (play: boolean) => void;
   bgSound?: Audio.Sound | null;
   pauseGoBack?: boolean;
+  navigator?: any;
+  setPauseGoBack?: any;
 }) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isRepeating, setIsRepeating] = useState<boolean>(false);
   const [duration, setDuration] = useState<number>(0);
   const [currentTime, setCurrentTime] = useState<number>(0);
+
+  function isAbsoluteUrl(url: string) {
+    try {
+      new URL(url);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 
   const togglePlayPause = async () => {
     if (!sound) return;
@@ -64,6 +74,7 @@ const AudioPlayer = ({
     }
 
     setIsPlaying((prev) => !prev);
+    //@ts-ignore
     setPlayAudio((prev: boolean) => !prev);
   };
 
@@ -76,7 +87,11 @@ const AudioPlayer = ({
 
   const loadAudio = async () => {
     try {
-      const audioUrl = `${apiUrl}/${data?.file_url}`;
+      const audioUrl = `${
+        isAbsoluteUrl(data?.file_url)
+          ? data?.file_url
+          : `${apiUrl}/${data?.file_url}`
+      }`;
       const { sound } = await Audio.Sound.createAsync(
         { uri: audioUrl },
         { shouldPlay: false },
