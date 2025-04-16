@@ -30,13 +30,24 @@ export default function ExpoVideoPlayer({
     return () => clearTimeout(timer); // Clean up on unmount
   }, []);
 
-  const videoSource = `${IMAGE_BASE_URL}${videoUrl}`;
+  function isAbsoluteUrl(url: string) {
+    try {
+      new URL(url);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  const videoSource = isAbsoluteUrl(videoUrl)
+    ? videoUrl
+    : `${IMAGE_BASE_URL}${videoUrl}`;
   const player = useVideoPlayer(videoSource, (player) => {
     player.loop = true;
   });
 
   const { isPlaying } = useEvent(player, "playingChange", {
-    isPlaying: player.playing,
+    isPlaying: player?.playing,
   });
 
   return (
