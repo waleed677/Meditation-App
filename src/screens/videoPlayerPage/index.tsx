@@ -93,7 +93,10 @@ const Index = ({ route }: { route: any }) => {
       >
         <Stack px={15} gap={10} mt={Platform.OS === "ios" ? -24 : 10}>
           {route?.params?.data?.file_url && (
-            <ExpoVideoPlayer videoUrl={route?.params?.data?.file_url} />
+            <ExpoVideoPlayer
+              thumbnail_url={route?.params?.data?.thumbnail_url}
+              videoUrl={route?.params?.data?.file_url}
+            />
           )}
           <Text
             allowFontScaling={false}
